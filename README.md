@@ -38,4 +38,4 @@ This project is licensed under the Apache2 License. See the [LICENSE](LICENSE) f
 
 ## Contact
 
-For questions or support, please contact [gi.demarco@innovazione.gov.it](mailto:gi.demarco@innovazione.gov.it.
+For questions or support, please contact [gi.demarco@innovazione.gov.it](mailto:gi.demarco@innovazione.gov.it).
