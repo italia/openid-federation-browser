@@ -20,6 +20,7 @@ To install and run the OpenID Federation Browser, follow these steps documented 
 - **Browse Subordinates**: inspect the Entities listed in the Federation Listing Endpoint and find Leaves and Intermediates.
 - **Filter Subordinates**: filter results using regexp on the entity IDs or Federation Listing url params filters.
 - **Discover Entities**: Submit a specific entity id to be resolved under the configured Trust Anchor.
+- **Inspect Entity Statements**: inspect Entity Configuration by clicking an Entity, Subordinate Statements by clicking the wire connecting an Entity with its Superior.
 - **Export Trust Chains**: By selecting a specific Entity, download the validated Trust Chain.
 - **Security Checks**: Inspect specific Trust Marks associated with each entity.
 
