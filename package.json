@@ -1,0 +1,54 @@
+{
+  "name": "openid-federation-browser",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@openid-federation/core": "^0.1.1-alpha.3",
+    "@react-sigma/core": "^4.0.3",
+    "@testing-library/jest-dom": "^5.17.0",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
+    "@types/jest": "^27.5.2",
+    "@types/node": "^16.18.119",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "bootstrap-italia": "^2.11.0",
+    "formatjs": "^0.1.1",
+    "graphology": "^0.25.4",
+    "graphology-types": "^0.24.7",
+    "jose": "^5.9.6",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-hook-form": "^7.53.2",
+    "react-intl": "^6.8.7",
+    "react-router-dom": "^6.28.0",
+    "react-scripts": "5.0.1",
+    "sigma": "^3.0.0-beta.36",
+    "typescript": "^4.9.5",
+    "web-vitals": "^2.1.4"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}

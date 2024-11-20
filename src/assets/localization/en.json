@@ -1,0 +1,20 @@
+{
+    "title": "Openid Federation Browser",
+    "trust_anchor_url": "Insert Trust Anchor URL",
+    "trust_anchor_url_button": "Submit",
+    "invalid_url_error_message": "Insert a valid URL",
+    "url_insert_placeholder": "Insert a valid URL to proceed",
+    "display_info_for": "Displaying Trust Anchor information for: ",
+    "fork_on_github": "Fork on GitHub",
+    "version": "Version: ",
+    "search_label": "Search",
+    "oidc-attributes": "User Information",
+    "oidc-logout": "Logout",
+    "welcome": "Welcome",
+    "login-with-spid": "Login with SPID",
+    "login-with-cie": "Login with CIE",
+    "spid-explanation": "SPID is the access system that allows you to use online services with a unique digital identity. If you already have a digital identity, login with your Identity Provider. If you don’t have a digital identity yet, choose an Identity Provider where obtain your SPID Digital Identity.",
+    "cie-explanation": "If you have the new Electronic Identity Card (CIE) you can use it to access the services online Public Administration. You need the PIN and PUK codes: the first part of the two codes is in the receipt of the CIE request, the second part is delivered together with the CIE. Visit the official site of CIE id to get the software, documentation and tutorial.",
+    "invalid_request": "Invalid Request",
+    "Authentication request rejected by user": "Authentication request rejected by user"
+  }
