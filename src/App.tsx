@@ -1,7 +1,7 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-import { Header } from './components/Header';
+import { SlimHeader } from './components/SlimHeader';
 import { SideMenu } from './components/SideMenu';
 import { GraphView } from './components/GraphView';
 import { IntlProvider } from 'react-intl';
@@ -15,7 +15,7 @@ function App() {
         defaultLocale="en-EN"
         messages={translations[navigator.language]}
       >
-        <Header />
+        <SlimHeader />
         <div className="container">
           <div className="row">
             <div className="col-sm">
