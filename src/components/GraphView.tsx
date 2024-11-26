@@ -1,11 +1,16 @@
 
-import { FC, useEffect, CSSProperties, useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { useSearchParams } from "react-router-dom";
 import { genGraphFromUrl } from "../lib/grap-data/graphGeneration";
 import { GraphCanvas } from "reagraph";
 import { Node, Edge } from "../lib/grap-data/types";
 import { ContextMenuAtom } from "../atoms/ContextMenu";
+import { 
+    FC, 
+    useEffect, 
+    CSSProperties, 
+    useState
+} from "react";
 
 export const GraphView: FC<{ style?: CSSProperties }> = ({ style }) => {
     const [searchParams, setSearchParams] = useSearchParams();
@@ -33,8 +38,8 @@ export const GraphView: FC<{ style?: CSSProperties }> = ({ style }) => {
     
 
     return (
-        <div>
-            <div style={{ position: "fixed", width: '50%', height: '60%', visibility:  isVisible? 'visible' : 'hidden'}}>
+        <div className="col-lg-8">
+            <div style={{ position: "fixed", height:"80%", visibility:  isVisible? 'visible' : 'hidden'}}>
                 <div className="alert alert-success" role="alert"><FormattedMessage id='display_info_for' /> {`${searchParams.get('trustAnchorUrl')}`}</div>
                 <GraphCanvas nodes={nodes} edges={edges} contextMenu={({ data, onClose }) => (
                     <ContextMenuAtom data={data} onClose={onClose} />

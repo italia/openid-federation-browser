@@ -21,9 +21,7 @@ function App() {
             <div className="col-sm">
               <SideMenu />
             </div>
-            <div className="col-lg-8">
-              <GraphView/>
-            </div>
+            <GraphView/>
           </div>
         </div>
       </IntlProvider>
