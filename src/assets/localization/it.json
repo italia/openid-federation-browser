@@ -1,6 +1,7 @@
 {
-    "title": "OIDC Relying Party Node.js",
-    "trust_anchor_url": "Inserisci l'URL del Trust Anchor",
+    "title": "Openid Federation Browser",
+    "insert_trust_node_url_option": "Inserisci l'URL del Nodo",
+    "select_trust_node_url_option": "Seleziona l'URL del Nodo dalla lista",
     "trust_anchor_url_button": "Submit",
     "invalid_url_error_message": "Inserisci un URL valido",
     "url_insert_placeholder": "Inserisci un URL valido per procedere",

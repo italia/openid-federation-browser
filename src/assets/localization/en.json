@@ -1,6 +1,7 @@
 {
     "title": "Openid Federation Browser",
-    "trust_anchor_url": "Insert Trust Anchor URL",
+    "insert_trust_node_url_option": "Insert Node URL",
+    "select_trust_node_url_option": "Select Node URL From List",
     "trust_anchor_url_button": "Submit",
     "invalid_url_error_message": "Insert a valid URL",
     "url_insert_placeholder": "Insert a valid URL to proceed",
