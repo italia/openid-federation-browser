@@ -2,6 +2,8 @@
     "title": "Openid Federation Browser",
     "insert_trust_node_url_option": "Inserisci l'URL del Nodo",
     "select_trust_node_url_option": "Seleziona l'URL del Nodo dalla lista",
+    "federation_entity_type": "Tipo di Entità di Federazione",
+    "immediate_subordinate_count": "Numero di Subordinati Immediati",
     "trust_anchor_url_button": "Submit",
     "invalid_url_error_message": "Inserisci un URL valido",
     "url_insert_placeholder": "Inserisci un URL valido per procedere",
@@ -18,4 +20,4 @@
     "cie-explanation": "Se hai la nuova Electronic Identity Card (CIE) puoi usarla per accedere ai servizi online della pubblica amministrazione. Hai bisongo dei codici PIN e PUK: la prima parte dei due codici è nella ricevuta della richiesta CIE, la seconda parte viene inviata insieme al CIE. Visita sito ufficiale di CIE id per ottenere software, documentazione e tutorial.",
     "invalid_request": "Errore nella richiesta",
     "Authentication request rejected by user": "Richiseta di autenticazione cancellata dall'utente"
-  }
+}

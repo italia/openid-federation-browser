@@ -1,46 +1,42 @@
-# Getting Started with Create React App
+# OpenID Federation Browser
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Welcome to the OpenID Federation Browser project!
+This tool is designed to facilitate the exploration and management of OpenID Federation entities,
+providing a user-friendly interface for navigating Trust Chains and Entity Configurations.
 
-## Available Scripts
+## Features
 
-In the project directory, you can run:
+- **Entity Discovery**: Easily discover and view OpenID Federation Entities and their configurations.
+- **Trust Chain Visualization**: Visualize the Trust Chains between entities, including Trust Anchors, Intermediates, and Leaves.
+- **Security Insights**: Gain insights into the security aspects of the federation, including trust marks and compliance status.
 
-### `npm start`
+## Installation
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+To install and run the OpenID Federation Browser, follow these steps documented in [here](SETUP.md).
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Usage
 
-### `npm test`
+- **Configure the Trust Anchor**: Submit the https URL of the Trust Anchor to use and optionally its Federation Entity Keys in JWK format.
+- **Browse Subordinates**: inspect the Entities listed in the Federation Listing Endpoint and find Leaves and Intermediates.
+- **Filter Subordinates**: filter results using regexp on the entity IDs or Federation Listing url params filters.
+- **Discover Entities**: Submit a specific entity id to be resolved under the configured Trust Anchor.
+- **Inspect Entity Statements**: inspect Entity Configuration by clicking an Entity, Subordinate Statements by clicking the wire connecting an Entity with its Superior.
+- **Export Trust Chains**: By selecting a specific Entity, download the validated Trust Chain.
+- **Security Checks**: Inspect specific Trust Marks associated with each entity.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Contributing
 
-### `npm run build`
+We welcome contributions to the OpenID Federation Browser project! To contribute, please follow these steps:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+1. Fork the repository.
+2. Create a new branch for your feature or bug fix.
+3. Commit your changes and push the branch to your fork.
+4. Submit a pull request with a description of your changes.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## License
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+This project is licensed under the Apache2 License. See the [LICENSE](LICENSE) file for more details.
 
-### `npm run eject`
+## Contact
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+For questions or support, please contact [gi.demarco@innovazione.gov.it](mailto:gi.demarco@innovazione.gov.it).
