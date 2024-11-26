@@ -22,7 +22,7 @@ function App() {
               <SideMenu />
             </div>
             <div className="col-lg-8">
-              <GraphView style={{ height: "500px", width: "500px"}}/>
+              <GraphView/>
             </div>
           </div>
         </div>
