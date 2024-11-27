@@ -1,10 +1,11 @@
 
-import { FormattedMessage } from "react-intl";
 import { useSearchParams } from "react-router-dom";
 import { genGraphFromUrl } from "../lib/grap-data/graphGeneration";
 import { GraphCanvas } from "reagraph";
 import { Node, Edge } from "../lib/grap-data/types";
-import { ContextMenuAtom } from "../atoms/ContextMenu";
+import { ContextMenuAtom } from "./ContextMenu";
+import { LoadingAtom } from "./Loading";
+import { handleCollapseVisibility } from "../lib/utils";
 import { 
     FC, 
     useEffect, 
@@ -12,9 +13,8 @@ import {
     useState
 } from "react";
 
-export const GraphView: FC<{ style?: CSSProperties }> = ({ style }) => {
+export const GraphViewAtom: FC<{ style?: CSSProperties }> = ({ style }) => {
     const [searchParams, setSearchParams] = useSearchParams();
-    const [isVisible, setVisible] = useState(false);
     const [nodes, setNodes] = useState<Node[]>([]);
     const [edges, setEdges] = useState<Edge[]>([]);
 
@@ -23,32 +23,29 @@ export const GraphView: FC<{ style?: CSSProperties }> = ({ style }) => {
             return;
         }
 
+        handleCollapseVisibility('graph-atom', false);
+        handleCollapseVisibility('loading-atom', true);
+
         const trustAnchorUrl = searchParams.get('trustAnchorUrl') as string;
 
         genGraphFromUrl(trustAnchorUrl).then(graph => {
             setNodes(graph.nodes);
             setEdges(graph.edges);
+            handleCollapseVisibility('graph-atom', true);
+            handleCollapseVisibility('loading-atom', false);
         });
 
     }, [searchParams]);
 
-    useEffect(() => {
-        if (searchParams.has('trustAnchorUrl')) return setVisible(true);
-    }, [searchParams]);
-    
 
     return (
-        <div className="col-lg-8">
-            <div style={{ position: "fixed", height:"80%", visibility:  isVisible? 'visible' : 'hidden'}}>
-                <div className="alert alert-success" role="alert"><FormattedMessage id='display_info_for' /> {`${searchParams.get('trustAnchorUrl')}`}</div>
+        <div style={{ position: "relative", height: "90vh", width: "100vw"}}>
+            <div className="collapse" id="graph-atom">
                 <GraphCanvas nodes={nodes} edges={edges} contextMenu={({ data, onClose }) => (
                     <ContextMenuAtom data={data} onClose={onClose} />
                 )} />
             </div>
-            <div style={{visibility:  !isVisible? 'visible' : 'hidden' }}>
-                <div className="alert alert-info" role="alert"><FormattedMessage id='url_insert_placeholder' /></div>
-            </div>
-
+            <div className="collapse" id="loading-atom"><LoadingAtom /></div>
         </div>
     );
 };
