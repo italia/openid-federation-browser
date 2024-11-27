@@ -1,12 +1,8 @@
-import React from 'react';
-import logo from './logo.svg';
 import './App.css';
-import { SlimHeader } from './atoms/SlimHeader';
-import { SideMenu } from './components/SideMenu';
-import { GraphView } from './components/GraphView';
 import { IntlProvider } from 'react-intl';
 import { translations } from './lib/translations';
 import { Header } from './components/Header';
+import { BodyComponent } from './components/Body';
 
 function App() {
   return (
@@ -17,14 +13,7 @@ function App() {
         messages={translations[navigator.language]}
       >
         <Header />
-        <div className="container">
-          <div className="row">
-            <div className="col-sm">
-              <SideMenu />
-            </div>
-            <GraphView/>
-          </div>
-        </div>
+        <BodyComponent/>
       </IntlProvider>
     </div>
   );
