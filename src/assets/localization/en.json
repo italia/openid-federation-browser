@@ -1,7 +1,7 @@
 {
     "title": "Openid Federation Browser",
-    "insert_trust_node_url_option": "Insert Node URL",
-    "select_trust_node_url_option": "Select Node URL From List",
+    "insert_trust_node_url_option": "Insert URL",
+    "select_trust_node_url_option": "Select From List",
     "federation_entity_type": "Federation Entity Type",
     "immediate_subordinate_count": "Immediate Subordinate Count",
     "trust_anchor_url_button": "Submit",
