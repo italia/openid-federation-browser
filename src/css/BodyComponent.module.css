@@ -1,0 +1,16 @@
+.bodyContainer {
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+}
+
+.bodyElement {
+    width: 40%; 
+    margin-top: 5%;
+}
+
+.graphAtom {
+    position: relative; 
+    height: 90vh; 
+    width: 100vw;
+}

@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
+import styles from '../css/BodyComponent.module.css';
 import trustChainList from '../assets/trustChainList.json';
 
 interface TrustAnchorLink {
@@ -27,7 +28,7 @@ export const TrstAnchorListAtom = () => {
     }, [searchValue]);
 
     return (
-        <div className="it-list-wrapper" style={{width: "40%", marginTop: "5%"}}>
+        <div className={`it-list-wrapper ${styles.bodyElement}`}>
             <div className="row">
                 <h4><FormattedMessage id="select_trust_node_url_label" /></h4>
             </div>

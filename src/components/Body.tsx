@@ -4,6 +4,7 @@ import { InputAtom } from '../atoms/Input';
 import { TrstAnchorListAtom } from '../atoms/TrustAnchorList';
 import { isValidUrl } from "../lib/utils";
 import { GraphViewAtom } from '../atoms/GraphView';
+import styles from '../css/BodyComponent.module.css';
 
 
 export const BodyComponent = () => {
@@ -27,7 +28,7 @@ export const BodyComponent = () => {
     }, [searchParams]);
 
     return (
-        <div style={{display: "flex", alignItems: "center", justifyContent: "center"}}>
+        <div className={styles.bodyContainer}>
             {visualizedAtom}
         </div>
     );

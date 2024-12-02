@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useSearchParams } from 'react-router-dom';
-import { getCollapsable, cleanInput } from '../lib/utils';
+import { handleCollapseVisibility, cleanInput } from '../lib/utils';
+import styles from '../css/BodyComponent.module.css';
 
 interface InputProps {
     validationFn: (value: string) => boolean;
@@ -18,22 +19,21 @@ export const InputAtom = ({validationFn}: InputProps) => {
         if (!doCheck) return;
         if (validationFn(inputValue)) {
             setSearchParams({ trustAnchorUrl: inputValue });
-            getCollapsable('invalid-input-collapse').hide();
+            handleCollapseVisibility('invalid-input-collapse', false);
             cleanInput('input-value');
         }else{
-            getCollapsable('invalid-input-collapse').show();
+            handleCollapseVisibility('invalid-input-collapse', true);
         }
         setDoCheck(false);
     }, [doCheck]);
 
     return (
-        <div style={{width: "40%", marginTop: "5%"}}>
+        <div className={`container ${styles.bodyElement}`}>
             <div className='row'>
                 <h4><FormattedMessage id="insert_trust_node_url_label" /></h4>
             </div>
             <div className="row">
-                <label className="col-2" htmlFor="input-value"><FormattedMessage id="url_input_label" /></label>
-                <div className="col-9"><input type="text" className="form-control" id="input-value" onChange={changeValue} /></div>
+                <input type="text" className="form-control" id="input-value" onChange={changeValue} />
             </div>
             <div className="collapse row" id="invalid-input-collapse">
                 <div className="col-12">
