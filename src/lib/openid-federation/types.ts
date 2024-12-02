@@ -80,10 +80,11 @@ export interface EntityConfiguration {
     startNode?: boolean;
 };
 
+export interface NodeInfo {
+    ec: EntityConfiguration;
+    immDependants: string[];
+    startNode?: boolean;
+}
+
 type MetadataValue = string | string[] | {[key: string]: string;};
 export type Metadata = {[key: string]: MetadataValue};
-
-export interface TrustChain {
-    tree: Tree<EntityConfiguration>;
-    metadata: Metadata;
-};
