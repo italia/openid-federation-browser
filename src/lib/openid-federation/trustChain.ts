@@ -4,10 +4,10 @@ import { Tree } from '@easygrating/easytree';
 import { jsonToPublicKey, mergeObjects } from './utils';
 import {
     EntityConfiguration, 
+    NodeInfo,
     EntityConfigurationHeader, 
     EntityConfigurationPayload, 
     SubordianteStatement,
-    TrustChain,
 } from './types';
 
 
@@ -38,36 +38,45 @@ const getEntityConfigurations = async (subject: string, wellKnownEndpoint: strin
     return {entity: subject, jwt, header: header, payload};
 };
 
-const discoveryStep = async (currenECUrl: string, prec: Tree<EntityConfiguration> | undefined = undefined): Promise<Tree<EntityConfiguration>> => {
+export const discovery = async (currenECUrl: string): Promise<Tree<NodeInfo>> => {
     const currentNodeEC = await getEntityConfigurations(currenECUrl);
-    const currentNode = new Tree(currenECUrl, currentNodeEC);
+    const federationListEndpoint = currentNodeEC.payload?.metadata?.federation_entity?.federation_list_endpoint;
 
-    if (prec) currentNode.addChild(prec);
-    else currentNode.data.startNode = true;
-
-    const federationListEndpoint = currentNode.data.payload?.metadata?.federation_entity?.federation_list_endpoint;
+    const nodeInfo: NodeInfo = {ec: currentNodeEC, immDependants: []};
 
     if (federationListEndpoint){
         const response = await axios.get(federationListEndpoint);
-        const federationList: Set<string> = new Set(response.data);
-        
-        federationList.forEach(async (child) => {
-            currentNode.addChild(new Tree(child, {entity: child}));
-        });
-        
+        const immediateSubordinate: Set<string> = new Set(response.data);
+
+        nodeInfo.immDependants = Array.from(immediateSubordinate);
     }
 
+    const currentNode = new Tree(currenECUrl, nodeInfo);
     return currentNode;
 };
 
-export const discovery = async (currenECUrl: string, prec: Tree<EntityConfiguration> | undefined = undefined): Promise<TrustChain> => {
-    const currentNode = await discoveryStep(currenECUrl, prec);
+export const discoverChild = async (currenECUrl: string, parent: Tree<NodeInfo>): Promise<Tree<NodeInfo>> => {
+    const currentNode = await discovery(currenECUrl);
+    currentNode.parent = parent;
+    return currentNode;
+};
 
-    const authorityHints = currentNode.data.payload?.authority_hints;
+export const discoverParent = async (currenECUrl: string, child: Tree<NodeInfo>): Promise<Tree<NodeInfo>> => {
+    const currentNode = await discovery(currenECUrl);
+    currentNode.addChild(child);
+    return currentNode;
+};
+
+export const traverseUp = async (currenECUrl: string, child: Tree<NodeInfo> | undefined = undefined): Promise<Tree<NodeInfo>> => {
+    const currentNode = child 
+        ? await discoverParent(currenECUrl, child)
+        : await discovery(currenECUrl);
+
+    const authorityHints = currentNode.data.ec.payload?.authority_hints;
 
     if (authorityHints && authorityHints.length > 0){
-        return discovery(authorityHints[0], currentNode);
+        return traverseUp(authorityHints[0], currentNode);
     }
 
-    return {tree: currentNode, metadata: {}};
+    return currentNode;
 };

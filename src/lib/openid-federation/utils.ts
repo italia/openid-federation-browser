@@ -1,4 +1,6 @@
 import * as jose from 'jose';
+import { Tree } from '@easygrating/easytree';
+import { NodeInfo } from './types';
 
 export const jsonToPublicKey = (jwk: JsonWebKey) => {
     if (jwk.kty === 'RSA') {
@@ -40,4 +42,7 @@ export const mergeObjects = (objectTarget: any, objectSource: any) => {
     }
     return output;
 };
-  
+
+export const getTreeRoot = (tree: Tree<NodeInfo>): Tree<NodeInfo> => {
+  return tree.parent ? getTreeRoot(tree.parent) : tree;
+}
