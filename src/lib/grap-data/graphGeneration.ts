@@ -1,6 +1,6 @@
 import { Tree } from '@easygrating/easytree';
-import { EntityConfiguration } from '../openid-federation/types';
-import { discovery } from '../openid-federation/trustChain';
+import { EntityConfiguration, NodeInfo } from '../openid-federation/types';
+import { discovery, traverseUp } from '../openid-federation/trustChain';
 import { Graph, Node, Edge } from './types';
 
 const NodeColor = {
@@ -17,14 +17,14 @@ enum NodeType {
     Leaf = "Leaf",
     StartNode = "StartNode",
     Undiscovered = "Undiscovered",
-}
+};
 
-const getNodeType = (tree: Tree<EntityConfiguration>): NodeType => {
+const getNodeType = (tree: Tree<NodeInfo>): NodeType => {
     if (tree.data.startNode){
         return NodeType.StartNode;
     }
 
-    if (!tree.data.jwt){
+    if (!tree.data.ec.jwt){
         return NodeType.Undiscovered;
     }
 
@@ -37,28 +37,39 @@ const getNodeType = (tree: Tree<EntityConfiguration>): NodeType => {
     }
 
     return NodeType.Anchor;
-}
+};
 
-export const genGraph = (tree: Tree<EntityConfiguration>, graph: Graph = {nodes: [], edges: []}, maxChilds: number = 10) => {
+export const genGraph = (tree: Tree<NodeInfo>, graph: Graph = {nodes: [], edges: []}, maxChilds: number = 10) => {
     const nodeType = getNodeType(tree);
     const label = tree.id.toString();
 
-    graph.nodes.push({id: tree.id, label, fill: NodeColor[nodeType], info: {type: nodeType, dependantsLen: tree.children.length}} as Node);
+    graph.nodes.push({id: tree.id, label, fill: NodeColor[nodeType], info: {type: nodeType, dependantsLen: tree.data.immDependants.length, tree}} as Node);
     
     if (tree.parent){
         graph.edges.push({id: `${tree.parent.id}-${tree.id}`, source: tree.id, target: tree.parent.id, label: `${tree.parent.id}->${tree.id}`} as Edge);
     }
 
-    tree.children.slice(0, maxChilds).forEach((child) => {
-        genGraph(child, graph);
-    });
+    if (tree.children.length == 0){
+        return graph;
+    }
+
+    const completeGraph: Graph = tree.children.reduce((accGraph, child) => {
+        return genGraph(child, accGraph);
+    }, graph);
+
+    return completeGraph;
+};
+
+export const traverseUpGraphFromUrl = async (url: string) => {
+    const tree = await traverseUp(url);
+    const graph = genGraph(tree);
 
     return graph;
-}
+};
 
-export const genGraphFromUrl = async (url: string) => {
-    const tree = await discovery(url);
-    const graph = genGraph(tree.tree);
+export const genStartNodeGraphFromUrl = async (url: string) => {
+    const startNode = await discovery(url);
+    const graph = genGraph(startNode);
 
     return graph;
 }
