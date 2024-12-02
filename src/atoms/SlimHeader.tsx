@@ -1,5 +1,6 @@
 import sprite from "../assets/sprite.svg"; 
 import { FormattedMessage } from "react-intl";
+import { RoundedIconAtom } from "./RoundedIcon";
 
 export const SlimHeader = () => {
     return (
@@ -16,11 +17,7 @@ export const SlimHeader = () => {
                             </div>
                             <div className="it-header-slim-right-zone">
                                 <a className="btn btn-primary btn-icon btn-full" href="#" title="Fork on Github" aria-label="Fork on Github">
-                                    <span className="rounded-icon">
-                                        <svg className="icon icon-primary">
-                                            <use xlinkHref={sprite + "#it-github"}></use>
-                                        </svg>
-                                    </span>
+                                    <RoundedIconAtom iconID={"#it-github"} />
                                     <span className="d-none d-lg-block"><FormattedMessage id="fork_on_github" /></span>
                                 </a>
                             </div>
