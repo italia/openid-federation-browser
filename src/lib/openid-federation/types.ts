@@ -73,9 +73,10 @@ export interface EntityConfigurationPayload {
 
 export interface EntityConfiguration {
     entity: string;
-    jwt?: string;
-    header?: EntityConfigurationHeader;
-    payload?: EntityConfigurationPayload;
+    jwt: string;
+    header: EntityConfigurationHeader;
+    payload: EntityConfigurationPayload;
+    valid: boolean;
     subordinate?: SubordianteStatement | undefined;
     startNode?: boolean;
 };
