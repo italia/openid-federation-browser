@@ -2,9 +2,10 @@ import * as jose from 'jose';
 import { Tree } from '@easygrating/easytree';
 import { NodeInfo } from './types';
 
-export const jsonToPublicKey = (jwk: JsonWebKey) => {
+export const jsonToPublicKey = (jwk: {[key:string]: any} ) => {
     if (jwk.kty === 'RSA') {
       return {
+        kid: jwk.kid,
         kty: jwk.kty,
         key_ops: jwk.key_ops,
         n: jwk.n,
@@ -14,6 +15,7 @@ export const jsonToPublicKey = (jwk: JsonWebKey) => {
     }
     else if (jwk.kty === 'EC') {
       return {
+        kid: jwk.kid,
         kty: jwk.kty,
         key_ops: jwk.key_ops,
         x: jwk.x,
