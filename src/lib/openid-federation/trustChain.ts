@@ -40,15 +40,13 @@ const getEntityConfigurations = async (subject: string, wellKnownEndpoint: strin
 
 export const discovery = async (currenECUrl: string): Promise<Tree<NodeInfo>> => {
     const currentNodeEC = await getEntityConfigurations(currenECUrl);
-    const federationListEndpoint = currentNodeEC.payload?.metadata?.federation_entity?.federation_list_endpoint;
+    const federationListEndpoint = currentNodeEC.payload.metadata?.federation_entity?.federation_list_endpoint;
 
     const nodeInfo: NodeInfo = {ec: currentNodeEC, immDependants: []};
 
     if (federationListEndpoint){
         const response = await axios.get(federationListEndpoint);
-        const immediateSubordinate: Set<string> = new Set(response.data);
-
-        nodeInfo.immDependants = Array.from(immediateSubordinate);
+        nodeInfo.immDependants = response.data;
     }
 
     const currentNode = new Tree(currenECUrl, nodeInfo);
