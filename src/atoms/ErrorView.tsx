@@ -1,6 +1,5 @@
 import { FormattedMessage } from 'react-intl';
 import { RoundedIconAtom } from './RoundedIcon';
-import sprite from '../assets/sprite.svg';
 import styles from '../css/BodyComponent.module.css';
 
 export interface ErrorViewAtomProps {
