@@ -1,5 +1,5 @@
 import { Tree } from '@easygrating/easytree';
-import { EntityConfiguration, NodeInfo } from '../openid-federation/types';
+import { NodeInfo } from '../openid-federation/types';
 import { discovery, traverseUp } from '../openid-federation/trustChain';
 import { Graph, Node, Edge } from './types';
 
@@ -49,7 +49,7 @@ export const genGraph = (tree: Tree<NodeInfo>, graph: Graph = {nodes: [], edges:
         graph.edges.push({id: `${tree.parent.id}-${tree.id}`, source: tree.id, target: tree.parent.id, label: `${tree.parent.id}->${tree.id}`} as Edge);
     }
 
-    if (tree.children.length == 0){
+    if (tree.children.length === 0){
         return graph;
     }
 

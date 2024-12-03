@@ -1,7 +1,8 @@
 import * as jose from 'jose';
 import axios from 'axios';
 import { Tree } from '@easygrating/easytree';
-import { jsonToPublicKey, mergeObjects } from './utils';
+import { jsonToPublicKey } from './utils';
+import { validateEntityConfiguration } from './validation';
 import {
     EntityConfiguration, 
     NodeInfo,
@@ -32,10 +33,16 @@ const getEntityConfigurations = async (subject: string, wellKnownEndpoint: strin
 
     if (federationFetchEndpoint){
         const subordinate = await getSubordinateStatement(federationFetchEndpoint);
-        return {entity: subject, jwt, header: header, payload, subordinate: subordinate};
+        const ec: EntityConfiguration = {entity: subject, jwt, header: header, payload, subordinate: subordinate, valid: false};
+        await validateEntityConfiguration(ec);
+
+        return ec;
     }
 
-    return {entity: subject, jwt, header: header, payload};
+    const ec: EntityConfiguration = {entity: subject, jwt, header: header, payload, valid: false};
+    await validateEntityConfiguration(ec);
+
+    return ec;
 };
 
 export const discovery = async (currenECUrl: string): Promise<Tree<NodeInfo>> => {
