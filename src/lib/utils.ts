@@ -1,5 +1,3 @@
-import { Collapse } from 'bootstrap';
-
 export const isValidUrl = (url: string): boolean => {
     try {
         new URL(url);
