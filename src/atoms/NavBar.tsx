@@ -14,6 +14,7 @@ export const NavBarAtom = () => {
                                     <ul className="navbar-nav">
                                         <li className="nav-item active"><Link className="nav-link" to="/?insertUrl"><span><FormattedMessage id="insert_trust_node_url_option" /></span></Link></li>
                                         <li className="nav-item"><Link className="nav-link" to="/?listUrl"><span><FormattedMessage id="select_trust_node_url_option" /></span></Link></li>
+                                        <li className="nav-item"><Link className="nav-link" to="/?insertEntityUrl"><span><FormattedMessage id="insert_entity_node_url_option" /></span></Link></li>
                                     </ul>
                                 </div>
                             </div>
