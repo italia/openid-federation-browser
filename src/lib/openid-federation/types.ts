@@ -77,6 +77,7 @@ export interface EntityConfiguration {
     header: EntityConfigurationHeader;
     payload: EntityConfigurationPayload;
     valid: boolean;
+    expired: boolean;
     subordinate?: SubordianteStatement | undefined;
     startNode?: boolean;
 };
