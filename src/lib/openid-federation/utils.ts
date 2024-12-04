@@ -1,6 +1,6 @@
 import * as jose from 'jose';
 import { Tree } from '@easygrating/easytree';
-import { NodeInfo } from './types';
+import { NodeInfo, EntityConfigurationPayload } from './types';
 
 export const jsonToPublicKey = (jwk: {[key:string]: any} ) => {
     if (jwk.kty === 'RSA') {
@@ -45,6 +45,8 @@ export const mergeObjects = (objectTarget: any, objectSource: any) => {
     return output;
 };
 
-export const getTreeRoot = (tree: Tree<NodeInfo>): Tree<NodeInfo> => {
-  return tree.parent ? getTreeRoot(tree.parent) : tree;
-}
+export const getTreeRoot       = (tree: Tree<NodeInfo>): Tree<NodeInfo> => tree.parent ? getTreeRoot(tree.parent) : tree;
+export const getFetchEndpoint  = (payload: EntityConfigurationPayload)  => payload.metadata?.federation_entity?.federation_fetch_endpoint;
+export const hasFetchEndpoint  = (payload: EntityConfigurationPayload)  => getFetchEndpoint(payload) ? true : false;
+export const getAuthorityHints = (payload: EntityConfigurationPayload)  => payload.authority_hints;
+export const hasAuthorityHints = (payload: EntityConfigurationPayload)  => getAuthorityHints(payload);
