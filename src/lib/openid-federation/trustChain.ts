@@ -30,18 +30,12 @@ const getEntityConfigurations = async (subject: string, wellKnownEndpoint: strin
     payload.jwks.keys = payload.jwks.keys.map((jwk) => jsonToPublicKey(jwk));
 
     const federationFetchEndpoint = payload.metadata?.federation_entity?.federation_fetch_endpoint;
+    const subordinate = federationFetchEndpoint ? await getSubordinateStatement(federationFetchEndpoint) : undefined;
 
-    if (federationFetchEndpoint){
-        const subordinate = await getSubordinateStatement(federationFetchEndpoint);
-        const ec: EntityConfiguration = {entity: subject, jwt, header: header, payload, subordinate: subordinate, valid: false};
-        await validateEntityConfiguration(ec);
+    const ec: EntityConfiguration = {entity: subject, jwt, header, payload, valid: false, expired: true, subordinate};
 
-        return ec;
-    }
-
-    const ec: EntityConfiguration = {entity: subject, jwt, header: header, payload, valid: false};
     await validateEntityConfiguration(ec);
-
+    
     return ec;
 };
 
