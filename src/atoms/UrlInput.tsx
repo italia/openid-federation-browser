@@ -2,13 +2,12 @@ import { useEffect, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useSearchParams } from 'react-router-dom';
 import { handleCollapseVisibility, cleanInput } from '../lib/utils';
-import styles from '../css/BodyComponent.module.css';
 
 interface InputProps {
     validationFn: (value: string) => boolean;
 };
 
-export const InputAtom = ({validationFn}: InputProps) => {
+export const UrlInputAtom = ({validationFn}: InputProps) => {
     const [inputValue, setInputValue] = useState('');
     const [doCheck, setDoCheck] = useState(false);
     const [searchParams, setSearchParams] = useSearchParams();
@@ -18,7 +17,10 @@ export const InputAtom = ({validationFn}: InputProps) => {
     useEffect(() => {
         if (!doCheck) return;
         if (validationFn(inputValue)) {
-            setSearchParams({ trustAnchorUrl: inputValue });
+            setSearchParams({ 
+                trustAnchorUrl: inputValue,
+                discoveryType: searchParams.has("insertEntityUrl") ? "entity" : "anchor",
+            });
             handleCollapseVisibility('invalid-input-collapse', false);
             cleanInput('input-value');
         }else{
@@ -28,9 +30,9 @@ export const InputAtom = ({validationFn}: InputProps) => {
     }, [doCheck]);
 
     return (
-        <div className={`container ${styles.bodyElement}`}>
+        <div className='container'>
             <div className='row'>
-                <h4><FormattedMessage id="insert_trust_node_url_label" /></h4>
+                <h4><FormattedMessage id={searchParams.has("insertEntityUrl") ? "insert_entity_url_label" : "insert_anchor_url_label"} /></h4>
             </div>
             <div className="row">
                 <input type="text" className="form-control" id="input-value" onChange={changeValue} />
