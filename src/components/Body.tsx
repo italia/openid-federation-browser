@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { InputAtom } from '../atoms/Input';
+import { UrlInputAtom } from '../atoms/UrlInput';
 import { PaginatedListAtom } from '../atoms/PaginatedList';
 import { Link } from 'react-router-dom';
 import { isValidUrl } from "../lib/utils";
@@ -8,20 +8,20 @@ import { GraphViewComponent } from './GraphView';
 import styles from '../css/BodyComponent.module.css';
 import trustChainList from '../assets/trustChainList.json';
 
-const ItemsRenderer = ({ items }: { items: any[] }) => {
-    return (
-        <>
-        {items && items.map((d) => <li key={d.url}><Link to={`/?trustAnchorUrl=${d.url}`}>{d.name} - {d.url}</Link></li>)}
-        </>
-    );
-};
-
-const trustAnchorFilter = (anchor: any, filterValue: string) => anchor.name.toLowerCase().includes(filterValue.toLowerCase());
-
 export const BodyComponent = () => {
+    const ItemsRenderer = ({ items }: { items: any[] }) => {
+        return (
+            <>
+            {items && items.map((d) => <li key={d.url}><Link to={`/?trustAnchorUrl=${d.url}`}>{d.name} - {d.url}</Link></li>)}
+            </>
+        );
+    };
+    
+    const trustAnchorFilter = (anchor: any, filterValue: string) => anchor.name.toLowerCase().includes(filterValue.toLowerCase());
+
     const conponents = {
-        InputAtom: <InputAtom validationFn={isValidUrl} />,
-        TrstAnchorListAtom: <PaginatedListAtom itemsPerPage={5} items={trustChainList} ItemsRenderer={ItemsRenderer} filterFn={trustAnchorFilter}/>,
+        InputAtom: <div className={styles.bodyElement}><UrlInputAtom validationFn={isValidUrl} /></div>,
+        TrstAnchorListAtom: <div className={styles.bodyElement}><PaginatedListAtom itemsPerPage={5} items={trustChainList} ItemsRenderer={ItemsRenderer} filterFn={trustAnchorFilter}/></div>,
         GraphView: <GraphViewComponent />
     };
 

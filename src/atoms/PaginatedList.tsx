@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import ReactPaginate from 'react-paginate';
 import { FormattedMessage } from 'react-intl';
-import styles from '../css/BodyComponent.module.css';
-
 
 export interface PaginatedListAtomProps {
     itemsPerPage: number;
@@ -17,7 +15,7 @@ export const PaginatedListAtom = ({ itemsPerPage, items, ItemsRenderer, filterFn
     const [currentItems, setCurrentItems] = useState(items);
     const [pageCount, setPageCount] = useState(0);
   
-    const setCurrentItemsBySearch = () => {
+    const setCurrentItemsBySearch = (searchValue: string, itemOffset: number) => {
         const endOffset = itemOffset + itemsPerPage;
         const filteredItems = filterFn ? items.filter((item) => filterFn(item, searchValue)) : items;
         const currentItems = filteredItems.slice(itemOffset, endOffset);
@@ -34,15 +32,15 @@ export const PaginatedListAtom = ({ itemsPerPage, items, ItemsRenderer, filterFn
 
     const changeSearchValue = (e: any) => setSearchValue(e.target.value);
 
-    useEffect(() => setCurrentItemsBySearch(), [searchValue, itemOffset, items]);
+    useEffect(() => setCurrentItemsBySearch(searchValue, itemOffset), [searchValue, itemOffset]);
   
     return (
-      <div className={`it-list-wrapper container ${styles.bodyElement}`} style={{width: "100rem"}}>
+      <div className={`it-list-wrapper container`} style={{width: "auto"}}>
         {
             filterFn &&
             <div className="row justify-content-md-center">
                 <div className="col-md-auto">
-                    <label htmlFor="input-value"><FormattedMessage id="search_label" /></label>
+                    <label htmlFor="input-value" style={{fontSize: "80%"}}><FormattedMessage id="search_label" /></label>
                 </div>
                 <div className="col-7">
                     <input type="text" className="form-control" id="input-value" onChange={changeSearchValue} />
@@ -57,14 +55,14 @@ export const PaginatedListAtom = ({ itemsPerPage, items, ItemsRenderer, filterFn
         <div className='row justify-content-md-center pt-4'>
             <div className='col-md-auto'>
                 <ReactPaginate
-                    className='pagination'
+                    className='pagination small'
                     containerClassName='pagination'
-                    pageClassName='page-item'
-                    pageLinkClassName='page-link'
+                    pageClassName='small'
+                    pageLinkClassName='page-link small'
                     breakLabel="..."
                     nextLabel="next >"
                     onPageChange={handlePageClick}
-                    pageRangeDisplayed={5}
+                    pageRangeDisplayed={3}
                     pageCount={pageCount}
                     previousLabel="< previous"
                     renderOnZeroPageCount={null}

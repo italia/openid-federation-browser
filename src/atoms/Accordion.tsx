@@ -18,11 +18,11 @@ export const AccordionAtom = ({accordinId, labelId, hiddenElement}: AccordinAtom
 
     return (
         <div className="accordion-item">
-            <h2 className="accordion-header " id={accordinId}>
-                <button className="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target={`#${accordinId}-collapse`} aria-expanded="true" aria-controls="detail-collapse" onClick={accordinIdCollapse}>
+            <div className="accordion-header " id={accordinId}>
+                <button className="accordion-button" style={{fontSize: "80%"}} type="button" data-bs-toggle="collapse" data-bs-target={`#${accordinId}-collapse`} aria-expanded="true" aria-controls="detail-collapse" onClick={accordinIdCollapse}>
                     <FormattedMessage id={labelId} />
                 </button>
-            </h2>
+            </div>
             <div id={`${accordinId}-collapse`} className="accordion-collapse collapse hidden" role="region" aria-labelledby={accordinId}>
                 {hiddenElement}
             </div>

@@ -2,20 +2,25 @@ import { FormattedMessage } from 'react-intl';
 
 export interface InfoViewProps {
     data: any;
-}
+};
 
 export const InfoView = ({data}: InfoViewProps) => {
     const displayedInfo = [
-        <h6><FormattedMessage id="federation_entity_type_label" />: {data.info.type}</h6>,
-        <h6><FormattedMessage id="immediate_subordinate_count_label" />: {data.info.dependantsLen}</h6>,
-        <h6><FormattedMessage id="status_label" />: {data.info.tree.data.ec.valid ? "valid" : "invalid"}</h6>
+        <><FormattedMessage id="federation_entity_type_label" />: {data.info.type}</>,
+        <><FormattedMessage id="immediate_subordinate_count_label" />: {data.info.dependantsLen}</>,
+        <><FormattedMessage id="status_label" />: {data.info.tree.data.ec.valid ? "valid" : "invalid"}</>,
+        <><FormattedMessage id="expired_label" />: {data.info.tree.data.ec.expired ? "expired" : "not expired"}</>,
+        <><FormattedMessage id="expiring_date_label" />: {new Date(data.info.tree.data.ec.payload.exp * 1000).toISOString()}</>
     ];
 
-    const toRow = (info: JSX.Element) => <div className="row justify-content-md-start"><div className="col-md-auto">{info}</div></div>
+    const toRow = (info: JSX.Element) => 
+        <li className="justify-content-md-start">
+            <p style={{fontSize: "60%"}}>{info}</p>
+        </li>
 
     return (
-        <div className="container">
+        <ul style={{textAlign: "left"}}>
             {displayedInfo.map(toRow)}
-        </div>
+        </ul>
     );
-}
+};

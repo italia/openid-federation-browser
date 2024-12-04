@@ -1,6 +1,6 @@
 
 import { useSearchParams } from "react-router-dom";
-import { traverseUp } from "../lib/openid-federation/trustChain";
+import { traverseUp, discovery } from "../lib/openid-federation/trustChain";
 import { genGraph } from "../lib/grap-data/graphGeneration";
 import { GraphCanvas } from "reagraph";
 import { Node, Edge } from "../lib/grap-data/types";
@@ -45,14 +45,17 @@ export const GraphViewComponent: FC<{ style?: CSSProperties }> = ({ style }) => 
         setShowElement(ShowElement.Error);
     };
 
+    const onUpdate = (newTree: Tree<NodeInfo>) => updateGraph(newTree);
+
     useEffect(() => {
         if (!searchParams.has('trustAnchorUrl')) {
             return;
         }
 
-        const trustAnchorUrl = searchParams.get('trustAnchorUrl') as string;
+        const entityUrl = searchParams.get('trustAnchorUrl') as string;
+        const discoveryTree = searchParams.get("discoveryType") === "entity" ? traverseUp(entityUrl) : discovery(entityUrl);
 
-        traverseUp(trustAnchorUrl).then(tree => {
+        discoveryTree.then(tree => {
             updateGraph(tree);
         }).catch(setErrorMessage);
 
@@ -62,12 +65,12 @@ export const GraphViewComponent: FC<{ style?: CSSProperties }> = ({ style }) => 
         <div className={styles.graphAtom}>
             {
                 showElement === ShowElement.Loading 
-                    ? <LoadingAtom /> :
-                showElement === ShowElement.Error ?
-                    <ErrorViewAtom error={error} /> :
-                    <GraphCanvas nodes={nodes} edges={edges} contextMenu={({ data, onClose }) => (
-                        <ContextMenuComponent data={data} onClose={onClose} onUpdate={(newTree: Tree<NodeInfo>) => updateGraph(newTree)} onError={setErrorMessage} />
-                    )} />
+                    ? <LoadingAtom /> 
+                    : showElement === ShowElement.Error 
+                        ? <ErrorViewAtom error={error} /> 
+                        : <GraphCanvas nodes={nodes} edges={edges} contextMenu={({ data, onClose }) => (
+                            <ContextMenuComponent data={data as any} onClose={onClose} onUpdate={onUpdate} onError={setErrorMessage} />
+                          )} />
             }
         </div>
     );
