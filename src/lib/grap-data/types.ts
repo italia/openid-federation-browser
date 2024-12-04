@@ -22,3 +22,19 @@ export interface Graph {
     nodes: Node[];
     edges: Edge[];
 };
+
+export const NodeColor = {
+    "Trust Anchor": "#FF6347",
+    "Intermediate": "#1E90FF",
+    "Leaf": "#CBDFAC",
+    "StartNode": "#FF8C00",
+    "Undiscovered": "#696969"
+};
+
+export enum NodeType {
+    Anchor = "Trust Anchor",
+    Intermediate = "Intermediate",
+    Leaf = "Leaf",
+    StartNode = "StartNode",
+    Undiscovered = "Undiscovered",
+};

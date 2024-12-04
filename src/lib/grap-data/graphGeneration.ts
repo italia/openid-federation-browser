@@ -1,43 +1,7 @@
 import { Tree } from '@easygrating/easytree';
 import { NodeInfo } from '../openid-federation/types';
-import { discovery, traverseUp } from '../openid-federation/trustChain';
-import { Graph, Node, Edge } from './types';
-
-const NodeColor = {
-    "Trust Anchor": "#FF6347",
-    "Intermediate": "#1E90FF",
-    "Leaf": "#CBDFAC",
-    "StartNode": "#FF8C00",
-    "Undiscovered": "#696969"
-};
-
-enum NodeType {
-    Anchor = "Trust Anchor",
-    Intermediate = "Intermediate",
-    Leaf = "Leaf",
-    StartNode = "StartNode",
-    Undiscovered = "Undiscovered",
-};
-
-const getNodeType = (tree: Tree<NodeInfo>): NodeType => {
-    if (tree.data.startNode){
-        return NodeType.StartNode;
-    }
-
-    if (!tree.data.ec.jwt){
-        return NodeType.Undiscovered;
-    }
-
-    if (tree.children.length === 0){
-        return NodeType.Leaf;
-    }
-
-    if (tree.parent){
-        return NodeType.Intermediate;
-    }
-
-    return NodeType.Anchor;
-};
+import { Graph, Node, Edge, NodeColor } from './types';
+import { getNodeType } from './utils';
 
 export const genGraph = (tree: Tree<NodeInfo>, graph: Graph = {nodes: [], edges: []}, maxChilds: number = 10) => {
     const nodeType = getNodeType(tree);
@@ -59,17 +23,3 @@ export const genGraph = (tree: Tree<NodeInfo>, graph: Graph = {nodes: [], edges:
 
     return completeGraph;
 };
-
-export const traverseUpGraphFromUrl = async (url: string) => {
-    const tree = await traverseUp(url);
-    const graph = genGraph(tree);
-
-    return graph;
-};
-
-export const genStartNodeGraphFromUrl = async (url: string) => {
-    const startNode = await discovery(url);
-    const graph = genGraph(startNode);
-
-    return graph;
-}
