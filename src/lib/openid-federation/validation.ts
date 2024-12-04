@@ -1,14 +1,16 @@
 import * as jose from 'jose'
 import { EntityConfiguration } from './types';
 
-export const isValidJWT = async (jwt: string, key: jose.JWK) => {    
+const isValidJWT = async (jwt: string, key: jose.JWK) => {    
     try{
         await jose.jwtVerify(jwt, key);
         return true;
     }catch(err){
         return false;
     }
-}
+};
+
+export const isExpired = (ec: EntityConfiguration) => ec.payload.exp < Date.now() / 1000;
 
 export const validateEntityConfiguration = async (ec: EntityConfiguration) => {
     const kid = ec.header.kid;
@@ -19,9 +21,11 @@ export const validateEntityConfiguration = async (ec: EntityConfiguration) => {
 
     if (!key) return false;
 
-    const isValid = await isValidJWT(ec.jwt!, key);
+    const isJWTValid = await isValidJWT(ec.jwt!, key);
+    const expired = isExpired(ec);
 
-    ec.valid = isValid;
+    ec.valid = isJWTValid;
+    ec.expired = expired;
 
-    return isValid;
-}
+    return isJWTValid && expired;
+};
