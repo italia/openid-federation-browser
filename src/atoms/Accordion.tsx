@@ -9,17 +9,10 @@ export interface AccordinAtomProps {
 }
 
 export const AccordionAtom = ({accordinId, labelId, hiddenElement}: AccordinAtomProps) => {
-    const [show, setShow] = useState(false);
-
-    const accordinIdCollapse = () => {
-        setShow(!show);
-        handleCollapseVisibility(`${accordinId}-collapse`, show)
-    };
-
     return (
         <div className="accordion-item">
             <div className="accordion-header " id={accordinId}>
-                <button className="accordion-button" style={{fontSize: "80%"}} type="button" data-bs-toggle="collapse" data-bs-target={`#${accordinId}-collapse`} aria-expanded="true" aria-controls="detail-collapse" onClick={accordinIdCollapse}>
+                <button className="accordion-button collapsed" style={{fontSize: "80%"}} type="button" data-bs-toggle="collapse" data-bs-target={`#${accordinId}-collapse`} aria-expanded="true" aria-controls="detail-collapse">
                     <FormattedMessage id={labelId} />
                 </button>
             </div>
