@@ -12,9 +12,9 @@ export const NavBarAtom = () => {
                             <div className="navbar-collapsable" id="nav1" style={{ display: 'none' }}>
                                 <div className="menu-wrapper">
                                     <ul className="navbar-nav">
-                                        <li className="nav-item active"><Link className="nav-link" to="/?insertUrl"><span><FormattedMessage id="insert_trust_node_url_option" /></span></Link></li>
-                                        <li className="nav-item"><Link className="nav-link" to="/?listUrl"><span><FormattedMessage id="select_trust_node_url_option" /></span></Link></li>
-                                        <li className="nav-item"><Link className="nav-link" to="/?insertEntityUrl"><span><FormattedMessage id="insert_entity_node_url_option" /></span></Link></li>
+                                        <li className="nav-item active" style={{fontSize: "70%"}}><Link className="nav-link" to="/?insertUrl"><span><FormattedMessage id="insert_trust_node_url_option" /></span></Link></li>
+                                        <li className="nav-item" style={{fontSize: "70%"}}><Link className="nav-link" to="/?listUrl"><span><FormattedMessage id="select_trust_node_url_option" /></span></Link></li>
+                                        <li className="nav-item" style={{fontSize: "70%"}}><Link className="nav-link" to="/?insertEntityUrl"><span><FormattedMessage id="insert_entity_node_url_option" /></span></Link></li>
                                     </ul>
                                 </div>
                             </div>
