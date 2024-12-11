@@ -14,13 +14,14 @@
     "node_info": "Informazioni del Nodo",
     "subordinate_list": "Lista degli Immediate Subordinate",
     "entity_configuration_data": "Dati dell'Entity Configuration",
+    "subordinate_statement_data": "Dati dello Subordinate Statement",
     "select_trust_node_url_label": "Seleziona l'URL di un'Entità di Federazione OpenID",
     "loading": "Caricamento...",
     "federation_entity_type_label": "Tipo di Entità di Federazione",
-    "immediate_subordinate_count_label": "Numero di Subordinati Immediati",
-    "status_label": "Stato EC",
+    "immediate_subordinate_count_label": "Numero di Immediate Subordinate",
+    "status_label": "Stato Entity Configuration",
     "expired_label": "Scaduto",
-    "expiring_date_label": "Data Scadenza",
+    "expiring_date_label": "Valido Fino",
     "no_immediate_label": "Nessun Immediate Subordinate", 
     "trust_anchor_url_button": "Submit",
     "invalid_url_error_message": "Inserisci un URL valido",
@@ -37,5 +38,9 @@
     "spid-explanation": "SPID è il sistema di accesso che permette di usare servizi online con un unica identità digitale. Se hai già la tua identità digitale entra con il tuo Identity Provider. Se non hai ancora la tua identità digitale scegli lo SPID Digital Identity con il quale ottenerla.",
     "cie-explanation": "Se hai la nuova Electronic Identity Card (CIE) puoi usarla per accedere ai servizi online della pubblica amministrazione. Hai bisongo dei codici PIN e PUK: la prima parte dei due codici è nella ricevuta della richiesta CIE, la seconda parte viene inviata insieme al CIE. Visita sito ufficiale di CIE id per ottenere software, documentazione e tutorial.",
     "invalid_request": "Errore nella richiesta",
-    "Authentication request rejected by user": "Richiseta di autenticazione cancellata dall'utente"
+    "Authentication request rejected by user": "Richiseta di autenticazione cancellata dall'utente",
+    "warning_modal_title": "Attenzione",
+    "warning_modal_message": "Stai aggiungendo più nodi della rete. Questo potrebbe rallentare il caricamento delle informazioni. Continuare?",
+    "warning_modal_confirm": "Continua",
+    "warning_modal_cancel": "Annulla"
 }
