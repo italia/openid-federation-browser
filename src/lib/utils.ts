@@ -21,9 +21,20 @@ export const handleCollapseVisibility = (id: string, isVisible: boolean) => {
     if(!isVisible) {
         collapsable.classList.remove('show');
         collapsable.classList.add('hide');
-    }
-    else {
+    } else {
         collapsable.classList.remove('hide');
         collapsable.classList.add('show');
     }
-}
+};
+
+export const handleKeyDwonEvent = (key: string, onEvent: () => void) => {
+    const handleKeyDown = (event: any) => {
+        if (event.key === key) onEvent();
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+};

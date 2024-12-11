@@ -6,7 +6,7 @@ import { Node as GraphNode } from "../lib/grap-data/types";
 import { isNode } from "../lib/grap-data/utils";
 import { NodeMenuAtom } from "../atoms/NodeMenu";
 import { FormattedMessage } from 'react-intl';
-import { RoundedIconAtom } from "../atoms/RoundedIcon";
+import { handleKeyDwonEvent } from "../lib/utils";
 
 export interface ContextMenuProps {
     data: GraphNode;
@@ -18,6 +18,7 @@ export interface ContextMenuProps {
 export const ContextMenuComponent = ({data, onClose, onUpdate, onError}: ContextMenuProps) => {
 
     const nodeCheck = isNode(data);
+    useEffect(() => handleKeyDwonEvent('Escape', onClose), []);
 
     return (
         <IntlProvider
