@@ -1,5 +1,5 @@
 import { FormattedMessage } from "react-intl";
-import { RoundedIconAtom } from "./RoundedIcon";
+import { IconAtom } from "./Icon";
 
 export const SlimHeader = () => {
     return (
@@ -16,7 +16,7 @@ export const SlimHeader = () => {
                             </div>
                             <div className="it-header-slim-right-zone">
                                 <a className="btn btn-primary btn-icon btn-full" href="#" title="Fork on Github" aria-label="Fork on Github">
-                                    <RoundedIconAtom iconID={"#it-github"} isPrimary={true} />
+                                    <IconAtom iconID={"#it-github"} className="icon-primary" isRounded={true}/>
                                     <span className="d-none d-lg-block"><FormattedMessage id="fork_on_github" /></span>
                                 </a>
                             </div>

@@ -1,5 +1,5 @@
 import { FormattedMessage } from 'react-intl';
-import { RoundedIconAtom } from './RoundedIcon';
+import { IconAtom } from './Icon';
 import styles from '../css/BodyComponent.module.css';
 
 export interface ErrorViewAtomProps {
@@ -10,7 +10,7 @@ export const ErrorViewAtom = ({error}: ErrorViewAtomProps) => {
     return (
         <div className={`container ${styles.bodyElement}`}>
             <div className="row">
-                <RoundedIconAtom iconID={"#it-warning-circle"} sizeClass='icon-xl' />
+                <IconAtom iconID={"#it-warning-circle"} className='icon-xl' />
             </div>
             <div className='row'><h4><FormattedMessage id="error" /></h4></div>
             <div className='row'><h5><FormattedMessage id="message" />: {error.message}</h5></div>
