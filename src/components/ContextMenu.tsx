@@ -1,23 +1,25 @@
 import { IntlProvider } from "react-intl";
 import { translations } from "../lib/translations";
-import { Tree } from "@easygrating/easytree";
-import { NodeInfo } from "../lib/openid-federation/types";
-import { Node as GraphNode } from "../lib/grap-data/types";
+import { GraphEdge, GraphNode, Graph } from "../lib/grap-data/types";
 import { isNode } from "../lib/grap-data/utils";
 import { NodeMenuAtom } from "../atoms/NodeMenu";
+import { EdgeMenuAtom } from "../atoms/EdgeMenu";
 import { FormattedMessage } from 'react-intl';
+import { IconAtom } from "../atoms/Icon";
+import { useEffect } from "react";
 import { handleKeyDwonEvent } from "../lib/utils";
 
 export interface ContextMenuProps {
-    data: GraphNode;
+    data: GraphNode | GraphEdge;
+    graph: Graph;
     onClose: () => void;
-    onUpdate: (tree: Tree<NodeInfo>) => void;
+    onUpdate: (graph: Graph) => void;
     onError: (error: Error) => void;
 };
 
-export const ContextMenuComponent = ({data, onClose, onUpdate, onError}: ContextMenuProps) => {
-
+export const ContextMenuComponent = ({data, graph, onClose, onUpdate, onError}: ContextMenuProps) => {
     const nodeCheck = isNode(data);
+
     useEffect(() => handleKeyDwonEvent('Escape', onClose), []);
 
     return (
@@ -30,7 +32,7 @@ export const ContextMenuComponent = ({data, onClose, onUpdate, onError}: Context
                 <div className="row primary-bg">
                     <div className="col-1">
                         <button className="btn-primary btn-icon" onClick={onClose}>
-                            <RoundedIconAtom iconID="#it-close" sizeClass="icon-sm" isPrimary={true} />
+                            <IconAtom iconID="#it-close" className="icon-sm icon-white" />
                         </button>
                     </div>
                     <div className="col-11">
@@ -39,8 +41,8 @@ export const ContextMenuComponent = ({data, onClose, onUpdate, onError}: Context
                 </div>
                 { 
                     nodeCheck
-                        ? <NodeMenuAtom data={data} onUpdate={onUpdate} onError={onError} />
-                        :  <div/>
+                        ? <NodeMenuAtom data={data as GraphNode} graph={graph} onUpdate={onUpdate} onError={onError} />
+                        :  <EdgeMenuAtom data={data as GraphEdge} />
                 }
 
             </div>

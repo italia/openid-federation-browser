@@ -1,20 +1,18 @@
 
 import { useSearchParams } from "react-router-dom";
 import { traverseUp, discovery } from "../lib/openid-federation/trustChain";
-import { genGraph } from "../lib/grap-data/graphGeneration";
 import { GraphCanvas } from "reagraph";
-import { Node, Edge } from "../lib/grap-data/types";
+import { GraphNode, GraphEdge, Graph } from "../lib/grap-data/types";
 import { ContextMenuComponent } from "./ContextMenu";
 import { LoadingAtom } from "../atoms/Loading";
 import { ErrorViewAtom } from "../atoms/ErrorView";
 import styles from '../css/BodyComponent.module.css';
-import { NodeInfo } from "../lib/openid-federation/types";
-import { Tree } from '@easygrating/easytree';
+import { fromNodeInfo } from "../lib/grap-data/utils";
 import { 
     FC, 
     useEffect, 
     CSSProperties, 
-    useState
+    useState,
 } from "react";
 
 enum ShowElement {
@@ -25,14 +23,12 @@ enum ShowElement {
 
 export const GraphViewComponent: FC<{ style?: CSSProperties }> = ({ style }) => {
     const [searchParams] = useSearchParams();
-    const [nodes, setNodes] = useState<Node[]>([]);
-    const [edges, setEdges] = useState<Edge[]>([]);
+    const [nodes, setNodes] = useState<GraphNode[]>([]);
+    const [edges, setEdges] = useState<GraphEdge[]>([]);
     const [error, setError] = useState<Error>(new Error(""));
     const [showElement, setShowElement] = useState<ShowElement>(ShowElement.Loading);
 
-    const updateGraph = (newTree: Tree<NodeInfo>) => {
-        const { nodes, edges } = genGraph(newTree as Tree<NodeInfo>);
-
+    const updateGraph = ({nodes, edges}: Graph) => {
         setNodes(nodes);
         setEdges(edges);
 
@@ -45,7 +41,7 @@ export const GraphViewComponent: FC<{ style?: CSSProperties }> = ({ style }) => 
         setShowElement(ShowElement.Error);
     };
 
-    const onUpdate = (newTree: Tree<NodeInfo>) => updateGraph(newTree);
+    const onUpdate = (newGraph: Graph) => updateGraph(newGraph);
 
     useEffect(() => {
         if (!searchParams.has('trustAnchorUrl')) {
@@ -53,11 +49,15 @@ export const GraphViewComponent: FC<{ style?: CSSProperties }> = ({ style }) => 
         }
 
         const entityUrl = searchParams.get('trustAnchorUrl') as string;
-        const discoveryTree = searchParams.get("discoveryType") === "entity" ? traverseUp(entityUrl) : discovery(entityUrl);
 
-        discoveryTree.then(tree => {
-            updateGraph(tree);
-        }).catch(setErrorMessage);
+        const discoveryTree = 
+            searchParams.get("discoveryType") === "entity" 
+                ? traverseUp(entityUrl) 
+                : discovery(entityUrl).then(fromNodeInfo);
+
+        discoveryTree
+            .then(updateGraph)
+            .catch(setErrorMessage);
 
     }, [searchParams]);
 
@@ -68,9 +68,13 @@ export const GraphViewComponent: FC<{ style?: CSSProperties }> = ({ style }) => 
                     ? <LoadingAtom /> 
                     : showElement === ShowElement.Error 
                         ? <ErrorViewAtom error={error} /> 
-                        : <GraphCanvas nodes={nodes} edges={edges} contextMenu={({ data, onClose }) => (
-                            <ContextMenuComponent data={data as any} onClose={onClose} onUpdate={onUpdate} onError={setErrorMessage} />
-                          )} />
+                        : <GraphCanvas 
+                            nodes={nodes} 
+                            edges={edges}
+                            draggable
+                            contextMenu={({ data, onClose }) => (
+                                <ContextMenuComponent data={data as any} graph={{nodes, edges}} onClose={onClose} onUpdate={onUpdate} onError={setErrorMessage} />
+                            )} />
             }
         </div>
     );
