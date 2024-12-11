@@ -49,7 +49,7 @@ export const PaginatedListAtom = ({ itemsPerPage, items, ItemsRenderer, filterFn
         }
         <div className="row justify-content-md-center pt-4">
             <div className="col-md-auto">
-                <ul><ItemsRenderer items={currentItems} /></ul>
+                <ItemsRenderer items={currentItems} />
             </div>
         </div>
         <div className='row justify-content-md-center pt-4'>

@@ -11,9 +11,9 @@ import trustChainList from '../assets/trustChainList.json';
 export const BodyComponent = () => {
     const ItemsRenderer = ({ items }: { items: any[] }) => {
         return (
-            <>
-            {items && items.map((d) => <li key={d.url}><Link to={`/?trustAnchorUrl=${d.url}`}>{d.name} - {d.url}</Link></li>)}
-            </>
+            <ul>
+                {items && items.map((d) => <li key={d.url}><Link to={`/?trustAnchorUrl=${d.url}`}>{d.name} - {d.url}</Link></li>)}
+            </ul>
         );
     };
     
