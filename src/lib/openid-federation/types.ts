@@ -1,5 +1,4 @@
 import jose from 'jose';
-import { Tree } from '@easygrating/easytree';
 
 export interface SubordianteStatement {
     exp: number;
@@ -86,7 +85,16 @@ export interface NodeInfo {
     ec: EntityConfiguration;
     immDependants: string[];
     startNode?: boolean;
+    type: EntityType;
 }
 
 type MetadataValue = string | string[] | {[key: string]: string;};
 export type Metadata = {[key: string]: MetadataValue};
+
+export enum EntityType {
+    Anchor = "Trust Anchor",
+    Intermediate = "Intermediate",
+    Leaf = "Leaf",
+    StartNode = "StartNode",
+    Undiscovered = "Undiscovered",
+};
