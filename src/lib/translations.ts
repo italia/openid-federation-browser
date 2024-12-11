@@ -7,4 +7,5 @@ export const translations: Record<string, Record<string, string>> = {
   en: en,
   "en-EN": en,
   "en-GB": en,
+  "en-US": en,
 };
