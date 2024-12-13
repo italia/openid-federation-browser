@@ -6,19 +6,20 @@ enum Tab {
 };
 
 export interface ECViewerProps {
+    id: string;
     raw: string;
     decoded: {[key:string]: string};
 };
 
-export const ECViewer = ({raw, decoded}: ECViewerProps) => {
+export const JWTViewer = ({id, raw, decoded}: ECViewerProps) => {
     const decodedStr = JSON.stringify(decoded, null, 4);
     const [tab, setTab] = useState(Tab.Raw);
 
     const handleTabChange = (tab: Tab) => {
-        const unselected = document.getElementById(tab === Tab.Raw ? "dec" : "raw") as HTMLInputElement;
+        const unselected = document.getElementById(tab === Tab.Raw ? `${id}-dec` : `${id}-raw`) as HTMLInputElement;
         unselected.checked = false;
 
-        const selected = document.getElementById(tab === Tab.Raw ? "raw" : "dec") as HTMLInputElement;
+        const selected = document.getElementById(tab === Tab.Raw ? `${id}-raw` : `${id}-dec`) as HTMLInputElement;
         selected.checked = true;
 
         setTab(tab);
@@ -31,14 +32,14 @@ export const ECViewer = ({raw, decoded}: ECViewerProps) => {
             <div className="row">
                 <div className="col-6">
                     <div className="form-check">
-                        <input name="Raw" type="radio" id="raw" onClick={() => handleTabChange(Tab.Raw)} />
-                        <label htmlFor="raw">Raw</label>
+                        <input name="Raw" type="radio" id={`${id}-raw`} onClick={() => handleTabChange(Tab.Raw)} />
+                        <label htmlFor={`${id}-raw`}>Raw</label>
                     </div>
                 </div>
                 <div className="col-6">
                     <div className="form-check">
-                        <input name="Decoded" type="radio" id="dec" onClick={() => handleTabChange(Tab.Decoded)}/>
-                        <label htmlFor="dec">Decoded</label>
+                        <input name="Decoded" type="radio" id={`${id}-dec`} onClick={() => handleTabChange(Tab.Decoded)}/>
+                        <label htmlFor={`${id}-dec`}>Decoded</label>
                     </div>
                 </div>
             </div>

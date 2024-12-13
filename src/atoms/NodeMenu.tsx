@@ -1,5 +1,5 @@
 import { AccordionAtom } from "./Accordion";
-import { ECViewer } from "../atoms/ECViewer";
+import { JWTViewer } from "./JWTViewer";
 import { InfoView } from "../atoms/InfoView";
 import { GraphNode, Graph } from "../lib/grap-data/types";
 import { removeSubGraph } from "../lib/grap-data/utils";
@@ -17,18 +17,28 @@ export interface ContextMenuProps {
 
 export const NodeMenuAtom = ({data, graph, onUpdate, onError}: ContextMenuProps) => {
 
-    const addSubordinate = (entityID: string) =>
-        discoverChild(entityID, data.info, graph).then(onUpdate).catch(onError);
+    const addSubordinates = (entityIDs: string | string[]) =>{
+        const newGraph = 
+            Array.isArray(entityIDs) 
+                ? discoverMultipleChildren(entityIDs, data.info, graph)
+                : discoverChild(entityIDs, data.info, graph);
 
-    const addAllFilteredSubordinates = (items: string[]) =>
-        discoverMultipleChildren(items, data.info, graph).then(onUpdate).catch(onError);
+        newGraph.then(onUpdate).catch(onError);
+    };
 
-    const removeSubordinate = (entityID: string) => {
-        const newGraph = removeSubGraph(graph, entityID);
+    const removeSubordinates = (entityIDs: string | string[]) => {
+        const newGraph = 
+            Array.isArray(entityIDs) 
+                ? entityIDs.reduce((acc, id) => removeSubGraph(acc, id), graph)
+                : removeSubGraph(graph, entityIDs);
+
         onUpdate(newGraph);
     };
     
-    const immediateFilter = (anchor: string, filterValue: string) => anchor.toLowerCase().includes(filterValue.toLowerCase());
+    const immediateFilter = (anchor: string, filterValue: string) => 
+        anchor
+            .toLowerCase()
+            .includes(filterValue.toLowerCase());
 
     return (
         <>
@@ -52,9 +62,8 @@ export const NodeMenuAtom = ({data, graph, onUpdate, onError}: ContextMenuProps)
                                         SubListItemsRenderer(
                                             {
                                                 graph, 
-                                                addAllFilteredSubordinates, 
-                                                addSubordinate, 
-                                                removeSubordinate
+                                                addSubordinates, 
+                                                removeSubordinates
                                             }
                                         )
                                     } 
@@ -63,9 +72,11 @@ export const NodeMenuAtom = ({data, graph, onUpdate, onError}: ContextMenuProps)
                     />
                     <AccordionAtom 
                         accordinId="entity-configuration" 
-                        labelId="entity_configuration_data" 
+                        labelId="subordinate_statement_data" 
                         hiddenElement={
-                            <ECViewer raw={data.info.ec.jwt} decoded={data.info.ec.payload as any} />
+                            <JWTViewer id="node-viewer" 
+                                raw={data.info.ec.jwt} 
+                                decoded={data.info.ec.payload as any} />
                         } 
                     />
                 </div>
