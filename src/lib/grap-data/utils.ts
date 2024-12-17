@@ -35,8 +35,6 @@ export const removeSubGraph = (graph: Graph, id: string): Graph => {
     const nodes = graph.nodes.filter(node => node.id !== id);
     const edges = graph.edges.filter(edge => edge.source !== id || edge.target !== id);
 
-    console.log(nodes, edges);
-
     const filteredGraph = 
         graph.edges.filter(edge => edge.source === id)
             .map(edge => edge.target)

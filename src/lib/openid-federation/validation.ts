@@ -24,8 +24,10 @@ export const validateEntityConfiguration = async (ec: EntityConfiguration) => {
     const isJWTValid = await isValidJWT(ec.jwt!, key);
     const expired = isExpired(ec);
 
-    ec.valid = isJWTValid;
-    ec.expired = expired;
+    ec.valid = isJWTValid && !expired;
 
-    return isJWTValid && expired;
+    if (!isJWTValid || !expired) ec.invalidReason = 
+        `${isJWTValid ? 'Invalid JWT' : ''} ${isJWTValid || !expired ? ';' : ''} ${!expired ? 'Expired' : ''}`;
+
+    return isJWTValid && !expired;
 };

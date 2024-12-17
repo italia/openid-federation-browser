@@ -1,6 +1,12 @@
 import jose from 'jose';
 
-export interface SubordianteStatement {
+export interface JWTHeader {
+    alg: string;
+    typ: string;
+    kid: string;
+};
+
+export interface SubordinateStatementPayload {
     exp: number;
     iat: number;
     iss: string;
@@ -29,10 +35,10 @@ export interface SubordianteStatement {
     };
 };
 
-export interface EntityConfigurationHeader {
-    alg: string;
-    typ: string;
-    kid: string;
+export interface SubordianteStatement {
+    jwt: string;
+    header: JWTHeader;
+    payload: SubordinateStatementPayload;
 };
 
 export interface EntityConfigurationPayload {
@@ -73,10 +79,10 @@ export interface EntityConfigurationPayload {
 export interface EntityConfiguration {
     entity: string;
     jwt: string;
-    header: EntityConfigurationHeader;
+    header: JWTHeader;
     payload: EntityConfigurationPayload;
     valid: boolean;
-    expired: boolean;
+    invalidReason?: string;
     subordinate?: SubordianteStatement | undefined;
     startNode?: boolean;
 };
