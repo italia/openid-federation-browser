@@ -1,0 +1,33 @@
+.contextMenu {
+    background: white; 
+    border-style: solid; 
+    border-color: #0066CC; 
+    align-items: left;
+    width: 35rem;
+    height: auto;
+    font-size: 1rem;
+}
+
+@media (min-width: 576px) {
+    .App {
+      font-size: 1.2rem;
+    }
+  }
+    
+  @media (min-width: 768px) {
+    .App {
+      font-size: 1.4rem;
+    }
+  }
+    
+  @media (min-width: 992px) {
+    .App {
+      font-size: 1.6rem;
+    }
+  }
+    
+  @media (min-width: 1200px) {
+    .App {
+      font-size: 1.8rem;
+    }
+  }

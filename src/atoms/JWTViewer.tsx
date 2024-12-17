@@ -28,7 +28,7 @@ export const JWTViewer = ({id, raw, decoded}: ECViewerProps) => {
     useEffect(() => handleTabChange(Tab.Raw), []);
 
     return (
-        <div className="container">
+        <div className="container" style={{width: "100%", padding: "14px 24px"}}>
             <div className="row">
                 <div className="col-6">
                     <div className="form-check">

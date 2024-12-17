@@ -73,7 +73,12 @@ export const GraphViewComponent: FC<{ style?: CSSProperties }> = ({ style }) => 
                             edges={edges}
                             draggable
                             contextMenu={({ data, onClose }) => (
-                                <ContextMenuComponent data={data as any} graph={{nodes, edges}} onClose={onClose} onUpdate={onUpdate} onError={setErrorMessage} />
+                                <ContextMenuComponent 
+                                    data={data as any} 
+                                    graph={{nodes, edges}} 
+                                    onClose={onClose} 
+                                    onUpdate={onUpdate} 
+                                    onError={setErrorMessage} />
                             )} />
             }
         </div>

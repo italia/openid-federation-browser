@@ -8,6 +8,7 @@ import { FormattedMessage } from 'react-intl';
 import { IconAtom } from "../atoms/Icon";
 import { useEffect } from "react";
 import { handleKeyDwonEvent } from "../lib/utils";
+import styles from '../css/ContextMenu.module.css';
 
 export interface ContextMenuProps {
     data: GraphNode | GraphEdge;
@@ -28,15 +29,21 @@ export const ContextMenuComponent = ({data, graph, onClose, onUpdate, onError}: 
             defaultLocale="en-EN"
             messages={translations[navigator.language]}
         >
-            <div className="container" style={{background: 'white', borderStyle: "solid", borderColor: "CornflowerBlue", alignItems: "left", justifyContent: "left", width: "40rem", height: "auto"}}>
-                <div className="row primary-bg">
-                    <div className="col-1">
-                        <button className="btn-primary btn-icon" onClick={onClose}>
-                            <IconAtom iconID="#it-close" className="icon-sm icon-white" />
-                        </button>
+            <div 
+                className={`container ${styles.contextMenu}`}>
+                <div className="row primary-bg" style={{padding: "-40px"}}>
+                    <div className="col-md-auto" onClick={onClose}>
+                        <IconAtom iconID="#it-close" className="icon-sm icon-white" />
                     </div>
-                    <div className="col-11">
-                        <small style={{color: "white", whiteSpace: "nowrap", fontSize: "80%"}}><FormattedMessage id={nodeCheck ? 'entity_id_label' : 'connection_lael'} />: {data.label}</small>
+                    <div className="col-md-auto">
+                        <small 
+                            style={{
+                                color: "white", 
+                                whiteSpace: "nowrap", 
+                                fontSize: "80%"
+                            }}>
+                                <FormattedMessage 
+                                    id={nodeCheck ? 'entity_id_label' : 'connection_lael'} />: {data.label}</small>
                     </div>
                 </div>
                 { 

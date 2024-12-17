@@ -1,6 +1,6 @@
 import { GraphEdge } from "../lib/grap-data/types";
 import { AccordionAtom } from "./Accordion";
-import { SubordinateViewerAtom } from "./SubordinateViewer";
+import { JWTViewer } from "./JWTViewer";
 
 export interface EdgeMenuAtomProps {
     data: GraphEdge;
@@ -12,9 +12,16 @@ export const EdgeMenuAtom = ({data}: EdgeMenuAtomProps) => {
             <div className="accordion">
                 {
                     data.subStatement &&
-                    <AccordionAtom accordinId="subordinate-configuration" labelId="subordinate_statement_data" hiddenElement={
-                        <SubordinateViewerAtom subordinate={data.subStatement} />
-                    } />
+                    <AccordionAtom 
+                        accordinId="subordinate-statement" 
+                        labelId="entity_configuration_data" 
+                        hiddenElement={
+                            <JWTViewer 
+                                id="edge-viewer" 
+                                raw={data.subStatement.jwt} 
+                                decoded={data.subStatement.payload as any} />
+                        } 
+                    />
                 }
             </div>
         </div>
