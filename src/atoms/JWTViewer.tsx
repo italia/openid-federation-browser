@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react';
+import style from '../css/ContextMenu.module.css';
+
 
 enum Tab {
     Raw,
@@ -29,15 +31,15 @@ export const JWTViewer = ({id, raw, decoded}: ECViewerProps) => {
 
     return (
         <div className="container" style={{width: "100%", padding: "14px 24px"}}>
-            <div className="row">
+            <div className={`row ${style.contextAccordinText}`}>
                 <div className="col-6">
-                    <div className="form-check">
+                    <div>
                         <input name="Raw" type="radio" id={`${id}-raw`} onClick={() => handleTabChange(Tab.Raw)} />
                         <label htmlFor={`${id}-raw`}>Raw</label>
                     </div>
                 </div>
                 <div className="col-6">
-                    <div className="form-check">
+                    <div>
                         <input name="Decoded" type="radio" id={`${id}-dec`} onClick={() => handleTabChange(Tab.Decoded)}/>
                         <label htmlFor={`${id}-dec`}>Decoded</label>
                     </div>
@@ -47,8 +49,8 @@ export const JWTViewer = ({id, raw, decoded}: ECViewerProps) => {
                 <div className="col-12">
                     {
                         tab === Tab.Raw ? 
-                            <textarea style={{overflowY: "scroll", resize: "none", width: "100%", height:"20rem"}} value={raw} readOnly></textarea> :
-                            <textarea style={{overflowY: "scroll", resize: "none", width: "100%", height:"20rem"}} value={decodedStr} readOnly></textarea>
+                            <textarea className={`${style.contextAccordinText} ${style.readOnlyTextArea}`} value={raw} readOnly></textarea> :
+                            <textarea className={`${style.contextAccordinText} ${style.readOnlyTextArea}`} value={decodedStr} readOnly></textarea>
                     }
                 </div>
             </div>

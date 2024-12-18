@@ -1,0 +1,14 @@
+.pageTitle {
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: unset;
+    margin-bottom: 0;
+}
+
+.headerText {
+    color: #fff;
+    font-size: 14px;
+    font-weight: 300;
+    padding: 0 .75rem;
+}

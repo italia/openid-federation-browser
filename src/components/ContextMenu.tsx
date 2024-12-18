@@ -6,7 +6,7 @@ import { NodeMenuAtom } from "../atoms/NodeMenu";
 import { EdgeMenuAtom } from "../atoms/EdgeMenu";
 import { FormattedMessage } from 'react-intl';
 import { IconAtom } from "../atoms/Icon";
-import { useEffect } from "react";
+import { useEffect, useCallback } from "react";
 import { handleKeyDwonEvent } from "../lib/utils";
 import styles from '../css/ContextMenu.module.css';
 
@@ -20,9 +20,9 @@ export interface ContextMenuProps {
 
 export const ContextMenuComponent = ({data, graph, onClose, onUpdate, onError}: ContextMenuProps) => {
     const nodeCheck = isNode(data);
-
+    
     useEffect(() => handleKeyDwonEvent('Escape', onClose), []);
-
+    
     return (
         <IntlProvider
             locale={navigator.language}
@@ -35,15 +35,9 @@ export const ContextMenuComponent = ({data, graph, onClose, onUpdate, onError}: 
                     <div className="col-md-auto" onClick={onClose}>
                         <IconAtom iconID="#it-close" className="icon-sm icon-white" />
                     </div>
-                    <div className="col-md-auto">
-                        <small 
-                            style={{
-                                color: "white", 
-                                whiteSpace: "nowrap", 
-                                fontSize: "80%"
-                            }}>
-                                <FormattedMessage 
-                                    id={nodeCheck ? 'entity_id_label' : 'connection_lael'} />: {data.label}</small>
+                    <div className={`col-md-auto ${styles.contextHeaderText}`}>
+                        <FormattedMessage 
+                            id={nodeCheck ? 'entity_id_label' : 'connection_lael'} />: {data.label}
                     </div>
                 </div>
                 { 
