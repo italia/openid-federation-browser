@@ -40,7 +40,8 @@
     "invalid_request": "Errore nella richiesta",
     "Authentication request rejected by user": "Richiseta di autenticazione cancellata dall'utente",
     "warning_modal_title": "Attenzione",
+    "error_modal_title": "Errore",
     "warning_modal_message": "Stai aggiungendo più nodi della rete. Questo potrebbe rallentare il caricamento delle informazioni. Continuare?",
-    "warning_modal_confirm": "Continua",
-    "warning_modal_cancel": "Annulla"
+    "modal_confirm": "Continua",
+    "modal_cancel": "Annulla"
 }
