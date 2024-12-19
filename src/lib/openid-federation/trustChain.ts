@@ -1,7 +1,10 @@
 import * as jose from 'jose';
 import axios from 'axios';
 import { jsonToPublicKey } from './utils';
-import { validateEntityConfiguration } from './validation';
+import { 
+    validateSubordinateStatement,
+    validateEntityConfiguration
+} from './validation';
 import {
     EntityConfiguration, 
     NodeInfo,
@@ -16,7 +19,7 @@ import { updateGraph, genNode } from '../grap-data/utils';
 import { setEntityType } from './utils';
 
 
-const getSubordinateStatement = async (fetchEndpoint: string, sub: string): Promise<SubordianteStatement> => {
+const getSubordinateStatement = async (fetchEndpoint: string, sub: string, ec: EntityConfiguration): Promise<SubordianteStatement> => {
     const completeFetchEndpoint = `${fetchEndpoint}?sub=${sub}`;
     const response = await axios.get(completeFetchEndpoint);
     const payload  = jose.decodeJwt(response.data) as SubordinateStatementPayload;
@@ -24,7 +27,10 @@ const getSubordinateStatement = async (fetchEndpoint: string, sub: string): Prom
 
     payload.jwks.keys = payload.jwks.keys.map((jwk) => jsonToPublicKey(jwk));
 
-    return {jwt: response.data, payload, header};
+    const subordinate: SubordianteStatement = {jwt: response.data, header, payload, valid: false};
+    await validateSubordinateStatement(subordinate, ec);
+
+    return subordinate;
 };
 
 const getEntityConfigurations = async (subject: string, wellKnownEndpoint: string = ".well-known/openid-federation"): Promise<EntityConfiguration> => {
@@ -37,7 +43,6 @@ const getEntityConfigurations = async (subject: string, wellKnownEndpoint: strin
     payload.jwks.keys = payload.jwks.keys.map((jwk) => jsonToPublicKey(jwk));
 
     const ec: EntityConfiguration = {entity: subject, jwt, header, payload, valid: false};
-
     await validateEntityConfiguration(ec);
     
     return ec;
@@ -65,7 +70,7 @@ export const discoverChild = async (currenECUrl: string, parent: NodeInfo, graph
     const federationFetchEndpoint = parent.ec.payload?.metadata?.federation_entity?.federation_fetch_endpoint;
 
     if (federationFetchEndpoint)
-        currentNode.ec.subordinate = await getSubordinateStatement(federationFetchEndpoint, currenECUrl);
+        currentNode.ec.subordinate = await getSubordinateStatement(federationFetchEndpoint, currenECUrl, parent.ec);
 
     return updateGraph(parent, currentNode, graph);
 };
@@ -76,7 +81,7 @@ export const discoverParent = async (currenECUrl: string, child: NodeInfo, graph
     const federationFetchEndpoint = currentNode.ec.payload?.metadata?.federation_entity?.federation_fetch_endpoint;
 
     if (federationFetchEndpoint)
-        child.ec.subordinate = await getSubordinateStatement(federationFetchEndpoint, child.ec.entity as string);
+        child.ec.subordinate = await getSubordinateStatement(federationFetchEndpoint, child.ec.entity as string, currentNode.ec);
 
     return updateGraph(currentNode, child, graph);
 };
@@ -101,7 +106,7 @@ export const traverseUp = async (
     const federationFetchEndpoint = discoveredNode.ec.payload?.metadata?.federation_entity?.federation_fetch_endpoint;
 
     if (federationFetchEndpoint && child)
-        child.ec.subordinate = await getSubordinateStatement(federationFetchEndpoint, child.ec.entity as string);
+        child.ec.subordinate = await getSubordinateStatement(federationFetchEndpoint, child.ec.entity as string, discoveredNode.ec);
 
     const authorityHints = discoveredNode.ec.payload?.authority_hints;
 

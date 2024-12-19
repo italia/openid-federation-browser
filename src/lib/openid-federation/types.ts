@@ -39,6 +39,8 @@ export interface SubordianteStatement {
     jwt: string;
     header: JWTHeader;
     payload: SubordinateStatementPayload;
+    valid: boolean;
+    invalidReason?: string;
 };
 
 export interface EntityConfigurationPayload {
