@@ -24,6 +24,11 @@
   padding: 0 .75rem;
 }
 
+.contextAccordinButton {
+  font-size: 8px;
+  padding: 0 .75rem;
+}
+
 .readOnlyTextArea {
   overflow-y: scroll;
   resize: none; 

@@ -6,7 +6,7 @@ import { NodeMenuAtom } from "../atoms/NodeMenu";
 import { EdgeMenuAtom } from "../atoms/EdgeMenu";
 import { FormattedMessage } from 'react-intl';
 import { IconAtom } from "../atoms/Icon";
-import { useEffect, useCallback } from "react";
+import { useEffect } from "react";
 import { handleKeyDwonEvent } from "../lib/utils";
 import styles from '../css/ContextMenu.module.css';
 
@@ -31,8 +31,8 @@ export const ContextMenuComponent = ({data, graph, onClose, onUpdate, onError}: 
         >
             <div 
                 className={`container ${styles.contextMenu}`}>
-                <div className="row primary-bg" style={{padding: "-40px"}}>
-                    <div className="col-md-auto" onClick={onClose}>
+                <div className="row primary-bg pt-1 pb-1">
+                    <div className="col-md-auto" style={{position: "relative", top: "-2px"}} onClick={onClose}>
                         <IconAtom iconID="#it-close" className="icon-sm icon-white" />
                     </div>
                     <div className={`col-md-auto ${styles.contextHeaderText}`}>

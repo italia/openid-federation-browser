@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import ReactPaginate from 'react-paginate';
+import style from '../css/ContextMenu.module.css';
 
 export interface PaginatedListAtomProps {
     itemsPerPage: number;
@@ -43,8 +44,7 @@ export const PaginatedListAtom = ({ itemsPerPage, items, ItemsRenderer, filterFn
                     <div className="col-md-12">
                         <input 
                             type="text" 
-                            style={{fontSize: "95%"}} 
-                            className="form-control" 
+                            className={`form-control ${style.contextAccordinText}`}
                             id="input-value" 
                             placeholder='Filter Subordinates By Entity ID' 
                             onChange={changeSearchValue} 
@@ -60,10 +60,10 @@ export const PaginatedListAtom = ({ itemsPerPage, items, ItemsRenderer, filterFn
             <div className='row justify-content-md-center pt-4'>
                 <div className='col-md-auto'>
                     <ReactPaginate
-                        className='pagination small'
+                        className={`pagination ${style.contextAccordinText}`}
                         containerClassName='pagination'
                         pageClassName='small'
-                        pageLinkClassName='page-link small'
+                        pageLinkClassName={`page-link ${style.contextAccordinText}`}
                         breakLabel="..."
                         nextLabel="next >"
                         onPageChange={handlePageClick}
