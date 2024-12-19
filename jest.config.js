@@ -1,9 +1,9 @@
 /** @type {import('ts-jest').JestConfigWithTsJest} **/
 module.exports = {
   testEnvironment: "node",
-  preset: 'ts-jest',
+  preset: "ts-jest",
   moduleNameMapper: {
-    "^axios$": "axios/dist/node/axios.cjs"
+    "^axios$": "axios/dist/node/axios.cjs",
   },
   globals: {
     "ts-jest": {
@@ -11,7 +11,7 @@ module.exports = {
     },
   },
   transform: {
-    '^.+\\.(ts|tsx)?$': 'ts-jest',
-    '^.+\\.(js|jsx)$': 'babel-jest',
+    "^.+\\.(ts|tsx)?$": "ts-jest",
+    "^.+\\.(js|jsx)$": "babel-jest",
   },
 };

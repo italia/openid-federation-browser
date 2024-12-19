@@ -1,15 +1,15 @@
 .bodyContainer {
-    display: flex; 
-    align-items: center; 
-    justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .bodyElement {
-    margin-top: 5%;
+  margin-top: 5%;
 }
 
 .graphAtom {
-    position: relative; 
-    height: 90vh; 
-    width: 100vw;
+  position: relative;
+  height: 90vh;
+  width: 100vw;
 }

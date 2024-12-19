@@ -1,8 +1,8 @@
-import './App.css';
-import { IntlProvider } from 'react-intl';
-import { translations } from './lib/translations';
-import { Header } from './components/Header';
-import { BodyComponent } from './components/Body';
+import "./App.css";
+import { IntlProvider } from "react-intl";
+import { translations } from "./lib/translations";
+import { Header } from "./components/Header";
+import { BodyComponent } from "./components/Body";
 
 function App() {
   return (
@@ -13,7 +13,7 @@ function App() {
         messages={translations[navigator.language]}
       >
         <Header />
-        <BodyComponent/>
+        <BodyComponent />
       </IntlProvider>
     </div>
   );
