@@ -3,13 +3,15 @@ import { FormattedMessage } from 'react-intl';
 export interface WarningModalProps {
     modalID: string;
     headerID: string;
-    descriptionID: string;
+    descriptionID?: string;
+    description?: string;
     dismissActionID: string;
-    acceptActionID: string | undefined;
-    onAccept: () => void | undefined;
+    acceptActionID?: string;
+    onAccept?: () => void;
+    onDismiss?: () => void;
 };
 
-export const WarningModalAtom = ({modalID, headerID, descriptionID, dismissActionID, acceptActionID, onAccept}: WarningModalProps) => {
+export const WarningModalAtom = ({modalID, headerID, descriptionID, description, dismissActionID, acceptActionID, onAccept, onDismiss}: WarningModalProps) => {
     return (
         <div className="modal" tabIndex={-1} role="dialog" id={modalID}>
             <div className="modal-dialog" role="document">
@@ -22,13 +24,18 @@ export const WarningModalAtom = ({modalID, headerID, descriptionID, dismissActio
                         </h2>
                     </div>
                     <div className="modal-body">
-                        <p><FormattedMessage id={descriptionID} /></p>
+                        <p>{
+                            description !== undefined
+                                ? description 
+                                : <FormattedMessage id={descriptionID} />
+                        }</p>
                     </div>
                     <div className="modal-footer">
                         <button 
                             className="btn btn-outline-primary btn-sm" 
                             type="button" 
-                            data-bs-dismiss="modal">
+                            data-bs-dismiss="modal"
+                            onClick={onDismiss}>
                                 <FormattedMessage id={dismissActionID} />
                         </button>
                         {acceptActionID &&
