@@ -44,7 +44,7 @@ export const fromNodeInfo = (node: NodeInfo): Graph => {
 export const removeSubGraph = (graph: Graph, id: string): Graph => {
   const nodes = graph.nodes.filter((node) => node.id !== id);
   const edges = graph.edges.filter(
-    (edge) => edge.source !== id || edge.target !== id,
+    (edge) => edge.source !== id && edge.target !== id,
   );
 
   const filteredGraph = graph.edges
