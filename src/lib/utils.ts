@@ -46,6 +46,16 @@ export const toggleModal = (id: string) => {
   modal.toggle();
 };
 
+export const showModal = (id: string) => {
+  const modal = new Modal(document.getElementById(id) as HTMLElement);
+  modal.show();
+};
+
+export const hideModal = (id: string) => {
+  const modal = new Modal(document.getElementById(id) as HTMLElement);
+  modal.hide();
+};
+
 export const fmtValidity = (valid: boolean, reason: string | undefined) => {
   const value = valid ? "valid" : "invalid";
   return valid ? value : `${value} (${reason})`;
