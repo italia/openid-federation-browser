@@ -25,8 +25,14 @@ export const updateGraph = (
   child: NodeInfo,
   graph: Graph,
 ): Graph => {
-  const nodes = [...graph.nodes, genNode(child)];
-  const edges = [...graph.edges, genEdge(parent, child)];
+  const nodes = 
+    !graph.nodes.find(n => n.id === child.ec.entity) 
+      ? [...graph.nodes, genNode(child)]
+      : graph.nodes;
+
+  const edges = !graph.edges.find(e => e.id === `${parent.ec.entity}-${child.ec.entity}`) 
+    ? [...graph.edges, genEdge(parent, child)]
+    : graph.edges;
 
   return { nodes, edges };
 };
