@@ -9,6 +9,7 @@ export interface SubListItemsRendererProps {
   removeSubordinates: (dep: string | string[]) => void;
   addSubordinates: (dep?: string | string[]) => void;
   removeAllSubordinates: () => void;
+  isFailed: (node: string) => boolean;
 }
 
 export const SubListItemsRenderer = ({
@@ -18,7 +19,26 @@ export const SubListItemsRenderer = ({
   removeSubordinates,
   addSubordinates,
   removeAllSubordinates,
+  isFailed
 }: SubListItemsRendererProps): React.ComponentType<{ items: any[] }> => {
+  const getButtonColor = (dep: string) => {
+    if (isFailed(dep)) return "btn-secondary";
+    if (isDiscovered(dep)) return "btn-danger";
+    return "btn-success";
+  };
+
+  const getButtonIcon = (dep: string) => {
+    if (isFailed(dep)) return "#it-warning";
+    if (isDiscovered(dep)) return "#it-minus";
+    return "#it-plus";
+  };
+
+  const getButtonAction = (dep: string) => {
+    if (isFailed(dep)) return () => {};
+    if (isDiscovered(dep)) return () => removeSubordinates(dep);
+    return () => addSubordinates(dep);
+  }
+
   return ({ items }: { items: any[] }) => {
     return (
       <>
@@ -36,35 +56,20 @@ export const SubListItemsRenderer = ({
                       <div className="progress-spinner progress-spinner-double size-sm progress-spinner-active">
                         <span className="visually-hidden">Loading...</span>
                       </div>
-                    ) : isDiscovered(dep) ? (
-                      <button
-                        className="btn btn-danger btn-icon btn-sm py-0 px-1"
-                        title="Remove"
-                        aria-label="Remove"
-                        onClick={() => removeSubordinates(dep)}
-                        disabled={discovering}
-                      >
-                        <IconAtom
-                          iconID="#it-minus"
-                          className="icon-xs icon-white"
-                          isRounded={false}
-                        />
-                      </button>
-                    ) : (
-                      <button
-                        className="btn btn-success btn-icon btn-sm py-0 px-1"
-                        title="Add"
-                        aria-label="Add"
-                        onClick={() => addSubordinates(dep)}
-                        disabled={discovering}
-                      >
-                        <IconAtom
-                          iconID="#it-plus"
-                          className="icon-xs icon-white"
-                          isRounded={false}
-                        />
-                      </button>
-                    )}
+                    ) : <button
+                          className={`btn btn-icon btn-sm py-0 px-1 ${getButtonColor(dep)}`}
+                          title="Remove"
+                          aria-label="Remove"
+                          onClick={getButtonAction(dep)}
+                          disabled={discovering || isFailed(dep)}
+                        >
+                          <IconAtom
+                            iconID={getButtonIcon(dep)}
+                            className="icon-xs icon-white"
+                            isRounded={false}
+                          />
+                        </button>
+                  }
                   </div>
                   <div className="col-md-auto">
                     <span

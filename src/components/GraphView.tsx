@@ -7,9 +7,7 @@ import { ContextMenuComponent } from "./ContextMenu";
 import { LoadingAtom } from "../atoms/Loading";
 import styles from "../css/BodyComponent.module.css";
 import { fromNodeInfo } from "../lib/grap-data/utils";
-import { WarningModalAtom } from "../atoms/WarningModal";
 import { ErrorViewAtom } from "../atoms/ErrorView";
-import { toggleModal } from "../lib/utils";
 
 enum ShowElement {
   Loading = "loading-atom",
@@ -22,6 +20,7 @@ export const GraphViewComponent = () => {
   const [nodes, setNodes] = useState<GraphNode[]>([]);
   const [edges, setEdges] = useState<GraphEdge[]>([]);
   const [error, setError] = useState<Error>(new Error(""));
+  const [failedNodes, setFailedNodes] = useState<string[]>([]);
   const [showElement, setShowElement] = useState<ShowElement>(
     ShowElement.Loading,
   );
@@ -33,17 +32,17 @@ export const GraphViewComponent = () => {
     setShowElement(ShowElement.Graph);
   };
 
-  const onErrorModal = (error: Error) => {
-    console.error(error);
-    setError(error);
-    toggleModal("error-modal");
-  };
-
   const showErrorMessage = (e: Error) => {
     console.error(e);
     setError(e);
     setShowElement(ShowElement.Error);
   };
+
+  const addToFailedList = (nodes: string[]) => {
+    setFailedNodes([...failedNodes, ...nodes]);
+  }
+
+  const isFailed = (node: string) => failedNodes.includes(node);
 
   const onUpdate = (newGraph: Graph) => updateGraph(newGraph);
 
@@ -64,13 +63,6 @@ export const GraphViewComponent = () => {
 
   return (
     <>
-      <WarningModalAtom
-        modalID="error-modal"
-        headerID="error_modal_title"
-        description={error.message}
-        dismissActionID="modal_cancel"
-        acceptActionID="modal_confirm"
-      />
       <div className={styles.graphAtom}>
         {showElement === ShowElement.Loading ? (
           <LoadingAtom />
@@ -87,7 +79,8 @@ export const GraphViewComponent = () => {
                 graph={{ nodes, edges }}
                 onClose={onClose}
                 onUpdate={onUpdate}
-                onError={onErrorModal}
+                addToFailedList={addToFailedList}
+                isFailed={isFailed}
               />
             )}
           />

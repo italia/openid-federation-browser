@@ -9,28 +9,36 @@ import { PaginatedListAtom } from "../atoms/PaginatedList";
 import { SubListItemsRenderer } from "./SubListItemRender";
 import { useEffect, useState } from "react";
 import { WarningModalAtom } from "./WarningModal";
-import { toggleModal, fmtValidity } from "../lib/utils";
+import { showModal, fmtValidity } from "../lib/utils";
 
 export interface ContextMenuProps {
   data: GraphNode;
   graph: Graph;
   onUpdate: (tree: Graph) => void;
-  onError: (error: Error) => void;
+  addToFailedList: (nodes: string[]) => void;
+  isFailed: (node: string) => boolean;
 }
 
 export const NodeMenuAtom = ({
   data,
   graph,
   onUpdate,
-  onError,
+  addToFailedList,
+  isFailed
 }: ContextMenuProps) => {
   const [filteredItems, setFilteredItems] = useState<string[]>([]);
   const [discoveringList, setDiscoveringList] = useState<string[]>([]);
   const [discovering, setDiscovering] = useState(false);
+  const [errorModalText, setErrorModalText] = useState(new Error());
 
   const addSubordinates = (entityID?: string | string[]) => {
     if (!entityID) setDiscoveringList(filteredItems);
-    else setDiscoveringList(Array.isArray(entityID) ? entityID : [entityID]);
+    else {
+      const list = Array.isArray(entityID) ? entityID : [entityID];
+      const fiteredToDiscovery = list.filter((node) => !isFailed(node) && !isDiscovered(node));
+      console.log(fiteredToDiscovery);
+      setDiscoveringList(fiteredToDiscovery);
+    }
   };
 
   const removeSubordinates = (entityIDs: string | string[]) => {
@@ -55,12 +63,28 @@ export const NodeMenuAtom = ({
   const immediateFilter = (anchor: string, filterValue: string) =>
     anchor.toLowerCase().includes(filterValue.toLowerCase());
 
+  const handleDiscoveryResult = (result: {graph: Graph, failed: string[]}) => {
+    onUpdate(result.graph);
+    setDiscoveringList([]);
+
+    if (result.failed.length === 0) return;
+
+    console.error(`Failed to discover entities`, result.failed);
+
+    addToFailedList(result.failed);
+    setErrorModalText(
+      new Error(
+        `Failed to discover ${result.failed.length} entities`
+      )
+    );
+    showModal("error-modal");
+  }
+
   const startDiscovery = () => {
     setDiscovering(true);
 
     discoverMultipleChildren(discoveringList, data.info, graph)
-      .then(onUpdate)
-      .catch(onError)
+      .then(handleDiscoveryResult)
       .finally(() => setDiscovering(false));
   };
 
@@ -71,7 +95,7 @@ export const NodeMenuAtom = ({
       return;
     }
 
-    toggleModal("warning-modal");
+    showModal("warning-modal");
   }, [discoveringList]);
 
   const displayedInfo = [
@@ -97,6 +121,12 @@ export const NodeMenuAtom = ({
         acceptActionID="modal_confirm"
         onAccept={startDiscovery}
         onDismiss={() => setDiscoveringList([])}
+      />
+      <WarningModalAtom
+        modalID="error-modal"
+        headerID="error_modal_title"
+        description={errorModalText.message}
+        dismissActionID="modal_cancel"
       />
       <div className="row">
         <div className="accordion">
@@ -127,6 +157,7 @@ export const NodeMenuAtom = ({
                     addSubordinates,
                     removeSubordinates,
                     removeAllSubordinates,
+                    isFailed
                   })}
                   filterFn={immediateFilter}
                   onItemsFiltered={onFilteredList}

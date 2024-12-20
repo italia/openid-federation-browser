@@ -131,13 +131,21 @@ export const discoverMultipleChildren = async (
   entities: string[],
   parent: NodeInfo,
   graph: Graph = { nodes: [], edges: [] },
-): Promise<Graph> => {
-  const newGraph = await entities.reduce(async (acc, entity) => {
-    const graph = await acc;
-    return discoverChild(entity, parent, graph);
-  }, Promise.resolve(graph));
+): Promise<{graph: Graph, failed: string[]}> => {
 
-  return newGraph;
+  let newGraph = graph;
+  const failed: string[] = [];
+
+  for (const entity of entities) {
+    try {
+      newGraph = await discoverChild(entity, parent, newGraph);
+    }catch (e) {
+      console.error(e);
+      failed.push(entity);
+    }
+  }
+
+  return {graph: newGraph, failed};
 };
 
 export const traverseUp = async (

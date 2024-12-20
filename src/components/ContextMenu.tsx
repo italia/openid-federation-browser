@@ -15,7 +15,8 @@ export interface ContextMenuProps {
   graph: Graph;
   onClose: () => void;
   onUpdate: (graph: Graph) => void;
-  onError: (error: Error) => void;
+  addToFailedList: (nodes: string[]) => void;
+  isFailed: (node: string) => boolean;
 }
 
 export const ContextMenuComponent = ({
@@ -23,7 +24,8 @@ export const ContextMenuComponent = ({
   graph,
   onClose,
   onUpdate,
-  onError,
+  addToFailedList,
+  isFailed,
 }: ContextMenuProps) => {
   const nodeCheck = isNode(data);
 
@@ -56,7 +58,8 @@ export const ContextMenuComponent = ({
             data={data as GraphNode}
             graph={graph}
             onUpdate={onUpdate}
-            onError={onError}
+            addToFailedList={addToFailedList}
+            isFailed={isFailed}
           />
         ) : (
           <EdgeMenuAtom data={data as GraphEdge} />
