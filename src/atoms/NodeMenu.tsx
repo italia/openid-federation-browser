@@ -24,7 +24,7 @@ export const NodeMenuAtom = ({
   graph,
   onUpdate,
   addToFailedList,
-  isFailed
+  isFailed,
 }: ContextMenuProps) => {
   const [filteredItems, setFilteredItems] = useState<string[]>([]);
   const [discoveringList, setDiscoveringList] = useState<string[]>([]);
@@ -35,7 +35,9 @@ export const NodeMenuAtom = ({
     if (!entityID) setDiscoveringList(filteredItems);
     else {
       const list = Array.isArray(entityID) ? entityID : [entityID];
-      const fiteredToDiscovery = list.filter((node) => !isFailed(node) && !isDiscovered(node));
+      const fiteredToDiscovery = list.filter(
+        (node) => !isFailed(node) && !isDiscovered(node),
+      );
       console.log(fiteredToDiscovery);
       setDiscoveringList(fiteredToDiscovery);
     }
@@ -63,7 +65,10 @@ export const NodeMenuAtom = ({
   const immediateFilter = (anchor: string, filterValue: string) =>
     anchor.toLowerCase().includes(filterValue.toLowerCase());
 
-  const handleDiscoveryResult = (result: {graph: Graph, failed: string[]}) => {
+  const handleDiscoveryResult = (result: {
+    graph: Graph;
+    failed: string[];
+  }) => {
     onUpdate(result.graph);
     setDiscoveringList([]);
 
@@ -73,12 +78,10 @@ export const NodeMenuAtom = ({
 
     addToFailedList(result.failed);
     setErrorModalText(
-      new Error(
-        `Failed to discover ${result.failed.length} entities`
-      )
+      new Error(`Failed to discover ${result.failed.length} entities`),
     );
     showModal("error-modal");
-  }
+  };
 
   const startDiscovery = () => {
     setDiscovering(true);
@@ -157,7 +160,7 @@ export const NodeMenuAtom = ({
                     addSubordinates,
                     removeSubordinates,
                     removeAllSubordinates,
-                    isFailed
+                    isFailed,
                   })}
                   filterFn={immediateFilter}
                   onItemsFiltered={onFilteredList}

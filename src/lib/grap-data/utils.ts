@@ -25,12 +25,13 @@ export const updateGraph = (
   child: NodeInfo,
   graph: Graph,
 ): Graph => {
-  const nodes = 
-    !graph.nodes.find(n => n.id === child.ec.entity) 
-      ? [...graph.nodes, genNode(child)]
-      : graph.nodes;
+  const nodes = !graph.nodes.find((n) => n.id === child.ec.entity)
+    ? [...graph.nodes, genNode(child)]
+    : graph.nodes;
 
-  const edges = !graph.edges.find(e => e.id === `${parent.ec.entity}-${child.ec.entity}`) 
+  const edges = !graph.edges.find(
+    (e) => e.id === `${parent.ec.entity}-${child.ec.entity}`,
+  )
     ? [...graph.edges, genEdge(parent, child)]
     : graph.edges;
 

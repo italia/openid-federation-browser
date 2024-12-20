@@ -40,7 +40,7 @@ export const GraphViewComponent = () => {
 
   const addToFailedList = (nodes: string[]) => {
     setFailedNodes([...failedNodes, ...nodes]);
-  }
+  };
 
   const isFailed = (node: string) => failedNodes.includes(node);
 

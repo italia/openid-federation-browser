@@ -19,7 +19,7 @@ export const SubListItemsRenderer = ({
   removeSubordinates,
   addSubordinates,
   removeAllSubordinates,
-  isFailed
+  isFailed,
 }: SubListItemsRendererProps): React.ComponentType<{ items: any[] }> => {
   const getButtonColor = (dep: string) => {
     if (isFailed(dep)) return "btn-secondary";
@@ -37,7 +37,7 @@ export const SubListItemsRenderer = ({
     if (isFailed(dep)) return () => {};
     if (isDiscovered(dep)) return () => removeSubordinates(dep);
     return () => addSubordinates(dep);
-  }
+  };
 
   return ({ items }: { items: any[] }) => {
     return (
@@ -56,20 +56,21 @@ export const SubListItemsRenderer = ({
                       <div className="progress-spinner progress-spinner-double size-sm progress-spinner-active">
                         <span className="visually-hidden">Loading...</span>
                       </div>
-                    ) : <button
-                          className={`btn btn-icon btn-sm py-0 px-1 ${getButtonColor(dep)}`}
-                          title="Remove"
-                          aria-label="Remove"
-                          onClick={getButtonAction(dep)}
-                          disabled={discovering || isFailed(dep)}
-                        >
-                          <IconAtom
-                            iconID={getButtonIcon(dep)}
-                            className="icon-xs icon-white"
-                            isRounded={false}
-                          />
-                        </button>
-                  }
+                    ) : (
+                      <button
+                        className={`btn btn-icon btn-sm py-0 px-1 ${getButtonColor(dep)}`}
+                        title="Remove"
+                        aria-label="Remove"
+                        onClick={getButtonAction(dep)}
+                        disabled={discovering || isFailed(dep)}
+                      >
+                        <IconAtom
+                          iconID={getButtonIcon(dep)}
+                          className="icon-xs icon-white"
+                          isRounded={false}
+                        />
+                      </button>
+                    )}
                   </div>
                   <div className="col-md-auto">
                     <span
