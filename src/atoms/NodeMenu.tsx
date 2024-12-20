@@ -136,7 +136,7 @@ export const NodeMenuAtom = ({
           />
           <AccordionAtom
             accordinId="entity-configuration"
-            labelId="subordinate_statement_data"
+            labelId="entity_configuration_data"
             hiddenElement={
               <JWTViewer
                 id="node-viewer"

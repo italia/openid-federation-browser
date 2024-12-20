@@ -40,7 +40,7 @@ export const EdgeMenuAtom = ({ data }: EdgeMenuAtomProps) => {
             />
             <AccordionAtom
               accordinId="subordinate-statement"
-              labelId="entity_configuration_data"
+              labelId="subordinate_statement_data"
               hiddenElement={
                 <JWTViewer
                   id="edge-viewer"
