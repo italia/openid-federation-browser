@@ -35,10 +35,16 @@
     "lint": "npx prettier . --write"
   },
   "eslintConfig": {
+    "plugins": ["no-secrets"],
+    "rules": {
+      "no-secrets/no-secrets": "error"
+    },
     "extends": [
       "react-app",
       "react-app/jest",
-      "prettier"
+      "prettier",
+      "plugin:security/recommended-legacy",
+      "plugin:jsonc/base"
     ]
   },
   "browserslist": {
@@ -55,9 +61,13 @@
   },
   "devDependencies": {
     "@babel/preset-env": "^7.26.0",
+    "@types/eslint-plugin-security": "^3.0.0",
     "@types/jest": "^29.5.14",
     "babel-jest": "^29.7.0",
     "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-jsonc": "^2.18.2",
+    "eslint-plugin-no-secrets": "^2.1.1",
+    "eslint-plugin-security": "^3.0.1",
     "jest": "^29.7.0",
     "prettier": "3.4.2",
     "ts-jest": "^29.2.5"
