@@ -18,7 +18,7 @@ import { Graph } from "../grap-data/types";
 import { updateGraph, genNode } from "../grap-data/utils";
 import { setEntityType } from "./utils";
 
-const cors_proxy = process.env.REACT_APP_API_URL || "";
+const cors_proxy = process.env.REACT_APP_CORS_PROXY || "";
 
 const getSubordinateStatement = async (
   fetchEndpoint: string,
