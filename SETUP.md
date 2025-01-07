@@ -2,6 +2,7 @@
 
 ## Requirements
 To run or build the software, NodeJs version 20 or higher must be installed. 
+If you use GNU/Linux, you should follow the instruction published [here](https://nodejs.org/en/download).
 
 ## Installation
 To install the package move in the root of project directory and run:
