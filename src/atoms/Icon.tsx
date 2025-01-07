@@ -1,4 +1,4 @@
-import sprite from "../assets/sprite.svg";
+import sprite from "bootstrap-italia/dist/svg/sprites.svg";
 
 interface IconProps {
   iconID: string;
