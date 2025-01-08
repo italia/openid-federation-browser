@@ -1,6 +1,12 @@
 name: NPM audit scan
 
-on: [push, pull_request]
+on: 
+  push:
+    branches: ["*"]
+  pull_request:
+    branches: ["*"]
+  schedule: 
+    - cron: '0 9 * * 1'
 
 jobs:
   Run:
