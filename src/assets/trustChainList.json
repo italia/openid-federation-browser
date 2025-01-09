@@ -1,42 +1,10 @@
 [
   {
-    "name": "Trust Chain 1",
-    "url": "https://trust-chain-1.com"
+    "name": "CIE id OpenID Federation of the Italian Ministry of Interiors",
+    "url": "https://oidc.registry.servizicie.interno.gov.it"
   },
   {
-    "name": "Trust Chain 2",
-    "url": "https://trust-chain-2.com"
-  },
-  {
-    "name": "Trust Chain 3",
-    "url": "https://trust-chain-3.com"
-  },
-  {
-    "name": "Trust Chain 4",
-    "url": "https://trust-chain-4.com"
-  },
-  {
-    "name": "Trust Chain 5",
-    "url": "https://trust-chain-5.com"
-  },
-  {
-    "name": "Trust Chain 6",
-    "url": "https://trust-chain-6.com"
-  },
-  {
-    "name": "Trust Chain 7",
-    "url": "https://trust-chain-7.com"
-  },
-  {
-    "name": "Trust Chain 8",
-    "url": "https://trust-chain-8.com"
-  },
-  {
-    "name": "Trust Chain 9",
-    "url": "https://trust-chain-9.com"
-  },
-  {
-    "name": "Trust Chain 10",
-    "url": "https://trust-chain-10.com"
+    "name": "Italian IT-Wallet POC Federation",
+    "url": "https://demo.federation.eudi.wallet.developers.italia.it"
   }
 ]
