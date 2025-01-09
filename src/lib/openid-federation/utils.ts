@@ -27,24 +27,6 @@ export const jsonToPublicKey = (jwk: { [key: string]: any }) => {
   throw new Error(`Unsupported key type ${jwk.kty}`);
 };
 
-export const mergeObjects = (objectTarget: any, objectSource: any) => {
-  const isOject = (obj: any) => obj && typeof obj === "object";
-
-  const output = Object.assign({}, objectTarget);
-  if (isOject(objectTarget) && isOject(objectSource)) {
-    Object.keys(objectSource).forEach((key) => {
-      if (isOject(objectSource[key])) {
-        if (!(key in objectTarget))
-          Object.assign(output, { [key]: objectSource[key] });
-        else output[key] = mergeObjects(objectTarget[key], objectSource[key]);
-      } else {
-        Object.assign(output, { [key]: objectSource[key] });
-      }
-    });
-  }
-  return output;
-};
-
 export const getTreeRoot = (tree: Tree<NodeInfo>): Tree<NodeInfo> =>
   tree.parent ? getTreeRoot(tree.parent) : tree;
 export const getFetchEndpoint = (payload: EntityConfigurationPayload) =>
