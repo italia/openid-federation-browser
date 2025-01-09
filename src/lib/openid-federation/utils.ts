@@ -1,5 +1,4 @@
 import * as jose from "jose";
-import { Tree } from "@easygrating/easytree";
 import { NodeInfo, EntityConfigurationPayload, EntityType } from "./types";
 
 export const jsonToPublicKey = (jwk: { [key: string]: any }) => {
@@ -27,8 +26,6 @@ export const jsonToPublicKey = (jwk: { [key: string]: any }) => {
   throw new Error(`Unsupported key type ${jwk.kty}`);
 };
 
-export const getTreeRoot = (tree: Tree<NodeInfo>): Tree<NodeInfo> =>
-  tree.parent ? getTreeRoot(tree.parent) : tree;
 export const getFetchEndpoint = (payload: EntityConfigurationPayload) =>
   payload.metadata?.federation_entity?.federation_fetch_endpoint;
 export const hasFetchEndpoint = (payload: EntityConfigurationPayload) =>
