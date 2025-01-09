@@ -26,8 +26,8 @@ In the .env file there are two option that can be optionally set:
 # REACT_APP_BASENAME=/
 ```
 
-- REACT_APP_CORS_PROXY: sets an url of a service that provide proxy suppression.
-- REACT_APP_BASENAME: sets a base name if the page in not served under '/' .
+- REACT_APP_CORS_PROXY: sets an url of a service that provide CORS suppression.
+- REACT_APP_BASENAME: sets a base name if the page is not served under '/' .
 
 ### Build
 To build the project to an HTML optimized version run the following command:
