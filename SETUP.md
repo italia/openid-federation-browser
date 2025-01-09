@@ -77,7 +77,7 @@ server {
 }
 ```
 
-An example url of proxied GET request using this configuration:
+An example url of proxied GET request using a preselected Trust Anchor Entity Configuration:
 > localhost:8888?url=https://oidc.registry.servizicie.interno.gov.it/.well-known/openid-federation
 
 ### A self hosted service
