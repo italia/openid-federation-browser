@@ -11,6 +11,7 @@
     "@types/react-dom": "^18.3.1",
     "axios": "^1.7.7",
     "bootstrap-italia": "^2.11.0",
+    "express": "^4.21.2",
     "formatjs": "^0.1.1",
     "jose": "^5.9.6",
     "react": "^18.3.1",
@@ -34,7 +35,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "test-lib": "jest ./src/lib",
-    "lint": "npx prettier . --write"
+    "lint": "npx prettier . --write",
+    "proxy": "node bin/proxy.js"
   },
   "eslintConfig": {
     "plugins": ["no-secrets"],
