@@ -21,7 +21,6 @@
   "status_label": "Stato Entity Configuration",
   "expired_label": "Scaduto",
   "expiring_date_label": "Valido Fino",
-  "no_immediate_label": "Nessun Immediate Subordinates",
   "trust_anchor_url_button": "Submit",
   "invalid_url_error_message": "Inserisci un URL valido",
   "url_insert_placeholder": "Inserisci un URL valido per procedere",

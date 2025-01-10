@@ -21,7 +21,6 @@
   "status_label": "Entity Configuration Status",
   "expired_label": "Expired",
   "expiring_date_label": "Valid Until",
-  "no_immediate_label": "No immediate subordinates",
   "trust_anchor_url_button": "Submit",
   "invalid_url_error_message": "Insert a valid URL",
   "url_insert_placeholder": "Insert a valid URL to proceed",

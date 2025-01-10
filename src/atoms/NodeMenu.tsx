@@ -4,7 +4,6 @@ import { InfoView } from "../atoms/InfoView";
 import { GraphNode, Graph } from "../lib/grap-data/types";
 import { removeSubGraph } from "../lib/grap-data/utils";
 import { discoverMultipleChildren } from "../lib/openid-federation/trustChain";
-import { NoImmSubAtom } from "../atoms/NoImmSub";
 import { PaginatedListAtom } from "../atoms/PaginatedList";
 import { SubListItemsRenderer } from "./SubListItemRender";
 import { useEffect, useState } from "react";
@@ -143,13 +142,11 @@ export const NodeMenuAtom = ({
               />
             }
           />
-          <AccordionAtom
-            accordinId="immediate-subordinates-list"
-            labelId="subordinate_list"
-            hiddenElement={
-              data.info.immDependants.length === 0 ? (
-                <NoImmSubAtom />
-              ) : (
+          {data.info.immDependants.length > 0 && (
+            <AccordionAtom
+              accordinId="immediate-subordinates-list"
+              labelId="subordinate_list"
+              hiddenElement={
                 <PaginatedListAtom
                   items={data.info.immDependants}
                   itemsPerPage={5}
@@ -165,9 +162,9 @@ export const NodeMenuAtom = ({
                   filterFn={immediateFilter}
                   onItemsFiltered={onFilteredList}
                 />
-              )
-            }
-          />
+              }
+            />
+          )}
           <AccordionAtom
             accordinId="entity-configuration"
             labelId="entity_configuration_data"
