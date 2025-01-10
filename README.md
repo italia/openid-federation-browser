@@ -35,7 +35,7 @@ We welcome contributions to the OpenID Federation Browser project! To contribute
 
 ### Add your Federation in the Assets
 
-Open a PR adding your preferred Trust Anchors [here](src/assets/trustChainList.json).
+Open a PR adding your favorite Trust Anchors [here](src/assets/trustChainList.json).
 
 ## License
 
