@@ -78,7 +78,7 @@ export const JWTViewer = ({
             <>
               <AccordionAtom
                 accordinId="header"
-                labelId="Header"
+                labelId="header"
                 hiddenElement={
                   <textarea
                     className={`${style.contextAccordinText} ${style.readOnlyTextArea}`}
@@ -90,7 +90,7 @@ export const JWTViewer = ({
               />
               <AccordionAtom
                 accordinId="payload"
-                labelId="Payload"
+                labelId="payload"
                 hiddenElement={
                   <textarea
                     className={`${style.contextAccordinText} ${style.readOnlyTextArea}`}

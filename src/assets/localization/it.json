@@ -43,5 +43,7 @@
   "error_modal_title": "Errore",
   "warning_modal_message": "Stai aggiungendo più nodi della rete. Questo potrebbe rallentare il caricamento delle informazioni. Continuare?",
   "modal_confirm": "Continua",
-  "modal_cancel": "Annulla"
+  "modal_cancel": "Annulla",
+  "header": "Header",
+  "payload": "Payload"
 }

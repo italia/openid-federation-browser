@@ -43,5 +43,7 @@
   "error_modal_title": "Error",
   "warning_modal_message": "You are adding more nodes to the network. This could slow down the loading of information. Continue?",
   "modal_confirm": "Continue",
-  "modal_cancel": "Cancel"
+  "modal_cancel": "Cancel",
+  "header": "Header",
+  "payload": "Payload"
 }
