@@ -1,12 +1,12 @@
 name: NPM audit scan
 
-on: 
+on:
   push:
     branches: ["*"]
   pull_request:
     branches: ["*"]
-  schedule: 
-    - cron: '0 9 * * 1'
+  schedule:
+    - cron: "0 9 * * 1"
 
 jobs:
   Run:
@@ -19,4 +19,4 @@ jobs:
           node-version: 20.12.x
       - name: Run audit
         run: >-
-            npm audit --audit-level=moderate
+          npm audit --audit-level=moderate

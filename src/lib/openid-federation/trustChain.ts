@@ -49,7 +49,9 @@ const getEntityConfigurations = async (
 ): Promise<EntityConfiguration> => {
   const subjectWellKnown = subject.endsWith("/") ? subject : subject + "/";
 
-  const { data: jwt } = await axios.get(cors_proxy + subjectWellKnown + wellKnownEndpoint);
+  const { data: jwt } = await axios.get(
+    cors_proxy + subjectWellKnown + wellKnownEndpoint,
+  );
 
   const header = jose.decodeProtectedHeader(jwt) as JWTHeader;
   const payload = jose.decodeJwt(jwt) as EntityConfigurationPayload;

@@ -35,7 +35,7 @@ export const JWTViewer = ({ id, raw, decoded }: ECViewerProps) => {
   return (
     <div className="container" style={{ width: "100%", padding: "14px 24px" }}>
       <div className={`row ${style.contextAccordinText}`}>
-      <div className="col-6">
+        <div className="col-6">
           <div>
             <input
               name="Decoded"
