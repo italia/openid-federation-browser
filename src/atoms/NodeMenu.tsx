@@ -171,7 +171,8 @@ export const NodeMenuAtom = ({
               <JWTViewer
                 id="node-viewer"
                 raw={data.info.ec.jwt}
-                decoded={data.info.ec.payload as any}
+                decodedPayload={data.info.ec.payload as any}
+                decodedHeader={data.info.ec.header as any}
               />
             }
           />

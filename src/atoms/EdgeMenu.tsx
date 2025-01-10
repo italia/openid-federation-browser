@@ -45,7 +45,8 @@ export const EdgeMenuAtom = ({ data }: EdgeMenuAtomProps) => {
                 <JWTViewer
                   id="edge-viewer"
                   raw={data.subStatement.jwt}
-                  decoded={data.subStatement.payload as any}
+                  decodedPayload={data.subStatement.payload as any}
+                  decodedHeader={data.subStatement.header as any}
                 />
               }
             />
