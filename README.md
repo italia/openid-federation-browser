@@ -33,7 +33,7 @@ We welcome contributions to the OpenID Federation Browser project! To contribute
 3. Commit your changes and push the branch to your fork.
 4. Submit a pull request with a description of your changes.
 
-### Add your Federation In the Assets
+### Add your Federation in the Assets
 
 Open a PR adding your preferred Trust Anchors [here](src/assets/trustChainList.json).
 
