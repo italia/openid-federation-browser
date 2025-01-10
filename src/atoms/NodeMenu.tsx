@@ -37,7 +37,6 @@ export const NodeMenuAtom = ({
       const fiteredToDiscovery = list.filter(
         (node) => !isFailed(node) && !isDiscovered(node),
       );
-      console.log(fiteredToDiscovery);
       setDiscoveringList(fiteredToDiscovery);
     }
   };

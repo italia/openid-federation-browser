@@ -31,8 +31,6 @@ export const ContextMenuComponent = ({
 
   useEffect(() => handleKeyDwonEvent("Escape", onClose), []);
 
-  console.log("data", nodeCheck);
-
   return (
     <IntlProvider
       locale={navigator.language}
