@@ -18,13 +18,15 @@ import { Graph } from "../grap-data/types";
 import { updateGraph, genNode } from "../grap-data/utils";
 import { setEntityType } from "./utils";
 
+const cors_proxy = process.env.REACT_APP_CORS_PROXY || "";
+
 const getSubordinateStatement = async (
   fetchEndpoint: string,
   sub: string,
   ec: EntityConfiguration,
 ): Promise<SubordianteStatement> => {
   const completeFetchEndpoint = `${fetchEndpoint}?sub=${sub}`;
-  const response = await axios.get(completeFetchEndpoint);
+  const response = await axios.get(cors_proxy + completeFetchEndpoint);
   const payload = jose.decodeJwt(response.data) as SubordinateStatementPayload;
   const header = jose.decodeProtectedHeader(response.data) as JWTHeader;
 
@@ -47,7 +49,7 @@ const getEntityConfigurations = async (
 ): Promise<EntityConfiguration> => {
   const subjectWellKnown = subject.endsWith("/") ? subject : subject + "/";
 
-  const { data: jwt } = await axios.get(subjectWellKnown + wellKnownEndpoint);
+  const { data: jwt } = await axios.get(cors_proxy + subjectWellKnown + wellKnownEndpoint);
 
   const header = jose.decodeProtectedHeader(jwt) as JWTHeader;
   const payload = jose.decodeJwt(jwt) as EntityConfigurationPayload;
@@ -77,7 +79,7 @@ export const discovery = async (currenECUrl: string): Promise<NodeInfo> => {
   };
 
   if (federationListEndpoint) {
-    const response = await axios.get(federationListEndpoint);
+    const response = await axios.get(cors_proxy + federationListEndpoint);
     nodeInfo.immDependants = response.data;
   }
 
