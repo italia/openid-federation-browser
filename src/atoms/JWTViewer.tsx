@@ -14,7 +14,7 @@ export interface ECViewerProps {
 
 export const JWTViewer = ({ id, raw, decoded }: ECViewerProps) => {
   const decodedStr = JSON.stringify(decoded, null, 4);
-  const [tab, setTab] = useState(Tab.Raw);
+  const [tab, setTab] = useState(Tab.Decoded);
 
   const handleTabChange = (tab: Tab) => {
     const unselected = document.getElementById(
@@ -30,11 +30,22 @@ export const JWTViewer = ({ id, raw, decoded }: ECViewerProps) => {
     setTab(tab);
   };
 
-  useEffect(() => handleTabChange(Tab.Raw), []);
+  useEffect(() => handleTabChange(Tab.Decoded), []);
 
   return (
     <div className="container" style={{ width: "100%", padding: "14px 24px" }}>
       <div className={`row ${style.contextAccordinText}`}>
+      <div className="col-6">
+          <div>
+            <input
+              name="Decoded"
+              type="radio"
+              id={`${id}-dec`}
+              onClick={() => handleTabChange(Tab.Decoded)}
+            />
+            <label htmlFor={`${id}-dec`}>Decoded</label>
+          </div>
+        </div>
         <div className="col-6">
           <div>
             <input
@@ -44,17 +55,6 @@ export const JWTViewer = ({ id, raw, decoded }: ECViewerProps) => {
               onClick={() => handleTabChange(Tab.Raw)}
             />
             <label htmlFor={`${id}-raw`}>Raw</label>
-          </div>
-        </div>
-        <div className="col-6">
-          <div>
-            <input
-              name="Decoded"
-              type="radio"
-              id={`${id}-dec`}
-              onClick={() => handleTabChange(Tab.Decoded)}
-            />
-            <label htmlFor={`${id}-dec`}>Decoded</label>
           </div>
         </div>
       </div>
