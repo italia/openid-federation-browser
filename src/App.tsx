@@ -1,6 +1,6 @@
 import "./App.css";
 import { IntlProvider } from "react-intl";
-import { translations } from "./lib/translations";
+import { getTranslations } from "./lib/translations";
 import { Header } from "./components/Header";
 import { BodyComponent } from "./components/Body";
 
@@ -10,7 +10,7 @@ function App() {
       <IntlProvider
         locale={navigator.language}
         defaultLocale="en-EN"
-        messages={translations[navigator.language]}
+        messages={getTranslations(navigator.language)}
       >
         <Header />
         <BodyComponent />
