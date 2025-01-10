@@ -82,6 +82,7 @@ export const discovery = async (currenECUrl: string): Promise<NodeInfo> => {
 
   if (federationListEndpoint) {
     const response = await axios.get(cors_proxy + federationListEndpoint);
+    if (!Array.isArray(response.data)) throw new Error("Invalid subordinate list response");
     nodeInfo.immDependants = response.data;
   }
 
