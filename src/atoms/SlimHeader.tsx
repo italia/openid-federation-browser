@@ -11,7 +11,7 @@ export const SlimHeader = () => {
             <div className="it-header-slim-wrapper-content">
               <div className="row">
                 <div className="col-2">
-                  <a className="d-lg-block navbar-brand" href="#">
+                  <a className="d-lg-block navbar-brand" href="/">
                     <IconAtom
                       iconID={"#it-designers-italia"}
                       isRounded={true}
@@ -19,7 +19,7 @@ export const SlimHeader = () => {
                   </a>
                 </div>
                 <div className="col-10">
-                  <a className="d-lg-block navbar-brand">
+                  <a href="/" className="d-lg-block navbar-brand">
                     <h1 className={style.pageTitle}>
                       <FormattedMessage id="title" />
                     </h1>
