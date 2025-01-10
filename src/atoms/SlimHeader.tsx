@@ -18,7 +18,7 @@ export const SlimHeader = () => {
                     />
                   </a>
                 </div>
-                <div className="col-10">
+                <div className="col-8">
                   <a href="/" className="d-lg-block navbar-brand">
                     <h1 className={style.pageTitle}>
                       <FormattedMessage id="title" />
