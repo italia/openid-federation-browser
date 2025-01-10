@@ -17,21 +17,42 @@ export const isExpired = (
 export const validateEntityConfiguration = async (ec: EntityConfiguration) => {
   const kid = ec.header.kid;
 
-  if (!kid) return false;
+  if (!kid) {
+    ec.valid = false;
+    ec.invalidReason = "No kid in header";
+
+    return false;
+  }
 
   const key = ec.payload.jwks.keys.find((key) => key.kid === kid);
 
-  if (!key) return false;
+  if (!key) {
+    ec.valid = false;
+    ec.invalidReason = "No key found";
+
+    return false;
+  }
 
   const isJWTValid = await isValidJWT(ec.jwt, key);
+
+  if (!isJWTValid) {
+    ec.valid = false;
+    ec.invalidReason = "Invalid JWT";
+
+    return false;
+  }
+
   const expired = isExpired(ec);
 
-  ec.valid = isJWTValid && !expired;
+  if (expired) {
+    ec.valid = false;
+    ec.invalidReason = "Expired";
 
-  if (!isJWTValid || !expired)
-    ec.invalidReason = `${isJWTValid ? "Invalid JWT" : ""} ${isJWTValid || !expired ? ";" : ""} ${!expired ? "Expired" : ""}`;
+    return false;
+  }
 
-  return isJWTValid && !expired;
+  ec.valid = true;
+  return true;
 };
 
 export const validateSubordinateStatement = async (

@@ -49,7 +49,9 @@ const getEntityConfigurations = async (
 ): Promise<EntityConfiguration> => {
   const subjectWellKnown = subject.endsWith("/") ? subject : subject + "/";
 
-  const { data: jwt } = await axios.get(cors_proxy + subjectWellKnown + wellKnownEndpoint);
+  const { data: jwt } = await axios.get(
+    cors_proxy + subjectWellKnown + wellKnownEndpoint,
+  );
 
   const header = jose.decodeProtectedHeader(jwt) as JWTHeader;
   const payload = jose.decodeJwt(jwt) as EntityConfigurationPayload;
@@ -80,6 +82,8 @@ export const discovery = async (currenECUrl: string): Promise<NodeInfo> => {
 
   if (federationListEndpoint) {
     const response = await axios.get(cors_proxy + federationListEndpoint);
+    if (!Array.isArray(response.data))
+      throw new Error("Invalid subordinate list response");
     nodeInfo.immDependants = response.data;
   }
 

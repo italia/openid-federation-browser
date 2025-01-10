@@ -47,10 +47,8 @@ export const ContextMenuComponent = ({
             <IconAtom iconID="#it-close" className="icon-sm icon-white" />
           </div>
           <div className={`col-md-auto ${styles.contextHeaderText}`}>
-            <FormattedMessage
-              id={nodeCheck ? "entity_id_label" : "connection_lael"}
-            />
-            : {data.label}
+            {nodeCheck && <FormattedMessage id={"entity_id_label"} />}
+            {data.label}
           </div>
         </div>
         {nodeCheck ? (

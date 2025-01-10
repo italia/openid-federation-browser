@@ -1,11 +1,12 @@
 {
-  "title": "Openid Federation Browser",
+  "title": "OpenID Federation Browser",
   "insert_trust_node_url_option": "Insert URL",
   "select_trust_node_url_option": "Select From List",
+  "cors_warning": "Neither CORS proxy or CORS disabler Plug-in are set. You may experience issues with fetching data.",
+  "read_more": "Read More",
   "insert_anchor_url_label": "Insert URL of a Trust Anchor",
   "insert_entity_url_label": "Insert URL of an Entity",
-  "entity_id_label": "Entity ID",
-  "connection_lael": "Connection",
+  "entity_id_label": "Entity ID: ",
   "url_input_label": "URL: ",
   "error": "Error",
   "message": "Message",
@@ -22,7 +23,6 @@
   "status_label": "Entity Configuration Status",
   "expired_label": "Expired",
   "expiring_date_label": "Valid Until",
-  "no_immediate_label": "No immediate subordinates",
   "trust_anchor_url_button": "Submit",
   "invalid_url_error_message": "Insert a valid URL",
   "url_insert_placeholder": "Insert a valid URL to proceed",
@@ -43,5 +43,7 @@
   "error_modal_title": "Error",
   "warning_modal_message": "You are adding more nodes to the network. This could slow down the loading of information. Continue?",
   "modal_confirm": "Continue",
-  "modal_cancel": "Cancel"
+  "modal_cancel": "Cancel",
+  "header": "Header",
+  "payload": "Payload"
 }

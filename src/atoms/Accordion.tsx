@@ -5,12 +5,14 @@ export interface AccordinAtomProps {
   accordinId: string;
   labelId: string;
   hiddenElement: JSX.Element;
+  titleClassName?: string;
 }
 
 export const AccordionAtom = ({
   accordinId,
   labelId,
   hiddenElement,
+  titleClassName,
 }: AccordinAtomProps) => {
   return (
     <div className="accordion-item">
@@ -23,7 +25,7 @@ export const AccordionAtom = ({
           aria-expanded="true"
           aria-controls="detail-collapse"
         >
-          <span className={style.contextAccordinTitle}>
+          <span className={titleClassName || style.contextAccordinTitle}>
             <FormattedMessage id={labelId} />
           </span>
         </button>

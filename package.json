@@ -39,7 +39,9 @@
     "proxy": "node bin/proxy.js"
   },
   "eslintConfig": {
-    "plugins": ["no-secrets"],
+    "plugins": [
+      "no-secrets"
+    ],
     "rules": {
       "no-secrets/no-secrets": "error"
     },

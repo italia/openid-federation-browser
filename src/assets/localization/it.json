@@ -1,11 +1,12 @@
 {
-  "title": "Openid Federation Browser",
+  "title": "OpenID Federation Browser",
   "insert_trust_node_url_option": "Inserisci un Trust Anchor",
   "select_trust_node_url_option": "Seleziona un Trust Anchor",
+  "cors_warning": "Né il proxy CORS né il plug-in disabilitatore dei CORS sono impostati. Potresti riscontrare problemi nel recupero dei dati.",
+  "read_more": "Leggi di più",
   "insert_anchor_url_label": "Inserisci l'URL del Trust Anchor",
   "insert_entity_url_label": "Inserisci l'URL dell'Entity",
-  "entity_id_label": "ID Entity",
-  "connection_lael": "Connessione",
+  "entity_id_label": "ID Entity: ",
   "url_input_label": "URL: ",
   "error": "Errore",
   "message": "Messaggio",
@@ -22,7 +23,6 @@
   "status_label": "Stato Entity Configuration",
   "expired_label": "Scaduto",
   "expiring_date_label": "Valido Fino",
-  "no_immediate_label": "Nessun Immediate Subordinates",
   "trust_anchor_url_button": "Submit",
   "invalid_url_error_message": "Inserisci un URL valido",
   "url_insert_placeholder": "Inserisci un URL valido per procedere",
@@ -43,5 +43,7 @@
   "error_modal_title": "Errore",
   "warning_modal_message": "Stai aggiungendo più nodi della rete. Questo potrebbe rallentare il caricamento delle informazioni. Continuare?",
   "modal_confirm": "Continua",
-  "modal_cancel": "Annulla"
+  "modal_cancel": "Annulla",
+  "header": "Header",
+  "payload": "Payload"
 }
