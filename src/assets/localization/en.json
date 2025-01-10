@@ -1,5 +1,5 @@
 {
-  "title": "Openid Federation Browser",
+  "title": "OpenID Federation Browser",
   "insert_trust_node_url_option": "Insert URL",
   "select_trust_node_url_option": "Select From List",
   "insert_anchor_url_label": "Insert URL of a Trust Anchor",
