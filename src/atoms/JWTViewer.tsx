@@ -14,7 +14,12 @@ export interface ECViewerProps {
   decodedHeader: { [key: string]: string };
 }
 
-export const JWTViewer = ({ id, raw, decodedPayload, decodedHeader }: ECViewerProps) => {
+export const JWTViewer = ({
+  id,
+  raw,
+  decodedPayload,
+  decodedHeader,
+}: ECViewerProps) => {
   const decodedPayloadStr = JSON.stringify(decodedPayload, null, 4);
   const decodedHeaderStr = JSON.stringify(decodedHeader, null, 4);
   const [tab, setTab] = useState(Tab.Decoded);
@@ -71,21 +76,29 @@ export const JWTViewer = ({ id, raw, decodedPayload, decodedHeader }: ECViewerPr
             ></textarea>
           ) : (
             <>
-              <AccordionAtom accordinId="header" labelId="Header" hiddenElement={
-                <textarea
-                  className={`${style.contextAccordinText} ${style.readOnlyTextArea}`}
-                  value={decodedHeaderStr}
-                  style={{ height: "8rem" }}
-                  readOnly
-                ></textarea>
-              } />
-              <AccordionAtom accordinId="payload" labelId="Payload" hiddenElement={
-                <textarea
-                  className={`${style.contextAccordinText} ${style.readOnlyTextArea}`}
-                  value={decodedPayloadStr}
-                  readOnly
-                ></textarea>
-              } />
+              <AccordionAtom
+                accordinId="header"
+                labelId="Header"
+                hiddenElement={
+                  <textarea
+                    className={`${style.contextAccordinText} ${style.readOnlyTextArea}`}
+                    value={decodedHeaderStr}
+                    style={{ height: "8rem" }}
+                    readOnly
+                  ></textarea>
+                }
+              />
+              <AccordionAtom
+                accordinId="payload"
+                labelId="Payload"
+                hiddenElement={
+                  <textarea
+                    className={`${style.contextAccordinText} ${style.readOnlyTextArea}`}
+                    value={decodedPayloadStr}
+                    readOnly
+                  ></textarea>
+                }
+              />
             </>
           )}
         </div>
