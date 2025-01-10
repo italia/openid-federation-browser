@@ -1,5 +1,5 @@
 import { IntlProvider } from "react-intl";
-import { translations } from "../lib/translations";
+import { getTranslations } from "../lib/translations";
 import { GraphEdge, GraphNode, Graph } from "../lib/grap-data/types";
 import { isNode } from "../lib/grap-data/utils";
 import { NodeMenuAtom } from "../atoms/NodeMenu";
@@ -35,7 +35,7 @@ export const ContextMenuComponent = ({
     <IntlProvider
       locale={navigator.language}
       defaultLocale="en-EN"
-      messages={translations[navigator.language]}
+      messages={getTranslations(navigator.language)}
     >
       <div className={`container ${styles.contextMenu}`}>
         <div className="row primary-bg pt-1 pb-1">
