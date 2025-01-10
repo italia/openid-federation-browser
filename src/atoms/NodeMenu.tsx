@@ -169,7 +169,6 @@ export const NodeMenuAtom = ({
             labelId="entity_configuration_data"
             hiddenElement={
               <JWTViewer
-                id="node-viewer"
                 raw={data.info.ec.jwt}
                 decodedPayload={data.info.ec.payload as any}
                 decodedHeader={data.info.ec.header as any}
