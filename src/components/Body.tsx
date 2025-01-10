@@ -7,6 +7,8 @@ import { isValidUrl } from "../lib/utils";
 import { GraphViewComponent } from "./GraphView";
 import styles from "../css/BodyComponent.module.css";
 import trustChainList from "../assets/trustChainList.json";
+import axios from "axios";
+import { FormattedMessage } from "react-intl";
 
 export const BodyComponent = () => {
   const ItemsRenderer = ({ items }: { items: any[] }) => {
@@ -50,6 +52,8 @@ export const BodyComponent = () => {
   const [visualizedAtom, setVisualizedAtom] = useState<JSX.Element>(
     conponents["InputAtom"],
   );
+    
+  const [corsEnabled, setCorsEnabled] = useState(false);
 
   useEffect(() => {
     if (searchParams.has("listUrl")) {
@@ -61,5 +65,27 @@ export const BodyComponent = () => {
     }
   }, [searchParams]);
 
-  return <div className={styles.bodyContainer}>{visualizedAtom}</div>;
+  useEffect(() => {
+    if (trustChainList.length) {
+      const testUrl = process.env.REACT_APP_CORS_PROXY || "" + trustChainList[0].url + '/.well-known/openid-federation'
+
+      axios.get(testUrl).catch((e) => {
+        console.log(testUrl);
+        console.log(e);
+        if (e.request.status === 0) setCorsEnabled(true);
+      })
+    }
+  });
+
+  return <>
+    {corsEnabled && (
+      <div className="alert alert-warning" role="alert" style={{fontSize: "14px"}}>
+        <FormattedMessage id="cors_warning"/>
+        <a href={process.env.REACT_APP_CORS_DOCS_URL || "/"} className="alert-link" style={{marginLeft: "10px"}}><FormattedMessage id="read_more"/></a>
+      </div>
+    )}
+    <div className={styles.bodyContainer}>
+      {visualizedAtom}
+    </div>
+  </>;
 };

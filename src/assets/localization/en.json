@@ -2,6 +2,8 @@
   "title": "OpenID Federation Browser",
   "insert_trust_node_url_option": "Insert URL",
   "select_trust_node_url_option": "Select From List",
+  "cors_warning": "Neither CORS proxy or CORS disabler Plug-in are set. You may experience issues with fetching data.",
+  "read_more": "Read More",
   "insert_anchor_url_label": "Insert URL of a Trust Anchor",
   "insert_entity_url_label": "Insert URL of an Entity",
   "entity_id_label": "Entity ID: ",

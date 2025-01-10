@@ -23,15 +23,17 @@ After the initialization the page will be available to http://localhost:3000
 
 ### Page options
 
-In the .env file there are two option that can be optionally set:
+In the .env file there are some option that can be optionally set:
 
 ```
 # REACT_APP_CORS_PROXY=https://corsproxy.io/?url=
 # REACT_APP_BASENAME=/
+# REACT_APP_CORS_DOCS_URL=/
 ```
 
 - REACT_APP_CORS_PROXY: sets an url of a service that provide CORS suppression.
 - REACT_APP_BASENAME: sets a base name if the page is not served under '/' .
+- REACT_APP_CORS_DOCS_URL: sets the url where read about the CORS documentation.
 
 ### Build
 
