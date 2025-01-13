@@ -40,6 +40,13 @@ export const NavBarAtom = () => {
                         </span>
                       </Link>
                     </li>
+                    <li className="nav-item">
+                      <Link className="nav-link" to="/?viewUpload">
+                        <span className={style.headerText}>
+                          <FormattedMessage id="upload_entity_view_option" />
+                        </span>
+                      </Link>
+                    </li>
                   </ul>
                 </div>
               </div>
