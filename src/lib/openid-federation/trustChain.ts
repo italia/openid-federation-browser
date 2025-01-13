@@ -183,3 +183,17 @@ export const traverseUp = async (
 
   return graph;
 };
+
+export const exportView = (graph: Graph): string => {
+  return JSON.stringify(
+    {
+      nodes: graph.nodes.map((node) => node.id),
+      edges: graph.edges.map((edge) => ({
+        source: edge.source,
+        target: edge.target,
+      })),
+    },
+    null,
+    2,
+  );
+};
