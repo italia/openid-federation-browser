@@ -50,3 +50,21 @@ export const setEntityType = (info: NodeInfo): void => {
 
   info.type = EntityType.Anchor;
 };
+
+export const checkViewValidity = (view: any): boolean => {
+  if (!view) return false;
+  if (!view.hasOwnProperty("nodes")) return false;
+  if (!view.hasOwnProperty("edges")) return false;
+
+  const notString = view.nodes.find((node: any) => typeof node !== "string");
+  if (notString) return false;
+
+  const notStringEdge = view.edges.find(
+    (edge: any) =>
+      typeof edge.source !== "string" || typeof edge.target !== "string",
+  );
+
+  if (notStringEdge) return false;
+
+  return true;
+};
