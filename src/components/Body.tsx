@@ -9,8 +9,16 @@ import styles from "../css/BodyComponent.module.css";
 import trustChainList from "../assets/trustChainList.json";
 import axios from "axios";
 import { FormattedMessage } from "react-intl";
+import { ViewImportAtom } from "../atoms/ViewImport";
 
 export const BodyComponent = () => {
+  const [importedView, setImportedView] = useState<string | undefined>(
+    undefined,
+  );
+  const [trustAnchorUrl, setTrustAnchorUrl] = useState<string | undefined>(
+    undefined,
+  );
+
   const ItemsRenderer = ({ items }: { items: any[] }) => {
     return (
       <ul>
@@ -45,10 +53,15 @@ export const BodyComponent = () => {
         />
       </div>
     ),
-    GraphView: <GraphViewComponent />,
+    ViewImport: (
+      <div className={styles.bodyElement}>
+        <ViewImportAtom onFileUpload={setImportedView} />
+      </div>
+    ),
+    GraphView: <GraphViewComponent view={importedView} url={trustAnchorUrl} />,
   };
 
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [visualizedAtom, setVisualizedAtom] = useState<JSX.Element>(
     conponents["InputAtom"],
   );
@@ -56,14 +69,33 @@ export const BodyComponent = () => {
   const [corsEnabled, setCorsEnabled] = useState(false);
 
   useEffect(() => {
+    if (searchParams.has("graphView")) {
+      return;
+    }
+
+    if (searchParams.has("trustAnchorUrl")) {
+      setTrustAnchorUrl(searchParams.get("trustAnchorUrl") as string);
+      return;
+    }
+
+    setImportedView(undefined);
+    setTrustAnchorUrl(undefined);
+
     if (searchParams.has("listUrl")) {
       setVisualizedAtom(conponents["TrstAnchorListAtom"]);
-    } else if (searchParams.has("trustAnchorUrl")) {
-      setVisualizedAtom(conponents["GraphView"]);
+    } else if (searchParams.has("viewUpload")) {
+      setVisualizedAtom(conponents["ViewImport"]);
     } else {
       setVisualizedAtom(conponents["InputAtom"]);
     }
   }, [searchParams]);
+
+  useEffect(() => {
+    if (trustAnchorUrl || importedView) {
+      setSearchParams({ graphView: "" });
+      setVisualizedAtom(conponents["GraphView"]);
+    }
+  }, [trustAnchorUrl, importedView]);
 
   useEffect(() => {
     if (trustChainList.length) {
@@ -72,8 +104,6 @@ export const BodyComponent = () => {
         "" + trustChainList[0].url + "/.well-known/openid-federation";
 
       axios.get(testUrl).catch((e) => {
-        console.log(testUrl);
-        console.log(e);
         if (e.request.status === 0) setCorsEnabled(true);
       });
     }
