@@ -17,7 +17,6 @@ import {
 import { Graph } from "../grap-data/types";
 import { updateGraph, genNode } from "../grap-data/utils";
 import { setEntityType } from "./utils";
-import { error } from "console";
 
 const cors_proxy = process.env.REACT_APP_CORS_PROXY || "";
 
