@@ -42,13 +42,15 @@ export const SlimHeader = () => {
                     <FormattedMessage id="fork_on_github" />
                   </span>
                 </a>
-                {
-                  process.env.REACT_APP_VERSION  && (
-                    <div className={style.headerText} style={{marginLeft: "20px"}}>
-                      <FormattedMessage id="version" /> 1.0.0
-                    </div>
-                  )
-                }
+                {process.env.REACT_APP_VERSION && (
+                  <div
+                    className={style.headerText}
+                    style={{ marginLeft: "20px" }}
+                  >
+                    <FormattedMessage id="version" />
+                    {process.env.REACT_APP_VERSION}
+                  </div>
+                )}
               </div>
             </div>
           </div>
