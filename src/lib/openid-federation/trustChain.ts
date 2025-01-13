@@ -14,7 +14,7 @@ import {
   EntityType,
   SubordinateStatementPayload,
 } from "./types";
-import { Graph } from "../grap-data/types";
+import { Graph, GraphEdge, GraphNode } from "../grap-data/types";
 import { updateGraph, genNode } from "../grap-data/utils";
 import { setEntityType } from "./utils";
 
@@ -197,3 +197,42 @@ export const exportView = (graph: Graph): string => {
     2,
   );
 };
+
+export const importView = async(view: string): Promise<Graph> => {
+  const parsed = JSON.parse(view) as {
+    nodes: string[];
+    edges: { source: string; target: string }[];
+  };
+
+  const newNodes = await Promise.all(parsed.nodes.map(async (entity) => genNode(await discovery(entity))));
+  const newEdges: GraphEdge[] = await Promise.all(parsed.edges.map(async (edge) => {
+    const parent = newNodes.find((node) => node.id === edge.source);
+    const currentNode = newNodes.find((node) => node.id === edge.target);
+
+    if (!parent || !currentNode) throw new Error("Invalid graph data");
+
+    const label = `${edge.source}-${edge.target}`;
+    const federationFetchEndpoint =
+      parent.info.ec.payload?.metadata?.federation_entity?.federation_fetch_endpoint;
+
+    if (federationFetchEndpoint)
+      currentNode.info.ec.subordinate = await getSubordinateStatement(
+        federationFetchEndpoint,
+        edge.target,
+        parent.info.ec,
+      );
+
+    return {
+      id: label,
+      label,
+      subStatement: currentNode.info.ec.subordinate,
+      source: edge.source, 
+      target: edge.target 
+    };
+  }));
+
+  return {
+    nodes: newNodes,
+    edges: newEdges,
+  };
+}
