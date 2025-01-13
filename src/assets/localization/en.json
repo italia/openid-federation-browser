@@ -21,6 +21,7 @@
   "federation_entity_type_label": "Federation Entity Type",
   "immediate_subordinate_count_label": "Immediate Subordinates Count",
   "status_label": "Entity Configuration Status",
+  "substatement_status_label": "Subordinate Statement Status",
   "expired_label": "Expired",
   "expiring_date_label": "Valid Until",
   "trust_anchor_url_button": "Submit",

@@ -22,7 +22,7 @@ export const EdgeMenuAtom = ({ data }: EdgeMenuAtomProps) => {
                   id={`${data.label}-view`}
                   infos={[
                     [
-                      "status_label",
+                      "substatement_status_label",
                       fmtValidity(
                         data.subStatement.valid,
                         data.subStatement.invalidReason,
