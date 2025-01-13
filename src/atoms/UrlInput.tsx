@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { useSearchParams } from "react-router-dom";
 import { handleCollapseVisibility, cleanInput } from "../lib/utils";
+import { handleKeyDownEvent } from "../lib/utils";
 
 interface InputProps {
   validationFn: (value: string) => boolean;
@@ -30,6 +31,8 @@ export const UrlInputAtom = ({ validationFn }: InputProps) => {
     }
     setDoCheck(false);
   }, [doCheck]);
+
+  useEffect(() => handleKeyDownEvent("Enter", () => setDoCheck(true)), []);
 
   return (
     <div className="container">
