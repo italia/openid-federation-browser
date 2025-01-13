@@ -10,7 +10,7 @@ import { fromNodeInfo } from "../lib/grap-data/utils";
 import { ErrorViewAtom } from "../atoms/ErrorView";
 import { IconAtom } from "../atoms/Icon";
 import { downloadJsonFile } from "../lib/utils";
-import { exportView } from "../lib/openid-federation/trustChain";
+import { exportView, importView } from "../lib/openid-federation/trustChain";
 
 enum ShowElement {
   Loading = "loading-atom",
@@ -18,7 +18,12 @@ enum ShowElement {
   Graph = "graph-atom",
 }
 
-export const GraphViewComponent = () => {
+export interface GraphViewProps {
+  view?: string;
+  url?: string;
+}
+
+export const GraphViewComponent = ({ view, url }: GraphViewProps) => {
   const [searchParams] = useSearchParams();
   const [nodes, setNodes] = useState<GraphNode[]>([]);
   const [edges, setEdges] = useState<GraphEdge[]>([]);
@@ -50,11 +55,12 @@ export const GraphViewComponent = () => {
   const onUpdate = (newGraph: Graph) => updateGraph(newGraph);
 
   useEffect(() => {
-    if (!searchParams.has("trustAnchorUrl")) {
+    if (view) {
+      importView(view).then(updateGraph).catch(showErrorMessage);
       return;
     }
 
-    const entityUrl = searchParams.get("trustAnchorUrl") as string;
+    const entityUrl = url as string;
 
     const discoveryGraph =
       searchParams.get("discoveryType") === "entity"
