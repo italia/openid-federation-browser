@@ -8,6 +8,9 @@ import { LoadingAtom } from "../atoms/Loading";
 import styles from "../css/BodyComponent.module.css";
 import { fromNodeInfo } from "../lib/grap-data/utils";
 import { ErrorViewAtom } from "../atoms/ErrorView";
+import { IconAtom } from "../atoms/Icon";
+import { downloadJsonFile } from "../lib/utils";
+import { exportView } from "../lib/openid-federation/trustChain";
 
 enum ShowElement {
   Loading = "loading-atom",
@@ -69,21 +72,46 @@ export const GraphViewComponent = () => {
         ) : showElement === ShowElement.Error ? (
           <ErrorViewAtom error={error} />
         ) : (
-          <GraphCanvas
-            nodes={nodes}
-            edges={edges}
-            draggable
-            contextMenu={({ data, onClose }) => (
-              <ContextMenuComponent
-                data={data as any}
-                graph={{ nodes, edges }}
-                onClose={onClose}
-                onUpdate={onUpdate}
-                addToFailedList={addToFailedList}
-                isFailed={isFailed}
-              />
-            )}
-          />
+          <>
+            <div
+              style={{
+                zIndex: 9,
+                position: "absolute",
+                top: 15,
+                right: 15,
+                padding: 1,
+                color: "white",
+              }}
+            >
+              <button
+                className="btn btn-success btn-sm py-1 px-2"
+                style={{ display: "block", width: "100%" }}
+                onClick={() => downloadJsonFile(exportView({ nodes, edges }))}
+              >
+                <IconAtom
+                  iconID="#it-download"
+                  className="icon-sm icon-white"
+                  isRounded={false}
+                />
+                Export
+              </button>
+            </div>
+            <GraphCanvas
+              nodes={nodes}
+              edges={edges}
+              draggable
+              contextMenu={({ data, onClose }) => (
+                <ContextMenuComponent
+                  data={data as any}
+                  graph={{ nodes, edges }}
+                  onClose={onClose}
+                  onUpdate={onUpdate}
+                  addToFailedList={addToFailedList}
+                  isFailed={isFailed}
+                />
+              )}
+            />
+          </>
         )}
       </div>
     </>
