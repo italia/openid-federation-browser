@@ -138,16 +138,16 @@ export const discoverMultipleChildren = async (
   entities: string[],
   parent: NodeInfo,
   graph: Graph = { nodes: [], edges: [] },
-): Promise<{ graph: Graph; failed: {entity: string, error: Error}[] }> => {
+): Promise<{ graph: Graph; failed: { entity: string; error: Error }[] }> => {
   let newGraph = graph;
-  const failed: {entity: string, error: Error}[] = [];
+  const failed: { entity: string; error: Error }[] = [];
 
   for (const entity of entities) {
     try {
       newGraph = await discoverChild(entity, parent, newGraph);
     } catch (e) {
       console.error(e);
-      failed.push({entity, error: e as Error});
+      failed.push({ entity, error: e as Error });
     }
   }
 

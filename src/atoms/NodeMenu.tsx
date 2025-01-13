@@ -29,7 +29,9 @@ export const NodeMenuAtom = ({
   const [discoveringList, setDiscoveringList] = useState<string[]>([]);
   const [discovering, setDiscovering] = useState(false);
   const [errorModalText, setErrorModalText] = useState(new Error());
-  const [errorDetails, setErrorDetails] = useState<string[] | undefined>(undefined);
+  const [errorDetails, setErrorDetails] = useState<string[] | undefined>(
+    undefined,
+  );
 
   const addSubordinates = (entityID?: string | string[]) => {
     if (!entityID) setDiscoveringList(filteredItems);
@@ -66,7 +68,7 @@ export const NodeMenuAtom = ({
 
   const handleDiscoveryResult = (result: {
     graph: Graph;
-    failed: {entity: string, error: Error}[];
+    failed: { entity: string; error: Error }[];
   }) => {
     onUpdate(result.graph);
     setDiscoveringList([]);
@@ -80,7 +82,9 @@ export const NodeMenuAtom = ({
     setErrorModalText(
       new Error(`Failed to discover ${result.failed.length} entities`),
     );
-    setErrorDetails(result.failed.map((f) => `${f.entity} - ${f.error.message}`));
+    setErrorDetails(
+      result.failed.map((f) => `${f.entity} - ${f.error.message}`),
+    );
     showModal("error-modal");
   };
 

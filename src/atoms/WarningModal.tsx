@@ -30,7 +30,11 @@ export const WarningModalAtom = ({
       <div className="modal-dialog" role="document">
         <div className="modal-content">
           <div className="modal-header">
-            <p className="modal-title" style={{fontSize: "18px"}} id="modal1Title">
+            <p
+              className="modal-title"
+              style={{ fontSize: "18px" }}
+              id="modal1Title"
+            >
               <FormattedMessage id={headerID} />
             </p>
           </div>
@@ -50,7 +54,9 @@ export const WarningModalAtom = ({
                 hiddenElement={
                   <ul>
                     {details.map((detail, index) => (
-                      <li key={index} className={style.contextAccordinText}>{detail}</li>
+                      <li key={index} className={style.contextAccordinText}>
+                        {detail}
+                      </li>
                     ))}
                   </ul>
                 }
