@@ -42,7 +42,7 @@ export const SubListItemsRenderer = ({
   return ({ items }: { items: any[] }) => {
     return (
       <>
-        <ul style={{ listStyleType: "none" }}>
+        <ul style={{ listStyleType: "none", paddingLeft: "0.8rem" }}>
           {items &&
             items.map((dep) => (
               <li

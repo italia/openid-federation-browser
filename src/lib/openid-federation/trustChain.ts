@@ -17,6 +17,7 @@ import {
 import { Graph } from "../grap-data/types";
 import { updateGraph, genNode } from "../grap-data/utils";
 import { setEntityType } from "./utils";
+import { error } from "console";
 
 const cors_proxy = process.env.REACT_APP_CORS_PROXY || "";
 
@@ -137,16 +138,16 @@ export const discoverMultipleChildren = async (
   entities: string[],
   parent: NodeInfo,
   graph: Graph = { nodes: [], edges: [] },
-): Promise<{ graph: Graph; failed: string[] }> => {
+): Promise<{ graph: Graph; failed: { entity: string; error: Error }[] }> => {
   let newGraph = graph;
-  const failed: string[] = [];
+  const failed: { entity: string; error: Error }[] = [];
 
   for (const entity of entities) {
     try {
       newGraph = await discoverChild(entity, parent, newGraph);
     } catch (e) {
       console.error(e);
-      failed.push(entity);
+      failed.push({ entity, error: e as Error });
     }
   }
 

@@ -1,4 +1,6 @@
 import { FormattedMessage } from "react-intl";
+import { AccordionAtom } from "./Accordion";
+import style from "../css/ContextMenu.module.css";
 
 export interface WarningModalProps {
   modalID: string;
@@ -7,6 +9,7 @@ export interface WarningModalProps {
   description?: string;
   dismissActionID: string;
   acceptActionID?: string;
+  details?: string[];
   onAccept?: () => void;
   onDismiss?: () => void;
 }
@@ -18,6 +21,7 @@ export const WarningModalAtom = ({
   description,
   dismissActionID,
   acceptActionID,
+  details,
   onAccept,
   onDismiss,
 }: WarningModalProps) => {
@@ -26,18 +30,38 @@ export const WarningModalAtom = ({
       <div className="modal-dialog" role="document">
         <div className="modal-content">
           <div className="modal-header">
-            <h2 className="modal-title h5" id="modal1Title">
+            <p
+              className="modal-title"
+              style={{ fontSize: "18px" }}
+              id="modal1Title"
+            >
               <FormattedMessage id={headerID} />
-            </h2>
+            </p>
           </div>
           <div className="modal-body">
             <p>
               {description !== undefined ? (
-                description
+                <p className={style.contextAccordinTitle}>{description}</p>
               ) : (
                 <FormattedMessage id={descriptionID} />
               )}
             </p>
+
+            {details && (
+              <AccordionAtom
+                accordinId="details"
+                labelId="error_details"
+                hiddenElement={
+                  <ul>
+                    {details.map((detail, index) => (
+                      <li key={index} className={style.contextAccordinText}>
+                        {detail}
+                      </li>
+                    ))}
+                  </ul>
+                }
+              />
+            )}
           </div>
           <div className="modal-footer">
             <button
