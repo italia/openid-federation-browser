@@ -29,7 +29,7 @@ export const handleCollapseVisibility = (id: string, isVisible: boolean) => {
   }
 };
 
-export const handleKeyDwonEvent = (key: string, onEvent: () => void) => {
+export const handleKeyDownEvent = (key: string, onEvent: () => void) => {
   const handleKeyDown = (event: any) => {
     if (event.key === key) onEvent();
   };

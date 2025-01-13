@@ -7,7 +7,7 @@ import { EdgeMenuAtom } from "../atoms/EdgeMenu";
 import { FormattedMessage } from "react-intl";
 import { IconAtom } from "../atoms/Icon";
 import { useEffect } from "react";
-import { handleKeyDwonEvent } from "../lib/utils";
+import { handleKeyDownEvent } from "../lib/utils";
 import styles from "../css/ContextMenu.module.css";
 
 export interface ContextMenuProps {
@@ -29,7 +29,7 @@ export const ContextMenuComponent = ({
 }: ContextMenuProps) => {
   const nodeCheck = isNode(data);
 
-  useEffect(() => handleKeyDwonEvent("Escape", onClose), []);
+  useEffect(() => handleKeyDownEvent("Escape", onClose), []);
 
   return (
     <IntlProvider
