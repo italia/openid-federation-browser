@@ -69,14 +69,17 @@ export const truncateMiddle = (text: string, maxLength: number) => {
   return text.slice(0, half) + "..." + text.slice(-half);
 };
 
-export const downloadJsonFile = (data: string, filename: string | undefined = undefined) => {
-  const blob = new Blob([data], { type: 'application/json' });
+export const downloadJsonFile = (
+  data: string,
+  filename: string | undefined = undefined,
+) => {
+  const blob = new Blob([data], { type: "application/json" });
   const url = URL.createObjectURL(blob);
 
-  const a = document.createElement('a');
+  const a = document.createElement("a");
   a.href = url;
-  a.download = filename || 'currentView.json';
+  a.download = filename || "currentView.json";
 
   a.click();
   a.remove();
-}
+};
