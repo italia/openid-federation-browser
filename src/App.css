@@ -60,3 +60,12 @@
     transform: rotate(360deg);
   }
 }
+
+code {
+  font-size: 12px !important;
+}
+
+pre {
+  overflow-y: scroll !important;
+  height: 20rem !important;
+}

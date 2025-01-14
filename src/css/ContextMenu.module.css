@@ -34,4 +34,6 @@
   resize: none;
   width: 100%;
   height: 20rem;
+  border-color: hsl(0deg, 0%, 64%);
+  border-width: 2px;
 }
