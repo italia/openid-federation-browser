@@ -1,6 +1,7 @@
 import { AccordionAtom } from "./Accordion";
 import style from "../css/ContextMenu.module.css";
 import { IconAtom } from "./Icon";
+import { FormattedMessage } from "react-intl";
 
 export interface ECViewerProps {
   raw: string;
@@ -35,33 +36,63 @@ export const JWTViewer = ({
           </button>
         </div>
       </div>
-      <div className="row">
-        <div className="col-12">
-          <AccordionAtom
-            accordinId="header"
-            labelId="header"
-            titleClassName={style.contextAccordinText}
-            hiddenElement={
-              <textarea
-                className={`${style.contextAccordinText} ${style.readOnlyTextArea}`}
-                value={decodedHeaderStr}
-                style={{ height: "8rem" }}
-                readOnly
-              ></textarea>
-            }
-          />
-          <AccordionAtom
-            accordinId="payload"
-            labelId="payload"
-            titleClassName={style.contextAccordinText}
-            hiddenElement={
-              <textarea
-                className={`${style.contextAccordinText} ${style.readOnlyTextArea}`}
-                value={decodedPayloadStr}
-                readOnly
-              ></textarea>
-            }
-          />
+      <ul className="nav nav-tabs auto">
+        <li className="nav-item">
+          <a
+            className="nav-link active"
+            id="nav-header-tab"
+            data-bs-toggle="tab"
+            href="#nav-header"
+            role="tab"
+            aria-controls="nav-header"
+            aria-selected="true"
+          >
+            <span className={style.contextAccordinText}>
+              <FormattedMessage id="header" />
+            </span>
+          </a>
+        </li>
+        <li className="nav-item">
+          <a
+            className="nav-link"
+            id="nav-payload-tab"
+            data-bs-toggle="tab"
+            href="#nav-payload"
+            role="tab"
+            aria-controls="nav-payload"
+            aria-selected="false"
+          >
+            <span className={style.contextAccordinText}>
+              <FormattedMessage id="payload" />
+            </span>
+          </a>
+        </li>
+      </ul>
+      <div className="tab-content" id="nav-tabContent">
+        <div
+          className="tab-pane p-4 fade show active"
+          id="nav-header"
+          role="tabpanel"
+          aria-labelledby="nav-header-tab"
+        >
+          <textarea
+            className={`${style.contextAccordinText} ${style.readOnlyTextArea}`}
+            value={decodedHeaderStr}
+            style={{ height: "8rem" }}
+            readOnly
+          ></textarea>
+        </div>
+        <div
+          className="tab-pane p-4 fade"
+          id="nav-payload"
+          role="tabpanel"
+          aria-labelledby="nav-payload-tab"
+        >
+          <textarea
+            className={`${style.contextAccordinText} ${style.readOnlyTextArea}`}
+            value={decodedPayloadStr}
+            readOnly
+          ></textarea>
         </div>
       </div>
     </div>
