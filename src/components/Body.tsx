@@ -25,7 +25,10 @@ export const BodyComponent = () => {
         {items &&
           items.map((d) => (
             <li key={d.url}>
-              <Link to={`/?trustAnchorUrl=${d.url}`}>
+              <Link
+                style={{ fontSize: "14px" }}
+                to={`/?trustAnchorUrl=${d.url}`}
+              >
                 {d.name} - {d.url}
               </Link>
             </li>
