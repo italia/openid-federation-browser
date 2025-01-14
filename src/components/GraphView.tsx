@@ -6,6 +6,7 @@ import { GraphNode, GraphEdge, Graph } from "../lib/grap-data/types";
 import { ContextMenuComponent } from "./ContextMenu";
 import { LoadingAtom } from "../atoms/Loading";
 import styles from "../css/BodyComponent.module.css";
+import headerStyle from "../css/Header.module.css";
 import { fromNodeInfo } from "../lib/grap-data/utils";
 import { ErrorViewAtom } from "../atoms/ErrorView";
 import { IconAtom } from "../atoms/Icon";
@@ -90,7 +91,7 @@ export const GraphViewComponent = ({ view, url }: GraphViewProps) => {
               }}
             >
               <button
-                className="btn btn-success btn-sm py-1 px-2"
+                className={`btn btn-success btn-sm py-1 px-2 ${headerStyle.headerText}`}
                 style={{ display: "block", width: "100%" }}
                 onClick={() => downloadJsonFile(exportView({ nodes, edges }))}
               >
@@ -99,7 +100,9 @@ export const GraphViewComponent = ({ view, url }: GraphViewProps) => {
                   className="icon-sm icon-white"
                   isRounded={false}
                 />
-                Export
+                <span style={{marginLeft: "5px"}}>
+                  Export
+                </span>
               </button>
             </div>
             <GraphCanvas
