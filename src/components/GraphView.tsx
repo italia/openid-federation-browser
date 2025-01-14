@@ -11,6 +11,8 @@ import { ErrorViewAtom } from "../atoms/ErrorView";
 import { IconAtom } from "../atoms/Icon";
 import { downloadJsonFile } from "../lib/utils";
 import { exportView, importView } from "../lib/openid-federation/trustChain";
+import { WarningModalAtom } from "../atoms/WarningModal";
+import { showModal } from "../lib/utils";
 
 enum ShowElement {
   Loading = "loading-atom",
@@ -72,6 +74,15 @@ export const GraphViewComponent = ({ view, url }: GraphViewProps) => {
 
   return (
     <>
+      <WarningModalAtom
+        modalID="export-modal"
+        headerID="static_dynamic_title"
+        descriptionID="static_dynamic_choice_message"
+        dismissActionID="dynamic"
+        acceptActionID="static"
+        onAccept={() => downloadJsonFile(exportView({ nodes, edges }, true))}
+        onDismiss={() => downloadJsonFile(exportView({ nodes, edges }, false))}
+      />
       <div className={styles.graphAtom}>
         {showElement === ShowElement.Loading ? (
           <LoadingAtom />
@@ -92,7 +103,7 @@ export const GraphViewComponent = ({ view, url }: GraphViewProps) => {
               <button
                 className="btn btn-success btn-sm py-1 px-2"
                 style={{ display: "block", width: "100%" }}
-                onClick={() => downloadJsonFile(exportView({ nodes, edges }))}
+                onClick={() => showModal("export-modal")}
               >
                 <IconAtom
                   iconID="#it-download"
