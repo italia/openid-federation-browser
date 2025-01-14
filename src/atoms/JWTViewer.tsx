@@ -1,7 +1,9 @@
-import { AccordionAtom } from "./Accordion";
 import style from "../css/ContextMenu.module.css";
 import { IconAtom } from "./Icon";
 import { FormattedMessage } from "react-intl";
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { oneLight } from 'react-syntax-highlighter/dist/esm/styles/prism';
+
 
 export interface ECViewerProps {
   raw: string;
@@ -70,29 +72,24 @@ export const JWTViewer = ({
       </ul>
       <div className="tab-content" id="nav-tabContent">
         <div
-          className="tab-pane p-4 fade show active"
+          className="tab-pane fade show active"
           id="nav-header"
           role="tabpanel"
           aria-labelledby="nav-header-tab"
         >
-          <textarea
-            className={`${style.contextAccordinText} ${style.readOnlyTextArea}`}
-            value={decodedHeaderStr}
-            style={{ height: "8rem" }}
-            readOnly
-          ></textarea>
+          <SyntaxHighlighter language="json" style={oneLight}>
+            {decodedHeaderStr}
+          </SyntaxHighlighter>
         </div>
         <div
-          className="tab-pane p-4 fade"
+          className="tab-pane fade"
           id="nav-payload"
           role="tabpanel"
           aria-labelledby="nav-payload-tab"
         >
-          <textarea
-            className={`${style.contextAccordinText} ${style.readOnlyTextArea}`}
-            value={decodedPayloadStr}
-            readOnly
-          ></textarea>
+          <SyntaxHighlighter language="json" style={oneLight}>
+            {decodedPayloadStr}
+          </SyntaxHighlighter>
         </div>
       </div>
     </div>
