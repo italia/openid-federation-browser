@@ -18,6 +18,10 @@ import { Graph, GraphEdge, GraphNode } from "../grap-data/types";
 import { updateGraph, genNode } from "../grap-data/utils";
 import { setEntityType } from "./utils";
 import { checkViewValidity } from "./utils";
+import Ajv from "ajv";
+import schema from "../graph-data/graph.schema.json";
+
+const schemaValidator = new Ajv().compile(schema);
 
 const cors_proxy = process.env.REACT_APP_CORS_PROXY || "";
 
@@ -185,7 +189,12 @@ export const traverseUp = async (
   return graph;
 };
 
-export const exportView = (graph: Graph): string => {
+export const exportView = (
+  graph: Graph,
+  staticExport: boolean = false,
+): string => {
+  if (staticExport) return JSON.stringify(graph, null, 2);
+
   return JSON.stringify(
     {
       nodes: graph.nodes.map((node) => node.id),
@@ -203,13 +212,25 @@ export const importView = async (view: string): Promise<Graph> => {
   let parsed;
 
   try {
-    parsed = JSON.parse(view) as {
-      nodes: string[];
-      edges: { source: string; target: string }[];
-    };
+    parsed = JSON.parse(view);
   } catch (e) {
     throw new Error("Not a valid JSON");
   }
+
+  if (parsed.nodes.length === 0) throw new Error("Empty view data");
+
+  if (typeof parsed.nodes[0] === "object") {
+    const staticSchemaCheck = schemaValidator(parsed);
+    if (!staticSchemaCheck) {
+      throw new Error("Invalid view data");
+    }
+    return parsed as Graph;
+  }
+
+  parsed = parsed as {
+    nodes: string[];
+    edges: { source: string; target: string }[];
+  };
 
   if (!checkViewValidity(parsed)) throw new Error("Invalid view data");
 
