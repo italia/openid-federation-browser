@@ -11,12 +11,12 @@ export const InfoView = ({ id, infos }: InfoViewProps) => {
     <tr
       className={style.contextAccordinText}
       key={`${id}-info${index}`}
-      style={{ border: "1px solid" }}
+      style={{ border: "2px solid", borderColor: "hsl(0deg, 0%, 64%)" }}
     >
-      <td style={{ border: "1px solid", whiteSpace: "nowrap" }}>
+      <td style={{ border: "2px solid", whiteSpace: "nowrap", borderColor: "hsl(0deg, 0%, 64%)" }}>
         {<FormattedMessage id={info[0].toString()} />}
       </td>
-      <td style={{ border: "1px solid" }}>{info[1]}</td>
+      <td style={{ border: "2px solid", borderColor: "hsl(0deg, 0%, 64%)" }}>{info[1]}</td>
     </tr>
   );
 
@@ -24,7 +24,7 @@ export const InfoView = ({ id, infos }: InfoViewProps) => {
     <div className="container" style={{ padding: "14px 24px" }}>
       <table
         className="table"
-        style={{ borderCollapse: "collapse", border: "1px solid" }}
+        style={{ borderCollapse: "collapse", border: "1px solid", borderColor: "hsl(0deg, 0%, 64%)"}}
       >
         <tbody>{infos.map(toRow)}</tbody>
       </table>
