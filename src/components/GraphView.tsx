@@ -100,9 +100,7 @@ export const GraphViewComponent = ({ view, url }: GraphViewProps) => {
                   className="icon-sm icon-white"
                   isRounded={false}
                 />
-                <span style={{marginLeft: "5px"}}>
-                  Export
-                </span>
+                <span style={{ marginLeft: "5px" }}>Export</span>
               </button>
             </div>
             <GraphCanvas
