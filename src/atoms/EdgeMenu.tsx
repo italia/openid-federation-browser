@@ -1,4 +1,4 @@
-import { GraphEdge } from "../lib/grap-data/types";
+import { GraphEdge } from "../lib/graph-data/types";
 import { AccordionAtom } from "./Accordion";
 import { JWTViewer } from "./JWTViewer";
 import { fmtValidity } from "../lib/utils";

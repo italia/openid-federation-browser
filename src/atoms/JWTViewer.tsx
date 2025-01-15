@@ -1,9 +1,8 @@
 import style from "../css/ContextMenu.module.css";
 import { IconAtom } from "./Icon";
 import { FormattedMessage } from "react-intl";
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { oneLight } from 'react-syntax-highlighter/dist/esm/styles/prism';
-
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { oneLight } from "react-syntax-highlighter/dist/esm/styles/prism";
 
 export interface ECViewerProps {
   raw: string;
