@@ -83,3 +83,26 @@ export const downloadJsonFile = (
   a.click();
   a.remove();
 };
+
+export const persistSession = () => {
+  const currentSessionName = sessionStorage.getItem("currentSessionName");
+  const name = currentSessionName || `session-${new Date().toLocaleString()}`;
+
+  sessionStorage.setItem("currentSessionName", name);
+
+  localStorage.setItem(name, sessionStorage.getItem("currentSession") || "");
+};
+
+export const restoreSession = (sessionName: string) => {
+  const currentSession = localStorage.getItem(sessionName);
+  sessionStorage.setItem("currentSessionName", sessionName);
+  sessionStorage.setItem("currentSession", currentSession || "");
+};
+
+export const getSessionsList = () => {
+  return Object.keys(localStorage)
+    .filter((key) => key.startsWith("session-"))
+    .map((key) => {
+      return { label: key.replace("session-", ""), sessionName: key };
+    });
+};
