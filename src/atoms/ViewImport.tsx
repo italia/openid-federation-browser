@@ -16,6 +16,7 @@ export const ViewImportAtom = () => {
 
   const uploadFile = () => {
     if (file) {
+      sessionStorage.removeItem("currentSessionName");
       sessionStorage.setItem("currentSession", file);
       setSearchParams({ graphView: "" });
     }

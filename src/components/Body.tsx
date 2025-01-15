@@ -29,6 +29,7 @@ export const BodyComponent = () => {
                     JSON.stringify({ url: d.url, searchType: "anchor" }),
                   );
                   sessionStorage.removeItem("currentSession");
+                  sessionStorage.removeItem("currentSessionName");
                   window.dispatchEvent(new Event("trustAnchorUrl"));
                   setSearchParams({ graphView: "" });
                 }}
