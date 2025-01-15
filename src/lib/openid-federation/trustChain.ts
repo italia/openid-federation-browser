@@ -14,8 +14,8 @@ import {
   EntityType,
   SubordinateStatementPayload,
 } from "./types";
-import { Graph, GraphEdge, GraphNode } from "../grap-data/types";
-import { updateGraph, genNode } from "../grap-data/utils";
+import { Graph, GraphEdge, GraphNode } from "../graph-data/types";
+import { updateGraph, genNode } from "../graph-data/utils";
 import { setEntityType } from "./utils";
 import { checkViewValidity } from "./utils";
 import Ajv from "ajv";
