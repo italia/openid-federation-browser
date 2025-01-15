@@ -2,13 +2,13 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { UrlInputAtom } from "../atoms/UrlInput";
 import { PaginatedListAtom } from "../atoms/PaginatedList";
-import { Link } from "react-router-dom";
 import { GraphViewComponent } from "./GraphView";
 import styles from "../css/BodyComponent.module.css";
 import trustChainList from "../assets/trustChainList.json";
 import axios from "axios";
 import { FormattedMessage } from "react-intl";
 import { ViewImportAtom } from "../atoms/ViewImport";
+import { getSessionsList, restoreSession } from "../lib/utils";
 
 export const BodyComponent = () => {
   const [currentComponent, setCurrentComponent] = useState<string>("InputAtom");
@@ -42,6 +42,26 @@ export const BodyComponent = () => {
     );
   };
 
+  const PreviousSessionItemsRenderer = ({ items }: { items: any[] }) => {
+    return (
+      <ul>
+        {getSessionsList().map((d) => (
+          <li key={d.sessionName}>
+            <a
+              style={{ fontSize: "14px" }}
+              onClick={() => {
+                restoreSession(d.sessionName);
+                setSearchParams({ graphView: "" });
+              }}
+            >
+              {d.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    );
+  };
+
   const trustAnchorFilter = (anchor: any, filterValue: string) =>
     anchor.name.toLowerCase().includes(filterValue.toLowerCase());
 
@@ -52,6 +72,8 @@ export const BodyComponent = () => {
       setCurrentComponent("ViewImportComponent");
     } else if (searchParams.has("graphView")) {
       setCurrentComponent("GraphView");
+    } else if (searchParams.has("restoreSession")) {
+      setCurrentComponent("PreviousSessionItemsRenderer");
     } else {
       setCurrentComponent("InputAtom");
     }
@@ -103,6 +125,15 @@ export const BodyComponent = () => {
           </div>
         ) : currentComponent === "GraphView" ? (
           <GraphViewComponent />
+        ) : currentComponent === "PreviousSessionItemsRenderer" ? (
+          <div className={styles.bodyElement}>
+            <PaginatedListAtom
+              itemsPerPage={5}
+              items={getSessionsList()}
+              ItemsRenderer={PreviousSessionItemsRenderer}
+              filterFn={undefined}
+            />
+          </div>
         ) : (
           <div className={styles.bodyElement}>
             <UrlInputAtom />
