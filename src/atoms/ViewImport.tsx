@@ -1,13 +1,11 @@
 import { useState, ChangeEvent } from "react";
 import { FormattedMessage } from "react-intl";
 import { getTranslations } from "../lib/translations";
+import { useSearchParams } from "react-router-dom";
 
-interface InputProps {
-  onFileUpload: (value: string) => void;
-}
-
-export const ViewImportAtom = ({ onFileUpload }: InputProps) => {
+export const ViewImportAtom = () => {
   const [file, setFile] = useState<string | undefined>(undefined);
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -18,7 +16,8 @@ export const ViewImportAtom = ({ onFileUpload }: InputProps) => {
 
   const uploadFile = () => {
     if (file) {
-      onFileUpload(file);
+      sessionStorage.setItem("currentSession", file);
+      setSearchParams({ graphView: "" });
     }
   };
 

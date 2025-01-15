@@ -1,7 +1,7 @@
 import { IntlProvider } from "react-intl";
 import { getTranslations } from "../lib/translations";
-import { GraphEdge, GraphNode, Graph } from "../lib/grap-data/types";
-import { isNode } from "../lib/grap-data/utils";
+import { GraphEdge, GraphNode, Graph } from "../lib/graph-data/types";
+import { isNode } from "../lib/graph-data/utils";
 import { NodeMenuAtom } from "../atoms/NodeMenu";
 import { EdgeMenuAtom } from "../atoms/EdgeMenu";
 import { FormattedMessage } from "react-intl";

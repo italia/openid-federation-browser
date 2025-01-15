@@ -1,8 +1,19 @@
 import { FormattedMessage } from "react-intl";
 import { Link } from "react-router-dom";
 import style from "../css/Header.module.css";
+import { useSearchParams } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 export const NavBarAtom = () => {
+  const [searchParams] = useSearchParams();
+  const [hasGraphInitialized, setHasGraphInitialized] = useState(false);
+
+  useEffect(() => {
+    if (searchParams.has("graphView")) {
+      setHasGraphInitialized(true);
+    }
+  }, [searchParams]);
+
   return (
     <div className="it-header-navbar-wrapper">
       <div className="container-xxl">
@@ -47,6 +58,15 @@ export const NavBarAtom = () => {
                         </span>
                       </Link>
                     </li>
+                    {hasGraphInitialized && (
+                      <li className="nav-item">
+                        <Link className="nav-link" to="/?graphView">
+                          <span className={style.headerText}>
+                            <FormattedMessage id="current_view_label" />
+                          </span>
+                        </Link>
+                      </li>
+                    )}
                   </ul>
                 </div>
               </div>

@@ -1,8 +1,8 @@
 import { AccordionAtom } from "./Accordion";
 import { JWTViewer } from "./JWTViewer";
 import { InfoView } from "../atoms/InfoView";
-import { GraphNode, Graph } from "../lib/grap-data/types";
-import { removeSubGraph } from "../lib/grap-data/utils";
+import { GraphNode, Graph } from "../lib/graph-data/types";
+import { removeSubGraph } from "../lib/graph-data/utils";
 import { discoverMultipleChildren } from "../lib/openid-federation/trustChain";
 import { PaginatedListAtom } from "../atoms/PaginatedList";
 import { SubListItemsRenderer } from "./SubListItemRender";

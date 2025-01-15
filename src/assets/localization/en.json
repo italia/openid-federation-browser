@@ -7,6 +7,7 @@
   "insert_anchor_url_label": "Insert Trust Anchor HTTP URL",
   "insert_entity_url_label": "Insert Entity Anchor HTTP URL",
   "view_upload_label": "View/Upload",
+  "current_view_label": "Current View",
   "entity_id_label": "Entity ID: ",
   "url_input_label": "URL: ",
   "error": "Error",

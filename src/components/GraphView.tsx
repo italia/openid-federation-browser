@@ -1,19 +1,19 @@
 import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
-import { traverseUp, discovery } from "../lib/openid-federation/trustChain";
+import { discovery, traverseUp } from "../lib/openid-federation/trustChain";
 import { GraphCanvas } from "reagraph";
-import { GraphNode, GraphEdge, Graph } from "../lib/grap-data/types";
+import { GraphNode, GraphEdge, Graph } from "../lib/graph-data/types";
 import { ContextMenuComponent } from "./ContextMenu";
 import { LoadingAtom } from "../atoms/Loading";
 import styles from "../css/BodyComponent.module.css";
 import headerStyle from "../css/Header.module.css";
-import { fromNodeInfo } from "../lib/grap-data/utils";
+import { fromNodeInfo } from "../lib/graph-data/utils";
 import { ErrorViewAtom } from "../atoms/ErrorView";
 import { IconAtom } from "../atoms/Icon";
 import { downloadJsonFile } from "../lib/utils";
 import { exportView, importView } from "../lib/openid-federation/trustChain";
 import { WarningModalAtom } from "../atoms/WarningModal";
 import { showModal } from "../lib/utils";
+import { useRef } from "react";
 
 enum ShowElement {
   Loading = "loading-atom",
@@ -21,13 +21,9 @@ enum ShowElement {
   Graph = "graph-atom",
 }
 
-export interface GraphViewProps {
-  view?: string;
-  url?: string;
-}
-
-export const GraphViewComponent = ({ view, url }: GraphViewProps) => {
-  const [searchParams] = useSearchParams();
+export const GraphViewComponent = () => {
+  const nodeRef = useRef(new Map());
+  const [update, setUpdate] = useState(false);
   const [nodes, setNodes] = useState<GraphNode[]>([]);
   const [edges, setEdges] = useState<GraphEdge[]>([]);
   const [error, setError] = useState<Error>(new Error(""));
@@ -39,6 +35,8 @@ export const GraphViewComponent = ({ view, url }: GraphViewProps) => {
   const updateGraph = ({ nodes, edges }: Graph) => {
     setNodes(nodes);
     setEdges(edges);
+
+    sessionStorage.setItem("currentSession", JSON.stringify({ nodes, edges }));
 
     setShowElement(ShowElement.Graph);
   };
@@ -58,20 +56,37 @@ export const GraphViewComponent = ({ view, url }: GraphViewProps) => {
   const onUpdate = (newGraph: Graph) => updateGraph(newGraph);
 
   useEffect(() => {
+    window.addEventListener("trustAnchorUrl", () => {
+      setUpdate(true);
+    });
+    window.addEventListener("currentSession", () => {
+      setUpdate(true);
+    });
+  }, []);
+
+  useEffect(() => {
+    const view = sessionStorage.getItem("currentSession");
+
     if (view) {
       importView(view).then(updateGraph).catch(showErrorMessage);
       return;
     }
 
-    const entityUrl = url as string;
+    const trustAnchorUrl = sessionStorage.getItem("trustAnchorUrl");
+
+    if (!trustAnchorUrl) return;
+
+    const { url, searchType } = JSON.parse(trustAnchorUrl);
 
     const discoveryGraph =
-      searchParams.get("discoveryType") === "entity"
-        ? traverseUp(entityUrl)
-        : discovery(entityUrl).then(fromNodeInfo);
+      searchType === "entity"
+        ? traverseUp(url)
+        : discovery(url).then(fromNodeInfo);
 
     discoveryGraph.then(updateGraph).catch(showErrorMessage);
-  }, [searchParams]);
+
+    setUpdate(false);
+  }, [update]);
 
   return (
     <>

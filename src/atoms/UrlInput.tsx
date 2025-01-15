@@ -4,12 +4,9 @@ import { useSearchParams } from "react-router-dom";
 import { handleCollapseVisibility, cleanInput } from "../lib/utils";
 import { getTranslations } from "../lib/translations";
 import { handleKeyDownEvent } from "../lib/utils";
+import { isValidUrl } from "../lib/utils";
 
-interface InputProps {
-  validationFn: (value: string) => boolean;
-}
-
-export const UrlInputAtom = ({ validationFn }: InputProps) => {
+export const UrlInputAtom = () => {
   const [inputValue, setInputValue] = useState("");
   const [doCheck, setDoCheck] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -18,13 +15,18 @@ export const UrlInputAtom = ({ validationFn }: InputProps) => {
 
   useEffect(() => {
     if (!doCheck) return;
-    if (validationFn(inputValue)) {
-      setSearchParams({
-        trustAnchorUrl: inputValue,
-        discoveryType: searchParams.has("insertEntityUrl")
-          ? "entity"
-          : "anchor",
-      });
+    if (isValidUrl(inputValue)) {
+      sessionStorage.setItem(
+        "trustAnchorUrl",
+        JSON.stringify({
+          url: inputValue,
+          searchType: searchParams.has("insertEntityUrl") ? "entity" : "anchor",
+        }),
+      );
+      sessionStorage.removeItem("currentSession");
+      window.dispatchEvent(new Event("trustAnchorUrl"));
+      setSearchParams({ graphView: "" });
+
       handleCollapseVisibility("invalid-input-collapse", false);
       cleanInput("input-value");
     } else {
