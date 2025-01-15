@@ -13,7 +13,7 @@ import { downloadJsonFile } from "../lib/utils";
 import { exportView, importView } from "../lib/openid-federation/trustChain";
 import { WarningModalAtom } from "../atoms/WarningModal";
 import { showModal } from "../lib/utils";
-import { useRef } from "react";
+import { persistSession } from "../lib/utils";
 
 enum ShowElement {
   Loading = "loading-atom",
@@ -22,7 +22,6 @@ enum ShowElement {
 }
 
 export const GraphViewComponent = () => {
-  const nodeRef = useRef(new Map());
   const [update, setUpdate] = useState(false);
   const [nodes, setNodes] = useState<GraphNode[]>([]);
   const [edges, setEdges] = useState<GraphEdge[]>([]);
@@ -127,6 +126,18 @@ export const GraphViewComponent = () => {
                   isRounded={false}
                 />
                 <span style={{ marginLeft: "5px" }}>Export</span>
+              </button>
+              <button
+                className={`btn btn-success btn-sm py-1 px-2 mt-2 ${headerStyle.headerText}`}
+                style={{ display: "block", width: "100%" }}
+                onClick={() => persistSession()}
+              >
+                <IconAtom
+                  iconID="#it-bookmark"
+                  className="icon-sm icon-white"
+                  isRounded={false}
+                />
+                <span style={{ marginLeft: "5px" }}>Save</span>
               </button>
             </div>
             <GraphCanvas
