@@ -4,6 +4,7 @@ export interface GraphNode {
   id: string;
   label: string;
   info: NodeInfo;
+  position?: { x: number; y: number };
 }
 
 export interface GraphEdge {
