@@ -8,10 +8,7 @@ export interface InfoViewProps {
 
 export const InfoView = ({ id, infos }: InfoViewProps) => {
   const toRow = (info: (string | number)[], index: number) => (
-    <tr
-      className={style.contextAccordinText}
-      key={`${id}-info${index}`}
-    >
+    <tr className={style.contextAccordinText} key={`${id}-info${index}`}>
       <td
         style={{
           whiteSpace: "nowrap",
@@ -19,17 +16,13 @@ export const InfoView = ({ id, infos }: InfoViewProps) => {
       >
         {<FormattedMessage id={info[0].toString()} />}
       </td>
-      <td>
-        {info[1]}
-      </td>
+      <td>{info[1]}</td>
     </tr>
   );
 
   return (
     <div className="container" style={{ padding: "14px 24px" }}>
-      <table
-        className="table"
-      >
+      <table className="table">
         <tbody>{infos.map(toRow)}</tbody>
       </table>
     </div>
