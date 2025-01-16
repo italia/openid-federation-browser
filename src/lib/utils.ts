@@ -112,3 +112,7 @@ export const getSessionsList = () => {
       return { label: key.replace("session-", ""), sessionName: key };
     });
 };
+
+export const deleteSession = (sessionName: string) => {
+  localStorage.removeItem(sessionName);
+};
