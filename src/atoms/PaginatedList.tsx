@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
 import style from "../css/ContextMenu.module.css";
+import { FormattedMessage } from "react-intl";
 
 export interface PaginatedListAtomProps {
   itemsPerPage: number;
@@ -21,6 +22,7 @@ export const PaginatedListAtom = ({
   const [searchValue, setSearchValue] = useState("");
   const [currentItems, setCurrentItems] = useState(items);
   const [pageCount, setPageCount] = useState(0);
+  const [currentPage, setCurrentPage] = useState(0);
 
   const setCurrentItemsBySearch = (searchValue: string, itemOffset: number) => {
     const endOffset = itemOffset + itemsPerPage;
@@ -37,6 +39,7 @@ export const PaginatedListAtom = ({
 
   const handlePageClick = (event: { selected: number }) => {
     const newOffset = (event.selected * itemsPerPage) % items.length;
+    setCurrentPage(event.selected);
     setItemOffset(newOffset);
   };
 
@@ -86,6 +89,9 @@ export const PaginatedListAtom = ({
             renderOnZeroPageCount={null}
           />
         </div>
+      </div>
+      <div className={`row justify-content-md-center ${style.contextAccordinText}`}>
+        <FormattedMessage id="current_page" />: {currentPage + 1} / {pageCount}
       </div>
     </div>
   );
