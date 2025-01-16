@@ -54,5 +54,8 @@
   "static_dynamic_title": "View Type",
   "static_dynamic_choice_message": "Choose dynamic if you want to keep only the necessary information recalculating it at the next import, otherwise choose static to keep all the information without recalculating it during the import.",
   "dynamic": "Dynamic",
-  "static": "Static"
+  "static": "Static",
+  "save_name_title": "Insert the name of the View",
+  "save_name_message": "Insert the name of the View to save it",
+  "save": "Save"
 }
