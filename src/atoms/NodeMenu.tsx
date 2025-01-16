@@ -32,7 +32,9 @@ export const NodeMenuAtom = ({
   const [discovering, setDiscovering] = useState(false);
   const [errorModalText, setErrorModalText] = useState(new Error());
   const [filterDiscovered, setFilterDiscovered] = useState(false);
-  const [immDependants, setImmDependants] = useState(data.info.immDependants || []);
+  const [immDependants, setImmDependants] = useState(
+    data.info.immDependants || [],
+  );
   const [errorDetails, setErrorDetails] = useState<string[] | undefined>(
     undefined,
   );
@@ -110,9 +112,9 @@ export const NodeMenuAtom = ({
 
   useEffect(() => {
     setImmDependants(
-    filterDiscovered ?
-      data.info.immDependants.filter((dep) => !isDiscovered(dep)) :
-      data.info.immDependants
+      filterDiscovered
+        ? data.info.immDependants.filter((dep) => !isDiscovered(dep))
+        : data.info.immDependants,
     );
   }, [filterDiscovered]);
 
@@ -165,8 +167,14 @@ export const NodeMenuAtom = ({
               labelId="subordinate_list"
               hiddenElement={
                 <>
-                  <div className="toggles" style={{ width: "100%", paddingLeft: "18px" }}>
-                    <label htmlFor="filteredToggle" className={style.contextAccordinText}>
+                  <div
+                    className="toggles"
+                    style={{ width: "100%", paddingLeft: "18px" }}
+                  >
+                    <label
+                      htmlFor="filteredToggle"
+                      className={style.contextAccordinText}
+                    >
                       <FormattedMessage id="filter_discovered" />
                       <input
                         type="checkbox"
