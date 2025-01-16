@@ -202,9 +202,7 @@ export const GraphViewComponent = () => {
           color: "white",
         }}
       >
-        <span className="badge bg-success">
-          Saved: {viewName}
-        </span>
+        <span className="badge bg-success">Saved: {viewName}</span>
       </div>
     </>
   );
