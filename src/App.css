@@ -69,3 +69,8 @@ pre {
   overflow-y: scroll !important;
   height: 20rem !important;
 }
+
+table, th, td {
+  border: 0.5px solid hsl(0deg, 0%, 64%) !important;
+  border-collapse: collapse !important;
+}
