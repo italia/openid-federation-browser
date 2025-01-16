@@ -76,3 +76,8 @@ td {
   border: 0.5px solid hsl(0deg, 0%, 64%) !important;
   border-collapse: collapse !important;
 }
+
+a .icon {
+  width: 32px !important;
+  height: 32px !important;
+}
