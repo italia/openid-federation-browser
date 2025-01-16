@@ -44,7 +44,7 @@ export const PaginatedListAtom = ({
 
   useEffect(
     () => setCurrentItemsBySearch(searchValue, itemOffset),
-    [searchValue, itemOffset],
+    [searchValue, itemOffset, items],
   );
 
   return (
