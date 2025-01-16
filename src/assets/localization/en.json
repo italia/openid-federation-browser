@@ -57,5 +57,6 @@
   "static": "Static",
   "save_name_title": "Insert the name of the View",
   "save_name_message": "Insert the name of the View to save it",
-  "save": "Save"
+  "save": "Save",
+  "no_session_available": "No session available"
 }

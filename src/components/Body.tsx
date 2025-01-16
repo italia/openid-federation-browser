@@ -1,69 +1,19 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { UrlInputAtom } from "../atoms/UrlInput";
-import { PaginatedListAtom } from "../atoms/PaginatedList";
 import { GraphViewComponent } from "./GraphView";
 import styles from "../css/BodyComponent.module.css";
-import trustChainList from "../assets/trustChainList.json";
 import axios from "axios";
 import { FormattedMessage } from "react-intl";
 import { ViewImportAtom } from "../atoms/ViewImport";
-import { getSessionsList, restoreSession } from "../lib/utils";
+import trustChainList from "../assets/trustChainList.json";
+import { AnchorListItemRendererAtom } from "../atoms/AnchorListItemRenderer";
+import { SessionListItemRendererAtom } from "../atoms/SessionListItemRenderer";
 
 export const BodyComponent = () => {
+  const [searchParams] = useSearchParams();
   const [currentComponent, setCurrentComponent] = useState<string>("InputAtom");
-  const [searchParams, setSearchParams] = useSearchParams();
   const [corsEnabled, setCorsEnabled] = useState(false);
-
-  const ItemsRenderer = ({ items }: { items: any[] }) => {
-    return (
-      <ul>
-        {items &&
-          items.map((d) => (
-            <li key={d.url}>
-              <a
-                style={{ fontSize: "14px" }}
-                onClick={() => {
-                  sessionStorage.setItem(
-                    "trustAnchorUrl",
-                    JSON.stringify({ url: d.url, searchType: "anchor" }),
-                  );
-                  sessionStorage.removeItem("currentSession");
-                  sessionStorage.removeItem("currentSessionName");
-                  window.dispatchEvent(new Event("trustAnchorUrl"));
-                  setSearchParams({ graphView: "" });
-                }}
-              >
-                {d.name} - {d.url}
-              </a>
-            </li>
-          ))}
-      </ul>
-    );
-  };
-
-  const PreviousSessionItemsRenderer = ({ items }: { items: any[] }) => {
-    return (
-      <ul>
-        {getSessionsList().map((d) => (
-          <li key={d.sessionName}>
-            <a
-              style={{ fontSize: "14px" }}
-              onClick={() => {
-                restoreSession(d.sessionName);
-                setSearchParams({ graphView: "" });
-              }}
-            >
-              {d.label}
-            </a>
-          </li>
-        ))}
-      </ul>
-    );
-  };
-
-  const trustAnchorFilter = (anchor: any, filterValue: string) =>
-    anchor.name.toLowerCase().includes(filterValue.toLowerCase());
 
   useEffect(() => {
     if (searchParams.has("listUrl")) {
@@ -112,12 +62,7 @@ export const BodyComponent = () => {
       <div className={styles.bodyContainer}>
         {currentComponent === "ListComponent" ? (
           <div className={styles.bodyElement}>
-            <PaginatedListAtom
-              itemsPerPage={5}
-              items={trustChainList}
-              ItemsRenderer={ItemsRenderer}
-              filterFn={trustAnchorFilter}
-            />
+            <AnchorListItemRendererAtom />
           </div>
         ) : currentComponent === "ViewImportComponent" ? (
           <div className={styles.bodyElement}>
@@ -127,12 +72,7 @@ export const BodyComponent = () => {
           <GraphViewComponent />
         ) : currentComponent === "PreviousSessionItemsRenderer" ? (
           <div className={styles.bodyElement}>
-            <PaginatedListAtom
-              itemsPerPage={5}
-              items={getSessionsList()}
-              ItemsRenderer={PreviousSessionItemsRenderer}
-              filterFn={undefined}
-            />
+            <SessionListItemRendererAtom />
           </div>
         ) : (
           <div className={styles.bodyElement}>
