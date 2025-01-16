@@ -85,12 +85,18 @@ export const downloadJsonFile = (
 };
 
 export const persistSession = () => {
-  const currentSessionName = sessionStorage.getItem("currentSessionName");
-  const name = currentSessionName || `session-${new Date().toLocaleString()}`;
+  let currentSessionName = sessionStorage.getItem("currentSessionName");
 
-  sessionStorage.setItem("currentSessionName", name);
+  if (!currentSessionName) {
+    const newName = `session-${new Date().toLocaleString()}`;
+    sessionStorage.setItem("currentSessionName", newName);
+    currentSessionName = newName;
+  }
 
-  localStorage.setItem(name, sessionStorage.getItem("currentSession") || "");
+  localStorage.setItem(
+    currentSessionName,
+    sessionStorage.getItem("currentSession") || "",
+  );
 };
 
 export const restoreSession = (sessionName: string) => {
