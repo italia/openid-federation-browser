@@ -16,7 +16,7 @@ export const genEdge = (parent: NodeInfo, child: NodeInfo): GraphEdge => {
     source: parent.ec.entity,
     target: child.ec.entity,
     label: `${parent.ec.entity}->${child.ec.entity}`,
-    subStatement: child.ec.subordinate,
+    subStatement: child.ec.subordinates[parent.ec.entity],
   } as GraphEdge;
 };
 
