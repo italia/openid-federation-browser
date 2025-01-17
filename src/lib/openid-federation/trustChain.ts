@@ -148,7 +148,6 @@ export const discoverParent = async (
       );
 
       child.ec.subordinates[currentNode.ec.entity] = subordinateStatements;
-
     } catch (e) {
       console.error(e);
     }
@@ -208,8 +207,8 @@ export const traverseUp = async (
     discoveredNode.ec.payload?.metadata?.federation_entity
       ?.federation_fetch_endpoint;
 
-  if (federationFetchEndpoint && child){
-    try { 
+  if (federationFetchEndpoint && child) {
+    try {
       const subordinateStatements = await getSubordinateStatement(
         federationFetchEndpoint,
         child.ec.entity as string,
@@ -294,18 +293,19 @@ export const importView = async (view: string): Promise<Graph> => {
         parent.info.ec.payload?.metadata?.federation_entity
           ?.federation_fetch_endpoint;
 
-      if (federationFetchEndpoint){
-        try{
+      if (federationFetchEndpoint) {
+        try {
           const subordinateStatements = await getSubordinateStatement(
             federationFetchEndpoint,
             edge.target,
             parent.info.ec,
           );
 
-          currentNode.info.ec.subordinates[parent.info.ec.entity] = subordinateStatements;
+          currentNode.info.ec.subordinates[parent.info.ec.entity] =
+            subordinateStatements;
         } catch (e) {
           console.error(e);
-        } 
+        }
       }
 
       return {
