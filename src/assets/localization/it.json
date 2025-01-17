@@ -53,5 +53,8 @@
   "static_dynamic_title": "Tipo di View",
   "static_dynamic_choice_message": "Secgli il tipo dinamico se vuoi mantenere solo le informazioni necessarie ricalcolandola al prossimo import, altrimenti scegli statico per mantenere tutte le informazioni senza ricalcolarle in fase di import.",
   "dynamic": "Dinamico",
-  "static": "Statico"
+  "static": "Statico",
+  "validate_schema": "Valida Schema",
+  "invalid_schema": "Schema non valido",
+  "valid_schema": "Schema valido"
 }
