@@ -3,12 +3,16 @@ import { JWTViewer } from "./JWTViewer";
 import { InfoView } from "../atoms/InfoView";
 import { GraphNode, Graph } from "../lib/graph-data/types";
 import { removeSubGraph } from "../lib/graph-data/utils";
-import { discoverMultipleChildren } from "../lib/openid-federation/trustChain";
+import {
+  discoverMultipleChildren,
+  discoverMultipleParents,
+} from "../lib/openid-federation/trustChain";
 import { PaginatedListAtom } from "../atoms/PaginatedList";
 import { SubListItemsRenderer } from "./SubListItemRender";
 import { useEffect, useState } from "react";
 import { WarningModalAtom } from "./WarningModal";
 import { showModal, fmtValidity } from "../lib/utils";
+import { AuthHintListItemsRenderer } from "./AuthHintListItemRender";
 
 export interface ContextMenuProps {
   data: GraphNode;
@@ -27,39 +31,66 @@ export const NodeMenuAtom = ({
 }: ContextMenuProps) => {
   const [filteredItems, setFilteredItems] = useState<string[]>([]);
   const [discoveringList, setDiscoveringList] = useState<string[]>([]);
+  const [discoveringSubordinate, setDiscoveringSubordinate] = useState(false);
   const [discovering, setDiscovering] = useState(false);
   const [errorModalText, setErrorModalText] = useState(new Error());
   const [errorDetails, setErrorDetails] = useState<string[] | undefined>(
     undefined,
   );
 
-  const addSubordinates = (entityID?: string | string[]) => {
-    if (!entityID) setDiscoveringList(filteredItems);
-    else {
-      const list = Array.isArray(entityID) ? entityID : [entityID];
-      const fiteredToDiscovery = list.filter(
-        (node) => !isFailed(node) && !isDiscovered(node),
-      );
-      setDiscoveringList(fiteredToDiscovery);
-    }
-  };
+  const addEntities =
+    (subordinate: boolean) => (entityID?: string | string[]) => {
+      setDiscoveringSubordinate(subordinate);
+      if (!entityID) setDiscoveringList(filteredItems);
+      else {
+        const list = Array.isArray(entityID) ? entityID : [entityID];
+        const fiteredToDiscovery = list.filter(
+          (node) => !isFailed(node) && !isDiscovered(node),
+        );
+        setDiscoveringList(fiteredToDiscovery);
+      }
+    };
 
-  const removeSubordinates = (entityIDs: string | string[]) => {
-    const newGraph = Array.isArray(entityIDs)
-      ? entityIDs.reduce((acc, id) => removeSubGraph(acc, id), graph)
-      : removeSubGraph(graph, entityIDs);
+  const addSubordinates = addEntities(true);
+  const addAuthorityHints = addEntities(false);
 
-    onUpdate(newGraph);
-  };
+  const removeEntities =
+    (subordinate: boolean) => (entityIDs: string | string[]) => {
+      const newGraph = Array.isArray(entityIDs)
+        ? entityIDs.reduce(
+            (acc, id) => removeSubGraph(acc, id, subordinate),
+            graph,
+          )
+        : removeSubGraph(graph, entityIDs, subordinate);
+
+      onUpdate(newGraph);
+    };
+
+  const removeSubordinates = removeEntities(true);
+  const removeAuthorityHints = removeEntities(false);
 
   const isDiscovered = (dep: string) =>
     graph.nodes.find((node) => node.id === dep) ? true : false;
   const isInDiscovery = (dep: string) => discoveringList.includes(dep);
 
-  const removeAllSubordinates = () =>
-    removeSubordinates(
-      data.info.immDependants.filter((dep) => isDiscovered(dep)),
-    );
+  const removeAllEntities =
+    (subordinate: boolean = false) =>
+    () => {
+      if (subordinate) {
+        removeSubordinates(
+          data.info.immDependants.filter((dep) => isDiscovered(dep)),
+        );
+      } else {
+        const authorityHints = data.info.ec.payload.authority_hints;
+
+        if (!authorityHints) return;
+
+        removeAuthorityHints(authorityHints.filter((dep) => isDiscovered(dep)));
+      }
+    };
+
+  const removeAllSubordinates = removeAllEntities(true);
+  const removeAllAuthorityHints = removeAllEntities(false);
 
   const onFilteredList = (items: string[]) => setFilteredItems(items);
 
@@ -91,9 +122,15 @@ export const NodeMenuAtom = ({
   const startDiscovery = () => {
     setDiscovering(true);
 
-    discoverMultipleChildren(discoveringList, data.info, graph)
-      .then(handleDiscoveryResult)
-      .finally(() => setDiscovering(false));
+    if (discoveringSubordinate) {
+      discoverMultipleChildren(discoveringList, data.info, graph)
+        .then(handleDiscoveryResult)
+        .finally(() => setDiscovering(false));
+    } else {
+      discoverMultipleParents(discoveringList, data.info, graph)
+        .then(handleDiscoveryResult)
+        .finally(() => setDiscovering(false));
+    }
   };
 
   useEffect(() => {
@@ -149,6 +186,30 @@ export const NodeMenuAtom = ({
               />
             }
           />
+          {data.info.ec.payload.authority_hints &&
+            data.info.ec.payload.authority_hints.length > 0 && (
+              <AccordionAtom
+                accordinId="hauthority-hints-list"
+                labelId="authority_hints_list"
+                hiddenElement={
+                  <PaginatedListAtom
+                    items={data.info.ec.payload.authority_hints}
+                    itemsPerPage={5}
+                    ItemsRenderer={AuthHintListItemsRenderer({
+                      discovering,
+                      isDiscovered,
+                      isInDiscovery,
+                      addAuthorityHints,
+                      removeAuthorityHints,
+                      removeAllAuthorityHints,
+                      isFailed,
+                    })}
+                    filterFn={immediateFilter}
+                    onItemsFiltered={onFilteredList}
+                  />
+                }
+              />
+            )}
           {data.info.immDependants.length > 0 && (
             <AccordionAtom
               accordinId="immediate-subordinates-list"
