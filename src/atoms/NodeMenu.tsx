@@ -3,16 +3,12 @@ import { JWTViewer } from "./JWTViewer";
 import { InfoView } from "../atoms/InfoView";
 import { GraphNode, Graph } from "../lib/graph-data/types";
 import { removeSubGraph } from "../lib/graph-data/utils";
-import {
-  discoverMultipleChildren,
-  discoverMultipleParents,
-} from "../lib/openid-federation/trustChain";
+import { discoverNodes } from "../lib/openid-federation/trustChain";
 import { PaginatedListAtom } from "../atoms/PaginatedList";
-import { SubListItemsRenderer } from "./SubListItemRender";
+import { EntityItemsRenderer } from "./EntityItemRender";
 import { useEffect, useState } from "react";
 import { WarningModalAtom } from "./WarningModal";
 import { showModal, fmtValidity } from "../lib/utils";
-import { AuthHintListItemsRenderer } from "./AuthHintListItemRender";
 
 export interface ContextMenuProps {
   data: GraphNode;
@@ -31,28 +27,22 @@ export const NodeMenuAtom = ({
 }: ContextMenuProps) => {
   const [filteredItems, setFilteredItems] = useState<string[]>([]);
   const [discoveringList, setDiscoveringList] = useState<string[]>([]);
-  const [discoveringSubordinate, setDiscoveringSubordinate] = useState(false);
   const [discovering, setDiscovering] = useState(false);
   const [errorModalText, setErrorModalText] = useState(new Error());
   const [errorDetails, setErrorDetails] = useState<string[] | undefined>(
     undefined,
   );
 
-  const addEntities =
-    (subordinate: boolean) => (entityID?: string | string[]) => {
-      setDiscoveringSubordinate(subordinate);
-      if (!entityID) setDiscoveringList(filteredItems);
-      else {
-        const list = Array.isArray(entityID) ? entityID : [entityID];
-        const fiteredToDiscovery = list.filter(
-          (node) => !isFailed(node) && !isDiscovered(node),
-        );
-        setDiscoveringList(fiteredToDiscovery);
-      }
-    };
-
-  const addSubordinates = addEntities(true);
-  const addAuthorityHints = addEntities(false);
+  const addEntities = (entityID?: string | string[]) => {
+    if (!entityID) setDiscoveringList(filteredItems);
+    else {
+      const list = Array.isArray(entityID) ? entityID : [entityID];
+      const fiteredToDiscovery = list.filter(
+        (node) => !isFailed(node) && !isDiscovered(node),
+      );
+      setDiscoveringList(fiteredToDiscovery);
+    }
+  };
 
   const removeEntities =
     (subordinate: boolean) => (entityIDs: string | string[]) => {
@@ -71,6 +61,7 @@ export const NodeMenuAtom = ({
 
   const isDiscovered = (dep: string) =>
     graph.nodes.find((node) => node.id === dep) ? true : false;
+
   const isInDiscovery = (dep: string) => discoveringList.includes(dep);
 
   const removeAllEntities =
@@ -122,15 +113,9 @@ export const NodeMenuAtom = ({
   const startDiscovery = () => {
     setDiscovering(true);
 
-    if (discoveringSubordinate) {
-      discoverMultipleChildren(discoveringList, data.info, graph)
-        .then(handleDiscoveryResult)
-        .finally(() => setDiscovering(false));
-    } else {
-      discoverMultipleParents(discoveringList, data.info, graph)
-        .then(handleDiscoveryResult)
-        .finally(() => setDiscovering(false));
-    }
+    discoverNodes(discoveringList, graph)
+      .then(handleDiscoveryResult)
+      .finally(() => setDiscovering(false));
   };
 
   useEffect(() => {
@@ -195,13 +180,13 @@ export const NodeMenuAtom = ({
                   <PaginatedListAtom
                     items={data.info.ec.payload.authority_hints}
                     itemsPerPage={5}
-                    ItemsRenderer={AuthHintListItemsRenderer({
+                    ItemsRenderer={EntityItemsRenderer({
                       discovering,
                       isDiscovered,
                       isInDiscovery,
-                      addAuthorityHints,
-                      removeAuthorityHints,
-                      removeAllAuthorityHints,
+                      addEntities,
+                      removeEntity: removeAuthorityHints,
+                      removeAllEntities: removeAllAuthorityHints,
                       isFailed,
                     })}
                     filterFn={immediateFilter}
@@ -218,13 +203,13 @@ export const NodeMenuAtom = ({
                 <PaginatedListAtom
                   items={data.info.immDependants}
                   itemsPerPage={5}
-                  ItemsRenderer={SubListItemsRenderer({
+                  ItemsRenderer={EntityItemsRenderer({
                     discovering,
                     isDiscovered,
                     isInDiscovery,
-                    addSubordinates,
-                    removeSubordinates,
-                    removeAllSubordinates,
+                    addEntities,
+                    removeEntity: removeSubordinates,
+                    removeAllEntities: removeAllSubordinates,
                     isFailed,
                   })}
                   filterFn={immediateFilter}

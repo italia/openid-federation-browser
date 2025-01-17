@@ -20,67 +20,37 @@ export const genEdge = (parent: NodeInfo, child: NodeInfo): GraphEdge => {
   } as GraphEdge;
 };
 
-export const addChildToGraph = (
-  parent: NodeInfo,
-  child: NodeInfo,
-  graph: Graph,
-): Graph => {
-  const nodes = !graph.nodes.find((n) => n.id === child.ec.entity)
-    ? [...graph.nodes, genNode(child)]
-    : graph.nodes;
+export const updateGraph = (node: NodeInfo, graph: Graph): Graph => {
+  const alreadyExists = graph.nodes.find((n) => n.id === node.ec.entity);
 
-  let edges = !graph.edges.find(
-    (e) => e.id === `${parent.ec.entity}-${child.ec.entity}`,
-  )
-    ? [...graph.edges, genEdge(parent, child)]
-    : graph.edges;
+  if (alreadyExists) return graph;
 
-  const authorityHints = child.ec.payload.authority_hints;
+  const newGraphNode = genNode(node);
+  const nodes = [...graph.nodes, newGraphNode];
+
+  let edges = graph.edges;
+
+  const authorityHints = node.ec.payload.authority_hints;
 
   if (authorityHints) {
-    const disconnectedHints = authorityHints.filter(
-      (hint) => edges.find((edge) => edge.source === hint) === undefined,
-    );
-    const toConnectNodes = nodes.filter((n) =>
-      disconnectedHints.includes(n.id),
+    const toConnectNodes = nodes.filter((node) =>
+      authorityHints.includes(node.id),
     );
 
     edges = [
       ...edges,
-      ...toConnectNodes.map((node) => genEdge(node.info, child)),
+      ...toConnectNodes.map((cNode) => genEdge(cNode.info, node)),
     ];
   }
 
-  return { nodes, edges };
-};
+  const immDependants = node.immDependants;
 
-export const addParentToGraph = (
-  parent: NodeInfo,
-  child: NodeInfo,
-  graph: Graph,
-): Graph => {
-  const nodes = !graph.nodes.find((n) => n.id === parent.ec.entity)
-    ? [...graph.nodes, genNode(parent)]
-    : graph.nodes;
+  const toConnectNodes = nodes.filter((n) => immDependants.includes(n.id));
 
-  let edges = !graph.edges.find(
-    (e) => e.id === `${parent.ec.entity}-${child.ec.entity}`,
-  )
-    ? [...graph.edges, genEdge(parent, child)]
-    : graph.edges;
-
-  const authorityHints = parent.ec.payload.authority_hints;
-
-  if (authorityHints) {
-    const existentAuthorityHints = nodes.filter(
-      (node) => authorityHints.find((hint) => node.id === hint) !== undefined,
-    );
-
-    edges = [
-      ...edges,
-      ...existentAuthorityHints.map((node) => genEdge(node.info, parent)),
-    ];
-  }
+  edges = [
+    ...edges,
+    ...toConnectNodes.map((pNode) => genEdge(node, pNode.info)),
+  ];
 
   return { nodes, edges };
 };

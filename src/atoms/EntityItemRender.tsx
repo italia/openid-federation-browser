@@ -2,25 +2,25 @@ import { IconAtom } from "./Icon";
 import { truncateMiddle } from "../lib/utils";
 import style from "../css/ContextMenu.module.css";
 
-export interface AuthHintListItemsRendererProps {
+export interface EntityItemsRendererProps {
   discovering: boolean;
   isDiscovered: (dep: string) => boolean;
   isInDiscovery: (dep: string) => boolean;
-  removeAuthorityHints: (dep: string | string[]) => void;
-  addAuthorityHints: (dep?: string | string[]) => void;
-  removeAllAuthorityHints: () => void;
+  removeEntity: (dep: string | string[]) => void;
+  addEntities: (dep?: string | string[]) => void;
+  removeAllEntities: () => void;
   isFailed: (node: string) => boolean;
 }
 
-export const AuthHintListItemsRenderer = ({
+export const EntityItemsRenderer = ({
   discovering,
   isDiscovered,
   isInDiscovery,
-  removeAuthorityHints,
-  addAuthorityHints,
-  removeAllAuthorityHints,
+  removeEntity,
+  addEntities,
+  removeAllEntities,
   isFailed,
-}: AuthHintListItemsRendererProps): React.ComponentType<{ items: any[] }> => {
+}: EntityItemsRendererProps): React.ComponentType<{ items: any[] }> => {
   const getButtonColor = (dep: string) => {
     if (isFailed(dep)) return "btn-secondary";
     if (isDiscovered(dep)) return "btn-danger";
@@ -35,8 +35,8 @@ export const AuthHintListItemsRenderer = ({
 
   const getButtonAction = (dep: string) => {
     if (isFailed(dep)) return () => {};
-    if (isDiscovered(dep)) return () => removeAuthorityHints(dep);
-    return () => addAuthorityHints(dep);
+    if (isDiscovered(dep)) return () => removeEntity(dep);
+    return () => addEntities(dep);
   };
 
   return ({ items }: { items: any[] }) => {
@@ -91,7 +91,7 @@ export const AuthHintListItemsRenderer = ({
                 className="btn btn-primary btn-icon btn-xs py-1 px-1"
                 title="Discovery"
                 aria-label="Discovery"
-                onClick={() => addAuthorityHints(items)}
+                onClick={() => addEntities(items)}
                 disabled={discovering}
               >
                 <IconAtom
@@ -109,7 +109,7 @@ export const AuthHintListItemsRenderer = ({
                 className="btn btn-secondary btn-icon btn-xs py-1 px-1"
                 title="Discovery"
                 aria-label="Discovery"
-                onClick={() => addAuthorityHints()}
+                onClick={() => addEntities()}
                 disabled={discovering}
               >
                 <IconAtom
@@ -127,7 +127,7 @@ export const AuthHintListItemsRenderer = ({
                 className="btn btn-warning btn-icon btn-xs py-1 px-1"
                 title="Discovery"
                 aria-label="Discovery"
-                onClick={removeAllAuthorityHints}
+                onClick={removeAllEntities}
                 disabled={discovering}
               >
                 <IconAtom
@@ -136,7 +136,7 @@ export const AuthHintListItemsRenderer = ({
                   isRounded={false}
                 />
                 <span className={style.contextAccordinButton}>
-                  Remove All Authority Hints
+                  Remove All
                 </span>
               </button>
             </div>
