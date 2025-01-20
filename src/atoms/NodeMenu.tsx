@@ -9,6 +9,8 @@ import { EntityItemsRenderer } from "./EntityItemRender";
 import { useEffect, useState } from "react";
 import { WarningModalAtom } from "./WarningModal";
 import { showModal, fmtValidity } from "../lib/utils";
+import { FormattedMessage } from "react-intl";
+import style from "../css/ContextMenu.module.css";
 
 export interface ContextMenuProps {
   data: GraphNode;
@@ -29,6 +31,10 @@ export const NodeMenuAtom = ({
   const [discoveringList, setDiscoveringList] = useState<string[]>([]);
   const [discovering, setDiscovering] = useState(false);
   const [errorModalText, setErrorModalText] = useState(new Error());
+  const [filterDiscovered, setFilterDiscovered] = useState(false);
+  const [immDependants, setImmDependants] = useState(
+    data.info.immDependants || [],
+  );
   const [errorDetails, setErrorDetails] = useState<string[] | undefined>(
     undefined,
   );
@@ -98,8 +104,6 @@ export const NodeMenuAtom = ({
 
     if (result.failed.length === 0) return;
 
-    console.error(`Failed to discover entities`, result.failed);
-
     addToFailedList(result.failed.map((f) => f.entity));
     setErrorModalText(
       new Error(`Failed to discover ${result.failed.length} entities`),
@@ -127,6 +131,14 @@ export const NodeMenuAtom = ({
 
     showModal("warning-modal");
   }, [discoveringList]);
+
+  useEffect(() => {
+    setImmDependants(
+      filterDiscovered
+        ? data.info.immDependants.filter((dep) => !isDiscovered(dep))
+        : data.info.immDependants,
+    );
+  }, [filterDiscovered]);
 
   const displayedInfo = [
     ["federation_entity_type_label", data.info.type],
@@ -171,6 +183,7 @@ export const NodeMenuAtom = ({
               />
             }
           />
+<<<<<<< HEAD
           {data.info.ec.payload.authority_hints &&
             data.info.ec.payload.authority_hints.length > 0 && (
               <AccordionAtom
@@ -196,10 +209,14 @@ export const NodeMenuAtom = ({
               />
             )}
           {data.info.immDependants.length > 0 && (
+=======
+          {immDependants.length > 0 && (
+>>>>>>> 7beb426370ac860207b78814c67a0a472d88913f
             <AccordionAtom
               accordinId="immediate-subordinates-list"
               labelId="subordinate_list"
               hiddenElement={
+<<<<<<< HEAD
                 <PaginatedListAtom
                   items={data.info.immDependants}
                   itemsPerPage={5}
@@ -215,6 +232,42 @@ export const NodeMenuAtom = ({
                   filterFn={immediateFilter}
                   onItemsFiltered={onFilteredList}
                 />
+=======
+                <>
+                  <div
+                    className="toggles"
+                    style={{ width: "100%", paddingLeft: "18px" }}
+                  >
+                    <label
+                      htmlFor="filteredToggle"
+                      className={style.contextAccordinText}
+                    >
+                      <FormattedMessage id="filter_discovered" />
+                      <input
+                        type="checkbox"
+                        id="filteredToggle"
+                        onChange={() => setFilterDiscovered(!filterDiscovered)}
+                      />
+                      <span className="lever"></span>
+                    </label>
+                  </div>
+                  <PaginatedListAtom
+                    items={immDependants}
+                    itemsPerPage={5}
+                    ItemsRenderer={SubListItemsRenderer({
+                      discovering,
+                      isDiscovered,
+                      isInDiscovery,
+                      addSubordinates,
+                      removeSubordinates,
+                      removeAllSubordinates,
+                      isFailed,
+                    })}
+                    filterFn={immediateFilter}
+                    onItemsFiltered={onFilteredList}
+                  />
+                </>
+>>>>>>> 7beb426370ac860207b78814c67a0a472d88913f
               }
             />
           )}

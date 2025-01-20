@@ -15,6 +15,7 @@
   "error_details": "Dettagli dell'errore",
   "insert_entity_node_url_option": "Inserisci un'Entità",
   "upload_entity_view_option": "Importa View",
+  "restore_session_label": "Ripristina Sessione",
   "node_info": "Informazioni del Nodo",
   "subordinate_list": "Lista degli Immediate Subordinates",
   "authority_hints_list": "Lista degli Authority Hints",
@@ -54,5 +55,14 @@
   "static_dynamic_title": "Tipo di View",
   "static_dynamic_choice_message": "Secgli il tipo dinamico se vuoi mantenere solo le informazioni necessarie ricalcolandola al prossimo import, altrimenti scegli statico per mantenere tutte le informazioni senza ricalcolarle in fase di import.",
   "dynamic": "Dinamico",
-  "static": "Statico"
+  "static": "Statico",
+  "validate_schema": "Valida Schema",
+  "invalid_schema": "Schema non valido",
+  "valid_schema": "Schema valido",
+  "filter_discovered": "Filtra le entità scoperte",
+  "current_page": "Pagina corrente",
+  "save_name_title": "Inserisci il nome della View",
+  "save_name_message": "Inserisci il nome della View per salvarla",
+  "save": "Salva",
+  "no_session_available": "Nessuna sessione disponibile"
 }
