@@ -15,6 +15,7 @@
   "error_details": "Dettagli dell'errore",
   "insert_entity_node_url_option": "Inserisci un'Entità",
   "upload_entity_view_option": "Importa View",
+  "restore_session_label": "Ripristina Sessione",
   "node_info": "Informazioni del Nodo",
   "subordinate_list": "Lista degli Immediate Subordinates",
   "entity_configuration_data": "Dati dell'Entity Configuration",
@@ -55,5 +56,9 @@
   "dynamic": "Dinamico",
   "static": "Statico",
   "filter_discovered": "Filtra le entità scoperte",
-  "current_page": "Pagina corrente"
+  "current_page": "Pagina corrente",
+  "save_name_title": "Inserisci il nome della View",
+  "save_name_message": "Inserisci il nome della View per salvarla",
+  "save": "Salva",
+  "no_session_available": "Nessuna sessione disponibile"
 }
