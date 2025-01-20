@@ -24,6 +24,7 @@ export const UrlInputAtom = () => {
         }),
       );
       sessionStorage.removeItem("currentSession");
+      sessionStorage.removeItem("currentSessionName");
       window.dispatchEvent(new Event("trustAnchorUrl"));
       setSearchParams({ graphView: "" });
 

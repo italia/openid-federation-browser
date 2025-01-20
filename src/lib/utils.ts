@@ -83,3 +83,36 @@ export const downloadJsonFile = (
   a.click();
   a.remove();
 };
+
+export const persistSession = () => {
+  let currentSessionName = sessionStorage.getItem("currentSessionName");
+
+  if (!currentSessionName) {
+    const newName = `session-${new Date().toLocaleString()}`;
+    sessionStorage.setItem("currentSessionName", newName);
+    currentSessionName = newName;
+  }
+
+  localStorage.setItem(
+    currentSessionName,
+    sessionStorage.getItem("currentSession") || "",
+  );
+};
+
+export const restoreSession = (sessionName: string) => {
+  const currentSession = localStorage.getItem(sessionName);
+  sessionStorage.setItem("currentSessionName", sessionName);
+  sessionStorage.setItem("currentSession", currentSession || "");
+};
+
+export const getSessionsList = () => {
+  return Object.keys(localStorage)
+    .filter((key) => key.startsWith("session-"))
+    .map((key) => {
+      return { label: key.replace("session-", ""), sessionName: key };
+    });
+};
+
+export const deleteSession = (sessionName: string) => {
+  localStorage.removeItem(sessionName);
+};

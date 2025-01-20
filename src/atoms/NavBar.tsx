@@ -58,6 +58,13 @@ export const NavBarAtom = () => {
                         </span>
                       </Link>
                     </li>
+                    <li className="nav-item">
+                      <Link className="nav-link" to="/?restoreSession">
+                        <span className={style.headerText}>
+                          <FormattedMessage id="restore_session_label" />
+                        </span>
+                      </Link>
+                    </li>
                     {hasGraphInitialized && (
                       <li className="nav-item">
                         <Link className="nav-link" to="/?graphView">
