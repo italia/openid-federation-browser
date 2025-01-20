@@ -95,7 +95,7 @@ export const SubListItemsRenderer = ({
                       className={style.contextAccordinText}
                       style={{ whiteSpace: "nowrap" }}
                     >
-                      {truncateMiddle(dep, 57)}
+                      {truncateMiddle(dep, 53)}
                     </span>
                   </div>
                 </div>
