@@ -90,7 +90,9 @@ export const PaginatedListAtom = ({
           />
         </div>
       </div>
-      <div className={`row justify-content-md-center ${style.contextAccordinText}`}>
+      <div
+        className={`row justify-content-md-center ${style.contextAccordinText}`}
+      >
         <FormattedMessage id="current_page" />: {currentPage + 1} / {pageCount}
       </div>
     </div>

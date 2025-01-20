@@ -1,6 +1,7 @@
 import { IconAtom } from "./Icon";
 import { truncateMiddle } from "../lib/utils";
 import style from "../css/ContextMenu.module.css";
+import { on } from "events";
 
 export interface SubListItemsRendererProps {
   discovering: boolean;
@@ -10,6 +11,7 @@ export interface SubListItemsRendererProps {
   addSubordinates: (dep?: string | string[]) => void;
   removeAllSubordinates: () => void;
   isFailed: (node: string) => boolean;
+  onSelection: (node: string) => void;
 }
 
 export const SubListItemsRenderer = ({
@@ -20,6 +22,7 @@ export const SubListItemsRenderer = ({
   addSubordinates,
   removeAllSubordinates,
   isFailed,
+  onSelection,
 }: SubListItemsRendererProps): React.ComponentType<{ items: any[] }> => {
   const getButtonColor = (dep: string) => {
     if (isFailed(dep)) return "btn-secondary";
@@ -71,6 +74,21 @@ export const SubListItemsRenderer = ({
                         />
                       </button>
                     )}
+                  </div>
+                  <div className="col-md-auto">
+                    <button
+                      className="btn btn-icon btn-sm py-0 px-1 btn-primary"
+                      title="Highlight"
+                      aria-label="Highlight"
+                      onClick={() => onSelection(dep)}
+                      disabled={!isDiscovered(dep)}
+                    >
+                      <IconAtom
+                        iconID="#it-search"
+                        className="icon-xs icon-white"
+                        isRounded={false}
+                      />
+                    </button>
                   </div>
                   <div className="col-md-auto">
                     <span

@@ -26,6 +26,7 @@ export const GraphViewComponent = () => {
   const [update, setUpdate] = useState(false);
   const [nodes, setNodes] = useState<GraphNode[]>([]);
   const [edges, setEdges] = useState<GraphEdge[]>([]);
+  const [selected, setSelected] = useState<string[]>([]);
   const [viewName, setViewName] = useState<string>("");
   const [error, setError] = useState<Error>(new Error(""));
   const [failedNodes, setFailedNodes] = useState<string[]>([]);
@@ -176,6 +177,7 @@ export const GraphViewComponent = () => {
               nodes={nodes}
               edges={edges}
               draggable
+              selections={selected}
               contextMenu={({ data, onClose }) => (
                 <ContextMenuComponent
                   data={data as any}
@@ -184,6 +186,11 @@ export const GraphViewComponent = () => {
                   onUpdate={onUpdate}
                   addToFailedList={addToFailedList}
                   isFailed={isFailed}
+                  onSelection={(node: string) => {
+                    setSelected([node]);
+                    onClose();
+                    setTimeout(() => setSelected([]), 2000);
+                  }}
                 />
               )}
             />

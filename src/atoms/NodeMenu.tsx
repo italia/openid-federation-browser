@@ -18,6 +18,7 @@ export interface ContextMenuProps {
   onUpdate: (tree: Graph) => void;
   addToFailedList: (nodes: string[]) => void;
   isFailed: (node: string) => boolean;
+  onSelection: (node: string) => void;
 }
 
 export const NodeMenuAtom = ({
@@ -26,6 +27,7 @@ export const NodeMenuAtom = ({
   onUpdate,
   addToFailedList,
   isFailed,
+  onSelection,
 }: ContextMenuProps) => {
   const [filteredItems, setFilteredItems] = useState<string[]>([]);
   const [discoveringList, setDiscoveringList] = useState<string[]>([]);
@@ -195,6 +197,7 @@ export const NodeMenuAtom = ({
                       removeSubordinates,
                       removeAllSubordinates,
                       isFailed,
+                      onSelection,
                     })}
                     filterFn={immediateFilter}
                     onItemsFiltered={onFilteredList}
