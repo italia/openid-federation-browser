@@ -183,7 +183,6 @@ export const NodeMenuAtom = ({
               />
             }
           />
-<<<<<<< HEAD
           {data.info.ec.payload.authority_hints &&
             data.info.ec.payload.authority_hints.length > 0 && (
               <AccordionAtom
@@ -209,14 +208,10 @@ export const NodeMenuAtom = ({
               />
             )}
           {data.info.immDependants.length > 0 && (
-=======
-          {immDependants.length > 0 && (
->>>>>>> 7beb426370ac860207b78814c67a0a472d88913f
             <AccordionAtom
               accordinId="immediate-subordinates-list"
               labelId="subordinate_list"
               hiddenElement={
-<<<<<<< HEAD
                 <PaginatedListAtom
                   items={data.info.immDependants}
                   itemsPerPage={5}
@@ -232,42 +227,6 @@ export const NodeMenuAtom = ({
                   filterFn={immediateFilter}
                   onItemsFiltered={onFilteredList}
                 />
-=======
-                <>
-                  <div
-                    className="toggles"
-                    style={{ width: "100%", paddingLeft: "18px" }}
-                  >
-                    <label
-                      htmlFor="filteredToggle"
-                      className={style.contextAccordinText}
-                    >
-                      <FormattedMessage id="filter_discovered" />
-                      <input
-                        type="checkbox"
-                        id="filteredToggle"
-                        onChange={() => setFilterDiscovered(!filterDiscovered)}
-                      />
-                      <span className="lever"></span>
-                    </label>
-                  </div>
-                  <PaginatedListAtom
-                    items={immDependants}
-                    itemsPerPage={5}
-                    ItemsRenderer={SubListItemsRenderer({
-                      discovering,
-                      isDiscovered,
-                      isInDiscovery,
-                      addSubordinates,
-                      removeSubordinates,
-                      removeAllSubordinates,
-                      isFailed,
-                    })}
-                    filterFn={immediateFilter}
-                    onItemsFiltered={onFilteredList}
-                  />
-                </>
->>>>>>> 7beb426370ac860207b78814c67a0a472d88913f
               }
             />
           )}
