@@ -5,6 +5,7 @@ import { handleCollapseVisibility, cleanInput } from "../lib/utils";
 import { getTranslations } from "../lib/translations";
 import { handleKeyDownEvent } from "../lib/utils";
 import { isValidUrl } from "../lib/utils";
+import style from "../css/ContextMenu.module.css";
 
 export const UrlInputAtom = () => {
   const [inputValue, setInputValue] = useState("");
@@ -24,6 +25,7 @@ export const UrlInputAtom = () => {
         }),
       );
       sessionStorage.removeItem("currentSession");
+      sessionStorage.removeItem("currentSessionName");
       window.dispatchEvent(new Event("trustAnchorUrl"));
       setSearchParams({ graphView: "" });
 
@@ -43,7 +45,7 @@ export const UrlInputAtom = () => {
         <div className="col-10">
           <input
             type="text"
-            className="form-control"
+            className={`form-control ${style.contextAccordinText}`}
             id="input-value"
             onChange={changeValue}
             placeholder={
@@ -53,7 +55,6 @@ export const UrlInputAtom = () => {
                   : "insert_anchor_url_label"
               ]
             }
-            style={{ fontSize: "14px" }}
           />
         </div>
         <div className="col-2">
