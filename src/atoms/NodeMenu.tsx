@@ -9,8 +9,6 @@ import { EntityItemsRenderer } from "./EntityItemRender";
 import { useEffect, useState } from "react";
 import { WarningModalAtom } from "./WarningModal";
 import { showModal, fmtValidity } from "../lib/utils";
-import { FormattedMessage } from "react-intl";
-import style from "../css/ContextMenu.module.css";
 
 export interface ContextMenuProps {
   data: GraphNode;
