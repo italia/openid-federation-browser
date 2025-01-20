@@ -15,6 +15,7 @@
   "error_details": "Error Details",
   "insert_entity_node_url_option": "Insert an Entity",
   "upload_entity_view_option": "Upload View",
+  "restore_session_label": "Restore Session",
   "node_info": "Node Information",
   "subordinate_list": "Immediate Subordinates List",
   "entity_configuration_data": "Entity Configuration Data",
@@ -53,5 +54,14 @@
   "static_dynamic_title": "View Type",
   "static_dynamic_choice_message": "Choose dynamic if you want to keep only the necessary information recalculating it at the next import, otherwise choose static to keep all the information without recalculating it during the import.",
   "dynamic": "Dynamic",
-  "static": "Static"
+  "static": "Static",
+  "validate_schema": "Validate Schema",
+  "invalid_schema": "Invalid Schema",
+  "valid_schema": "Valid Schema",
+  "filter_discovered": "Filter discovered entities",
+  "current_page": "Current Page",
+  "save_name_title": "Insert the name of the View",
+  "save_name_message": "Insert the name of the View to save it",
+  "save": "Save",
+  "no_session_available": "No session available"
 }
