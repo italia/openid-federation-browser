@@ -4,9 +4,8 @@ import style from "../css/ContextMenu.module.css";
 import { on } from "events";
 
 export interface EntityItemsRendererProps {
-  discovering: boolean;
   isDiscovered: (dep: string) => boolean;
-  isInDiscovery: (dep: string) => boolean;
+  discoveringList: string[];
   removeEntity: (dep: string | string[]) => void;
   addEntities: (dep?: string | string[]) => void;
   removeAllEntities: () => void;
@@ -15,9 +14,8 @@ export interface EntityItemsRendererProps {
 }
 
 export const EntityItemsRenderer = ({
-  discovering,
   isDiscovered,
-  isInDiscovery,
+  discoveringList,
   removeEntity,
   addEntities,
   removeAllEntities,
@@ -55,7 +53,7 @@ export const EntityItemsRenderer = ({
               >
                 <div className="row justify-content-md-start">
                   <div className="col-md-auto">
-                    {discovering && isInDiscovery(dep) ? (
+                    {discoveringList.includes(dep) ? (
                       <div className="progress-spinner progress-spinner-double size-sm progress-spinner-active">
                         <span className="visually-hidden">Loading...</span>
                       </div>
@@ -65,7 +63,7 @@ export const EntityItemsRenderer = ({
                         title="Remove"
                         aria-label="Remove"
                         onClick={getButtonAction(dep)}
-                        disabled={discovering || isFailed(dep)}
+                        disabled={isFailed(dep)}
                       >
                         <IconAtom
                           iconID={getButtonIcon(dep)}
@@ -110,7 +108,6 @@ export const EntityItemsRenderer = ({
                 title="Discovery"
                 aria-label="Discovery"
                 onClick={() => addEntities(items)}
-                disabled={discovering}
               >
                 <IconAtom
                   iconID="#it-plus"
@@ -128,7 +125,6 @@ export const EntityItemsRenderer = ({
                 title="Discovery"
                 aria-label="Discovery"
                 onClick={() => addEntities()}
-                disabled={discovering}
               >
                 <IconAtom
                   iconID="#it-plus-circle"
@@ -146,7 +142,6 @@ export const EntityItemsRenderer = ({
                 title="Discovery"
                 aria-label="Discovery"
                 onClick={removeAllEntities}
-                disabled={discovering}
               >
                 <IconAtom
                   iconID="#it-restore"
