@@ -13,13 +13,8 @@ const subordinateStatementValidator = avj.compile(subordinateStatement);
 
 export const validateEntityConfiguration = async (
   ec: any,
-): Promise<[boolean, undefined | number]> => {
+): Promise<boolean> => {
   const valid = await entityConfigurationValidator(ec);
-
-  console.error(avj.errorsText(entityConfigurationValidator.errors));
-
-  console.error(valid);
-
   return valid;
 };
 
