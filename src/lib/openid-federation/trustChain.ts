@@ -77,8 +77,6 @@ const getEntityConfigurations = async (
 
 export const discovery = async (currenECUrl: string): Promise<NodeInfo> => {
   const currentNodeEC = await getEntityConfigurations(currenECUrl);
-  const federationListEndpoint =
-    currentNodeEC.payload.metadata?.federation_entity?.federation_list_endpoint;
 
   const nodeInfo: NodeInfo = {
     ec: currentNodeEC,
@@ -86,11 +84,28 @@ export const discovery = async (currenECUrl: string): Promise<NodeInfo> => {
     type: EntityType.Leaf,
   };
 
+  const federationListEndpoint =
+    currentNodeEC.payload.metadata?.federation_entity?.federation_list_endpoint;
+
   if (federationListEndpoint) {
     const response = await axios.get(cors_proxy + federationListEndpoint);
     if (!Array.isArray(response.data))
       throw new Error("Invalid subordinate list response");
     nodeInfo.immDependants = response.data;
+  }
+
+  if (currentNodeEC.payload.trust_marks) {
+    nodeInfo.trustMarks = currentNodeEC.payload.trust_marks.map(
+      (tm: Record<string, string>) => ({
+        id: tm.id,
+        header: jose.decodeProtectedHeader(tm.trust_mark) as Record<
+          string,
+          any
+        >,
+        payload: jose.decodeJwt(tm.trust_mark) as Record<string, any>,
+        jwt: tm.trust_mark,
+      }),
+    );
   }
 
   setEntityType(nodeInfo);

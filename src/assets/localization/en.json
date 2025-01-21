@@ -64,5 +64,6 @@
   "save_name_title": "Insert the name of the View",
   "save_name_message": "Insert the name of the View to save it",
   "save": "Save",
-  "no_session_available": "No session available"
+  "no_session_available": "No session available",
+  "trust_marks": "Trust Marks"
 }
