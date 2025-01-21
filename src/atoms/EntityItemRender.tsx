@@ -22,6 +22,7 @@ export const EntityItemsRenderer = ({
   addEntities,
   removeAllEntities,
   isFailed,
+  onSelection,
 }: EntityItemsRendererProps): React.ComponentType<{ items: any[] }> => {
   const getButtonColor = (dep: string) => {
     if (isFailed(dep)) return "btn-secondary";
@@ -152,9 +153,7 @@ export const EntityItemsRenderer = ({
                   className="icon-xs icon-white"
                   isRounded={false}
                 />
-                <span className={style.contextAccordinButton}>
-                  Remove All
-                </span>
+                <span className={style.contextAccordinButton}>Remove All</span>
               </button>
             </div>
           </div>

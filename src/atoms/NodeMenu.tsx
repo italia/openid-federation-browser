@@ -227,6 +227,7 @@ export const NodeMenuAtom = ({
                     removeEntity: removeSubordinates,
                     removeAllEntities: removeAllSubordinates,
                     isFailed,
+                    onSelection,
                   })}
                   filterFn={immediateFilter}
                   onItemsFiltered={onFilteredList}

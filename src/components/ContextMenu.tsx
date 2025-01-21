@@ -76,25 +76,28 @@ export const ContextMenuComponent = ({
             >
               <IconAtom iconID="#it-close" className="icon-sm icon-white" />
             </div>
-            <div className={`col-md-auto ${styles.contextHeaderText}`} style={{ userSelect: "none" }}>
+            <div
+              className={`col-md-auto ${styles.contextHeaderText}`}
+              style={{ userSelect: "none" }}
+            >
               {nodeCheck && <FormattedMessage id={"entity_id_label"} />}
               {data.label}
             </div>
           </div>
-        {nodeCheck ? (
-          <NodeMenuAtom
-            data={data as GraphNode}
-            graph={graph}
-            onUpdate={onUpdate}
-            addToFailedList={addToFailedList}
-            isFailed={isFailed}
-            onSelection={onSelection}
-          />
-        ) : (
-          <EdgeMenuAtom data={data as GraphEdge} />
-        )}
-      </div>
-    </IntlProvider>
-  </div>
+          {nodeCheck ? (
+            <NodeMenuAtom
+              data={data as GraphNode}
+              graph={graph}
+              onUpdate={onUpdate}
+              addToFailedList={addToFailedList}
+              isFailed={isFailed}
+              onSelection={onSelection}
+            />
+          ) : (
+            <EdgeMenuAtom data={data as GraphEdge} />
+          )}
+        </div>
+      </IntlProvider>
+    </div>
   );
 };
