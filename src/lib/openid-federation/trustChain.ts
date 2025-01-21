@@ -136,9 +136,11 @@ export const discoverNode = async (
 
   setEntityType(currentNode);
 
-  if (currentNode.ec.payload.authority_hints) {
+  const authority_hints = currentNode.ec.payload.authority_hints;
+
+  if (authority_hints) {
     const existentParents = graph.nodes.filter((node) =>
-      currentNode.ec.payload.authority_hints?.includes(node.id),
+      authority_hints.some((ah) => ah.startsWith(node.id)),
     );
 
     await Promise.all(

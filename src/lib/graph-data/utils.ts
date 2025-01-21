@@ -34,7 +34,7 @@ export const updateGraph = (node: NodeInfo, graph: Graph): Graph => {
 
   if (authorityHints) {
     const toConnectNodes = nodes.filter((node) =>
-      authorityHints.includes(node.id),
+      authorityHints.some((ah) => ah.startsWith(node.id)),
     );
 
     edges = [
