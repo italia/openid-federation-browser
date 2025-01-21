@@ -11,6 +11,7 @@ import { WarningModalAtom } from "./WarningModal";
 import { showModal, fmtValidity } from "../lib/utils";
 import { FormattedMessage } from "react-intl";
 import style from "../css/ContextMenu.module.css";
+import { validateEntityConfiguration } from "../lib/openid-federation/schema";
 
 export interface ContextMenuProps {
   data: GraphNode;
@@ -208,12 +209,41 @@ export const NodeMenuAtom = ({
             labelId="entity_configuration_data"
             hiddenElement={
               <JWTViewer
+                id="entity-configuration-view"
                 raw={data.info.ec.jwt}
                 decodedPayload={data.info.ec.payload as any}
                 decodedHeader={data.info.ec.header as any}
+                validationFn={validateEntityConfiguration}
               />
             }
           />
+          {data.info.trustMarks && (
+            <AccordionAtom
+              accordinId="trust-marks"
+              labelId="trust_marks"
+              hiddenElement={
+                <>
+                  {data.info.trustMarks.map((tm, i) => (
+                    <div key={i} style={{ padding: "12px 12px" }}>
+                      <AccordionAtom
+                        key={i}
+                        accordinId={`trust-mark-${i}`}
+                        label={tm.id}
+                        hiddenElement={
+                          <JWTViewer
+                            id={`trust-mark-${i}-view`}
+                            raw={tm.jwt}
+                            decodedPayload={tm.payload as any}
+                            decodedHeader={tm.header as any}
+                          />
+                        }
+                      />
+                    </div>
+                  ))}
+                </>
+              }
+            />
+          )}
         </div>
       </div>
     </>
