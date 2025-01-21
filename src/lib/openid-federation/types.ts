@@ -86,7 +86,7 @@ export interface EntityConfiguration {
   payload: EntityConfigurationPayload;
   valid: boolean;
   invalidReason?: string;
-  subordinate?: SubordianteStatement | undefined;
+  subordinates: Record<string, SubordianteStatement>;
   startNode?: boolean;
 }
 
