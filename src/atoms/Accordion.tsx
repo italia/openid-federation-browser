@@ -3,7 +3,8 @@ import style from "../css/ContextMenu.module.css";
 
 export interface AccordinAtomProps {
   accordinId: string;
-  labelId: string;
+  labelId?: string;
+  label?: string;
   hiddenElement: JSX.Element;
   titleClassName?: string;
 }
@@ -11,6 +12,7 @@ export interface AccordinAtomProps {
 export const AccordionAtom = ({
   accordinId,
   labelId,
+  label,
   hiddenElement,
   titleClassName,
 }: AccordinAtomProps) => {
@@ -26,7 +28,7 @@ export const AccordionAtom = ({
           aria-controls="detail-collapse"
         >
           <span className={titleClassName || style.contextAccordinTitle}>
-            <FormattedMessage id={labelId} />
+            {labelId ? <FormattedMessage id={labelId} /> : <>{label}</>}
           </span>
         </button>
       </div>

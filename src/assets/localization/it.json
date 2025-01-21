@@ -18,6 +18,7 @@
   "restore_session_label": "Ripristina Sessione",
   "node_info": "Informazioni del Nodo",
   "subordinate_list": "Lista degli Immediate Subordinates",
+  "authority_hints_list": "Lista degli Authority Hints",
   "entity_configuration_data": "Dati dell'Entity Configuration",
   "subordinate_statement_data": "Dati dello Subordinate Statement",
   "select_trust_node_url_label": "Seleziona l'URL di un'Entità di Federazione OpenID",
@@ -63,5 +64,6 @@
   "save_name_title": "Inserisci il nome della View",
   "save_name_message": "Inserisci il nome della View per salvarla",
   "save": "Salva",
-  "no_session_available": "Nessuna sessione disponibile"
+  "no_session_available": "Nessuna sessione disponibile",
+  "trust_marks": "Trust Marks"
 }

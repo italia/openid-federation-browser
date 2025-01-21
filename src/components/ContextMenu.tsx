@@ -9,6 +9,7 @@ import { IconAtom } from "../atoms/Icon";
 import { useEffect } from "react";
 import { handleKeyDownEvent } from "../lib/utils";
 import styles from "../css/ContextMenu.module.css";
+import { useState, useRef } from "react";
 
 export interface ContextMenuProps {
   data: GraphNode | GraphEdge;
@@ -29,40 +30,68 @@ export const ContextMenuComponent = ({
 }: ContextMenuProps) => {
   const nodeCheck = isNode(data);
 
+  const [pressed, setPressed] = useState(false);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const ref = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (ref.current) {
+      ref.current.style.transform = `translate(${position.x}px, ${position.y}px)`;
+    }
+  }, [position]);
+
+  const onMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
+    if (pressed) {
+      setPosition({
+        x: position.x + event.movementX,
+        y: position.y + event.movementY,
+      });
+    }
+  };
+
   useEffect(() => handleKeyDownEvent("Escape", onClose), []);
 
   return (
-    <IntlProvider
-      locale={navigator.language}
-      defaultLocale="en-EN"
-      messages={getTranslations(navigator.language)}
-    >
-      <div className={`container ${styles.contextMenu}`}>
-        <div className="row primary-bg pt-1 pb-1">
+    <div ref={ref}>
+      <IntlProvider
+        locale={navigator.language}
+        defaultLocale="en-EN"
+        messages={getTranslations(navigator.language)}
+      >
+        <div className={`container ${styles.contextMenu}`}>
           <div
-            className="col-md-auto"
-            style={{ position: "relative", top: "-2px" }}
-            onClick={onClose}
+            className="row primary-bg pt-1 pb-1"
+            onMouseMove={onMouseMove}
+            onMouseDown={() => setPressed(true)}
+            onMouseUp={() => setPressed(false)}
+            onDragEnd={() => setPressed(false)}
+            onMouseLeave={() => setPressed(false)}
           >
-            <IconAtom iconID="#it-close" className="icon-sm icon-white" />
+            <div
+              className="col-md-auto"
+              style={{ position: "relative", top: "-2px" }}
+              onClick={onClose}
+            >
+              <IconAtom iconID="#it-close" className="icon-sm icon-white" />
+            </div>
+            <div className={`col-md-auto ${styles.contextHeaderText}`} style={{ userSelect: "none" }}>
+              {nodeCheck && <FormattedMessage id={"entity_id_label"} />}
+              {data.label}
+            </div>
           </div>
-          <div className={`col-md-auto ${styles.contextHeaderText}`}>
-            {nodeCheck && <FormattedMessage id={"entity_id_label"} />}
-            {data.label}
-          </div>
+          {nodeCheck ? (
+            <NodeMenuAtom
+              data={data as GraphNode}
+              graph={graph}
+              onUpdate={onUpdate}
+              addToFailedList={addToFailedList}
+              isFailed={isFailed}
+            />
+          ) : (
+            <EdgeMenuAtom data={data as GraphEdge} />
+          )}
         </div>
-        {nodeCheck ? (
-          <NodeMenuAtom
-            data={data as GraphNode}
-            graph={graph}
-            onUpdate={onUpdate}
-            addToFailedList={addToFailedList}
-            isFailed={isFailed}
-          />
-        ) : (
-          <EdgeMenuAtom data={data as GraphEdge} />
-        )}
-      </div>
-    </IntlProvider>
+      </IntlProvider>
+    </div>
   );
 };
