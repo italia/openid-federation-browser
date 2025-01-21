@@ -1,6 +1,7 @@
 import { IconAtom } from "./Icon";
 import { truncateMiddle } from "../lib/utils";
 import style from "../css/ContextMenu.module.css";
+import { on } from "events";
 
 export interface EntityItemsRendererProps {
   discovering: boolean;
@@ -10,6 +11,7 @@ export interface EntityItemsRendererProps {
   addEntities: (dep?: string | string[]) => void;
   removeAllEntities: () => void;
   isFailed: (node: string) => boolean;
+  onSelection: (node: string) => void;
 }
 
 export const EntityItemsRenderer = ({
@@ -20,6 +22,7 @@ export const EntityItemsRenderer = ({
   addEntities,
   removeAllEntities,
   isFailed,
+  onSelection,
 }: EntityItemsRendererProps): React.ComponentType<{ items: any[] }> => {
   const getButtonColor = (dep: string) => {
     if (isFailed(dep)) return "btn-secondary";
@@ -73,11 +76,26 @@ export const EntityItemsRenderer = ({
                     )}
                   </div>
                   <div className="col-md-auto">
+                    <button
+                      className="btn btn-icon btn-sm py-0 px-1 btn-primary"
+                      title="Highlight"
+                      aria-label="Highlight"
+                      onClick={() => onSelection(dep)}
+                      disabled={!isDiscovered(dep)}
+                    >
+                      <IconAtom
+                        iconID="#it-search"
+                        className="icon-xs icon-white"
+                        isRounded={false}
+                      />
+                    </button>
+                  </div>
+                  <div className="col-md-auto">
                     <span
                       className={style.contextAccordinText}
                       style={{ whiteSpace: "nowrap" }}
                     >
-                      {truncateMiddle(dep, 57)}
+                      {truncateMiddle(dep, 53)}
                     </span>
                   </div>
                 </div>
@@ -135,9 +153,7 @@ export const EntityItemsRenderer = ({
                   className="icon-xs icon-white"
                   isRounded={false}
                 />
-                <span className={style.contextAccordinButton}>
-                  Remove All
-                </span>
+                <span className={style.contextAccordinButton}>Remove All</span>
               </button>
             </div>
           </div>
