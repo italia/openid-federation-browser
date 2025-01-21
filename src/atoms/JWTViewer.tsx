@@ -15,12 +15,14 @@ export interface ECViewerProps {
   raw: string;
   decodedPayload: { [key: string]: string };
   decodedHeader: { [key: string]: string };
+  validationFn?: (payload: any) => Promise<boolean>;
 }
 
 export const JWTViewer = ({
   raw,
   decodedPayload,
   decodedHeader,
+  validationFn,
 }: ECViewerProps) => {
   const decodedPayloadStr = JSON.stringify(decodedPayload, null, 4);
   const decodedHeaderStr = JSON.stringify(decodedHeader, null, 4);
@@ -29,9 +31,10 @@ export const JWTViewer = ({
     useState<SchemaValidity>("UNKNOWN");
 
   const validateSchema = async () => {
-    const result =
-      (await validateEntityConfiguration(decodedPayload)) ||
-      (await validateSubordinateStatement(decodedPayload));
+    if (!validationFn) return;
+
+    const result = await validationFn(decodedPayload);
+
     if (result) {
       setSchemaValidity("VALID");
     } else {
@@ -42,7 +45,7 @@ export const JWTViewer = ({
   return (
     <div className="container" style={{ width: "100%", padding: "14px 24px" }}>
       <div className="row" style={{ padding: "8px" }}>
-        <div className="colmd-auto">
+        {validationFn && (
           <table style={{ width: "100%" }}>
             <tr>
               <td>
@@ -75,6 +78,7 @@ export const JWTViewer = ({
             </tr>
           </table>
         </div>
+        )}
       </div>
       <div className="row" style={{ padding: "8px" }}>
         <div className="col-4">
