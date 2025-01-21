@@ -3,6 +3,7 @@ import { AccordionAtom } from "./Accordion";
 import { JWTViewer } from "./JWTViewer";
 import { fmtValidity } from "../lib/utils";
 import { InfoView } from "./InfoView";
+import { validateSubordinateStatement } from "../lib/openid-federation/schema";
 
 export interface EdgeMenuAtomProps {
   data: GraphEdge;
@@ -43,9 +44,11 @@ export const EdgeMenuAtom = ({ data }: EdgeMenuAtomProps) => {
               labelId="subordinate_statement_data"
               hiddenElement={
                 <JWTViewer
+                  id="subordinate-statement-viewer"
                   raw={data.subStatement.jwt}
                   decodedPayload={data.subStatement.payload as any}
                   decodedHeader={data.subStatement.header as any}
+                  validationFn={validateSubordinateStatement}
                 />
               }
             />
