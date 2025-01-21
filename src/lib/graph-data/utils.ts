@@ -16,24 +16,41 @@ export const genEdge = (parent: NodeInfo, child: NodeInfo): GraphEdge => {
     source: parent.ec.entity,
     target: child.ec.entity,
     label: `${parent.ec.entity}->${child.ec.entity}`,
-    subStatement: child.ec.subordinate,
+    subStatement: child.ec.subordinates[parent.ec.entity],
   } as GraphEdge;
 };
 
-export const updateGraph = (
-  parent: NodeInfo,
-  child: NodeInfo,
-  graph: Graph,
-): Graph => {
-  const nodes = !graph.nodes.find((n) => n.id === child.ec.entity)
-    ? [...graph.nodes, genNode(child)]
-    : graph.nodes;
+export const updateGraph = (node: NodeInfo, graph: Graph): Graph => {
+  const alreadyExists = graph.nodes.find((n) => n.id === node.ec.entity);
 
-  const edges = !graph.edges.find(
-    (e) => e.id === `${parent.ec.entity}-${child.ec.entity}`,
-  )
-    ? [...graph.edges, genEdge(parent, child)]
-    : graph.edges;
+  if (alreadyExists) return graph;
+
+  const newGraphNode = genNode(node);
+  const nodes = [...graph.nodes, newGraphNode];
+
+  let edges = graph.edges;
+
+  const authorityHints = node.ec.payload.authority_hints;
+
+  if (authorityHints) {
+    const toConnectNodes = nodes.filter((node) =>
+      authorityHints.includes(node.id),
+    );
+
+    edges = [
+      ...edges,
+      ...toConnectNodes.map((cNode) => genEdge(cNode.info, node)),
+    ];
+  }
+
+  const immDependants = node.immDependants;
+
+  const toConnectNodes = nodes.filter((n) => immDependants.includes(n.id));
+
+  edges = [
+    ...edges,
+    ...toConnectNodes.map((pNode) => genEdge(node, pNode.info)),
+  ];
 
   return { nodes, edges };
 };
@@ -42,16 +59,23 @@ export const fromNodeInfo = (node: NodeInfo): Graph => {
   return { nodes: [genNode(node)], edges: [] };
 };
 
-export const removeSubGraph = (graph: Graph, id: string): Graph => {
+export const removeSubGraph = (
+  graph: Graph,
+  id: string,
+  subordinate: boolean = true,
+): Graph => {
   const nodes = graph.nodes.filter((node) => node.id !== id);
   const edges = graph.edges.filter(
     (edge) => edge.source !== id && edge.target !== id,
   );
 
   const filteredGraph = graph.edges
-    .filter((edge) => edge.source === id)
+    .filter((edge) => (subordinate ? edge.source : edge.target) === id)
     .map((edge) => edge.target)
-    .reduce((acc, target) => removeSubGraph(acc, target), { nodes, edges });
+    .reduce((acc, target) => removeSubGraph(acc, target, subordinate), {
+      nodes,
+      edges,
+    });
 
   return filteredGraph;
 };

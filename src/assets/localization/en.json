@@ -18,6 +18,7 @@
   "restore_session_label": "Restore Session",
   "node_info": "Node Information",
   "subordinate_list": "Immediate Subordinates List",
+  "authority_hints_list": "Authority Hints List",
   "entity_configuration_data": "Entity Configuration Data",
   "subordinate_statement_data": "Subordinate Statement Data",
   "select_trust_node_url_label": "Select URL of an OpenID Federation Entity",

@@ -3,14 +3,12 @@ import { JWTViewer } from "./JWTViewer";
 import { InfoView } from "../atoms/InfoView";
 import { GraphNode, Graph } from "../lib/graph-data/types";
 import { removeSubGraph } from "../lib/graph-data/utils";
-import { discoverMultipleChildren } from "../lib/openid-federation/trustChain";
+import { discoverNodes } from "../lib/openid-federation/trustChain";
 import { PaginatedListAtom } from "../atoms/PaginatedList";
-import { SubListItemsRenderer } from "./SubListItemRender";
+import { EntityItemsRenderer } from "./EntityItemRender";
 import { useEffect, useState } from "react";
 import { WarningModalAtom } from "./WarningModal";
 import { showModal, fmtValidity } from "../lib/utils";
-import { FormattedMessage } from "react-intl";
-import style from "../css/ContextMenu.module.css";
 
 export interface ContextMenuProps {
   data: GraphNode;
@@ -39,7 +37,7 @@ export const NodeMenuAtom = ({
     undefined,
   );
 
-  const addSubordinates = (entityID?: string | string[]) => {
+  const addEntities = (entityID?: string | string[]) => {
     if (!entityID) setDiscoveringList(filteredItems);
     else {
       const list = Array.isArray(entityID) ? entityID : [entityID];
@@ -50,22 +48,44 @@ export const NodeMenuAtom = ({
     }
   };
 
-  const removeSubordinates = (entityIDs: string | string[]) => {
-    const newGraph = Array.isArray(entityIDs)
-      ? entityIDs.reduce((acc, id) => removeSubGraph(acc, id), graph)
-      : removeSubGraph(graph, entityIDs);
+  const removeEntities =
+    (subordinate: boolean) => (entityIDs: string | string[]) => {
+      const newGraph = Array.isArray(entityIDs)
+        ? entityIDs.reduce(
+            (acc, id) => removeSubGraph(acc, id, subordinate),
+            graph,
+          )
+        : removeSubGraph(graph, entityIDs, subordinate);
 
-    onUpdate(newGraph);
-  };
+      onUpdate(newGraph);
+    };
+
+  const removeSubordinates = removeEntities(true);
+  const removeAuthorityHints = removeEntities(false);
 
   const isDiscovered = (dep: string) =>
     graph.nodes.find((node) => node.id === dep) ? true : false;
+
   const isInDiscovery = (dep: string) => discoveringList.includes(dep);
 
-  const removeAllSubordinates = () =>
-    removeSubordinates(
-      data.info.immDependants.filter((dep) => isDiscovered(dep)),
-    );
+  const removeAllEntities =
+    (subordinate: boolean = false) =>
+    () => {
+      if (subordinate) {
+        removeSubordinates(
+          data.info.immDependants.filter((dep) => isDiscovered(dep)),
+        );
+      } else {
+        const authorityHints = data.info.ec.payload.authority_hints;
+
+        if (!authorityHints) return;
+
+        removeAuthorityHints(authorityHints.filter((dep) => isDiscovered(dep)));
+      }
+    };
+
+  const removeAllSubordinates = removeAllEntities(true);
+  const removeAllAuthorityHints = removeAllEntities(false);
 
   const onFilteredList = (items: string[]) => setFilteredItems(items);
 
@@ -95,7 +115,7 @@ export const NodeMenuAtom = ({
   const startDiscovery = () => {
     setDiscovering(true);
 
-    discoverMultipleChildren(discoveringList, data.info, graph)
+    discoverNodes(discoveringList, graph)
       .then(handleDiscoveryResult)
       .finally(() => setDiscovering(false));
   };
@@ -161,45 +181,50 @@ export const NodeMenuAtom = ({
               />
             }
           />
-          {immDependants.length > 0 && (
-            <AccordionAtom
-              accordinId="immediate-subordinates-list"
-              labelId="subordinate_list"
-              hiddenElement={
-                <>
-                  <div
-                    className="toggles"
-                    style={{ width: "100%", paddingLeft: "18px" }}
-                  >
-                    <label
-                      htmlFor="filteredToggle"
-                      className={style.contextAccordinText}
-                    >
-                      <FormattedMessage id="filter_discovered" />
-                      <input
-                        type="checkbox"
-                        id="filteredToggle"
-                        onChange={() => setFilterDiscovered(!filterDiscovered)}
-                      />
-                      <span className="lever"></span>
-                    </label>
-                  </div>
+          {data.info.ec.payload.authority_hints &&
+            data.info.ec.payload.authority_hints.length > 0 && (
+              <AccordionAtom
+                accordinId="hauthority-hints-list"
+                labelId="authority_hints_list"
+                hiddenElement={
                   <PaginatedListAtom
-                    items={immDependants}
+                    items={data.info.ec.payload.authority_hints}
                     itemsPerPage={5}
-                    ItemsRenderer={SubListItemsRenderer({
+                    ItemsRenderer={EntityItemsRenderer({
                       discovering,
                       isDiscovered,
                       isInDiscovery,
-                      addSubordinates,
-                      removeSubordinates,
-                      removeAllSubordinates,
+                      addEntities,
+                      removeEntity: removeAuthorityHints,
+                      removeAllEntities: removeAllAuthorityHints,
                       isFailed,
                     })}
                     filterFn={immediateFilter}
                     onItemsFiltered={onFilteredList}
                   />
-                </>
+                }
+              />
+            )}
+          {data.info.immDependants.length > 0 && (
+            <AccordionAtom
+              accordinId="immediate-subordinates-list"
+              labelId="subordinate_list"
+              hiddenElement={
+                <PaginatedListAtom
+                  items={data.info.immDependants}
+                  itemsPerPage={5}
+                  ItemsRenderer={EntityItemsRenderer({
+                    discovering,
+                    isDiscovered,
+                    isInDiscovery,
+                    addEntities,
+                    removeEntity: removeSubordinates,
+                    removeAllEntities: removeAllSubordinates,
+                    isFailed,
+                  })}
+                  filterFn={immediateFilter}
+                  onItemsFiltered={onFilteredList}
+                />
               }
             />
           )}

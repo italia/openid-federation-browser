@@ -15,7 +15,7 @@ import {
   SubordinateStatementPayload,
 } from "./types";
 import { Graph, GraphEdge, GraphNode } from "../graph-data/types";
-import { updateGraph, genNode } from "../graph-data/utils";
+import { genNode, updateGraph } from "../graph-data/utils";
 import { setEntityType } from "./utils";
 import { checkViewValidity } from "./utils";
 import Ajv from "ajv";
@@ -68,6 +68,7 @@ const getEntityConfigurations = async (
     header,
     payload,
     valid: false,
+    subordinates: {},
   };
   await validateEntityConfiguration(ec);
 
@@ -97,50 +98,92 @@ export const discovery = async (currenECUrl: string): Promise<NodeInfo> => {
   return nodeInfo;
 };
 
-export const discoverChild = async (
+export const discoverNode = async (
   currenECUrl: string,
-  parent: NodeInfo,
   graph: Graph = { nodes: [], edges: [] },
 ): Promise<Graph> => {
-  const currentNode = await discovery(currenECUrl);
+  const currentNodeEC = await getEntityConfigurations(currenECUrl);
+  const federationListEndpoint =
+    currentNodeEC.payload.metadata?.federation_entity?.federation_list_endpoint;
 
-  const federationFetchEndpoint =
-    parent.ec.payload?.metadata?.federation_entity?.federation_fetch_endpoint;
+  const currentNode: NodeInfo = {
+    ec: currentNodeEC,
+    immDependants: [],
+    type: EntityType.Leaf,
+  };
 
-  if (federationFetchEndpoint)
-    currentNode.ec.subordinate = await getSubordinateStatement(
-      federationFetchEndpoint,
-      currenECUrl,
-      parent.ec,
+  if (federationListEndpoint) {
+    const response = await axios.get(cors_proxy + federationListEndpoint);
+    if (!Array.isArray(response.data))
+      throw new Error("Invalid subordinate list response");
+    currentNode.immDependants = response.data;
+  }
+
+  setEntityType(currentNode);
+
+  if (currentNode.ec.payload.authority_hints) {
+    const existentParents = graph.nodes.filter((node) =>
+      currentNode.ec.payload.authority_hints?.includes(node.id),
     );
 
-  return updateGraph(parent, currentNode, graph);
-};
+    await Promise.all(
+      existentParents.map(async (parent) => {
+        const federationFetchEndpoint =
+          parent.info.ec.payload?.metadata?.federation_entity
+            ?.federation_fetch_endpoint;
 
-export const discoverParent = async (
-  currenECUrl: string,
-  child: NodeInfo,
-  graph: Graph = { nodes: [], edges: [] },
-): Promise<Graph> => {
-  const currentNode = await discovery(currenECUrl);
+        if (federationFetchEndpoint) {
+          try {
+            const subordinateStatements = await getSubordinateStatement(
+              federationFetchEndpoint,
+              currenECUrl,
+              parent.info.ec,
+            );
 
-  const federationFetchEndpoint =
-    currentNode.ec.payload?.metadata?.federation_entity
-      ?.federation_fetch_endpoint;
+            currentNode.ec.subordinates[parent.info.ec.entity] =
+              subordinateStatements;
+          } catch (e) {
+            console.error(e);
+          }
+        }
+      }),
+    );
+  }
 
-  if (federationFetchEndpoint)
-    child.ec.subordinate = await getSubordinateStatement(
-      federationFetchEndpoint,
-      child.ec.entity as string,
-      currentNode.ec,
+  if (currentNode.immDependants.length > 0) {
+    const existentChildren = graph.nodes.filter((node) =>
+      currentNode.immDependants.includes(node.id),
     );
 
-  return updateGraph(currentNode, child, graph);
+    const federationFetchEndpoint =
+      currentNode.ec.payload?.metadata?.federation_entity
+        ?.federation_fetch_endpoint;
+
+    await Promise.all(
+      existentChildren.map(async (child) => {
+        if (federationFetchEndpoint) {
+          try {
+            const subordinateStatements = await getSubordinateStatement(
+              federationFetchEndpoint,
+              child.id,
+              currentNode.ec,
+            );
+
+            child.info.ec.subordinates[currentNode.ec.entity] =
+              subordinateStatements;
+          } catch (e) {
+            console.error(e);
+          }
+        }
+      }),
+    );
+  }
+
+  return updateGraph(currentNode, graph);
 };
 
-export const discoverMultipleChildren = async (
+export const discoverNodes = async (
   entities: string[],
-  parent: NodeInfo,
   graph: Graph = { nodes: [], edges: [] },
 ): Promise<{ graph: Graph; failed: { entity: string; error: Error }[] }> => {
   let newGraph = graph;
@@ -148,7 +191,7 @@ export const discoverMultipleChildren = async (
 
   for (const entity of entities) {
     try {
-      newGraph = await discoverChild(entity, parent, newGraph);
+      newGraph = await discoverNode(entity, newGraph);
     } catch (e) {
       console.error(e);
       failed.push({ entity, error: e as Error });
@@ -169,18 +212,22 @@ export const traverseUp = async (
     discoveredNode.ec.payload?.metadata?.federation_entity
       ?.federation_fetch_endpoint;
 
-  if (federationFetchEndpoint && child)
-    child.ec.subordinate = await getSubordinateStatement(
-      federationFetchEndpoint,
-      child.ec.entity as string,
-      discoveredNode.ec,
-    );
+  if (federationFetchEndpoint && child) {
+    try {
+      const subordinateStatements = await getSubordinateStatement(
+        federationFetchEndpoint,
+        child.ec.entity as string,
+        discoveredNode.ec,
+      );
+      child.ec.subordinates[discoveredNode.ec.entity] = subordinateStatements;
+    } catch (e) {
+      console.error(e);
+    }
+  }
 
   const authorityHints = discoveredNode.ec.payload?.authority_hints;
 
-  graph.nodes.push(genNode(discoveredNode));
-
-  if (child) graph = updateGraph(discoveredNode, child, graph);
+  graph = updateGraph(discoveredNode, graph);
 
   if (authorityHints && authorityHints.length > 0) {
     return traverseUp(authorityHints[0], discoveredNode, graph);
@@ -249,17 +296,25 @@ export const importView = async (view: string): Promise<Graph> => {
         parent.info.ec.payload?.metadata?.federation_entity
           ?.federation_fetch_endpoint;
 
-      if (federationFetchEndpoint)
-        currentNode.info.ec.subordinate = await getSubordinateStatement(
-          federationFetchEndpoint,
-          edge.target,
-          parent.info.ec,
-        );
+      if (federationFetchEndpoint) {
+        try {
+          const subordinateStatements = await getSubordinateStatement(
+            federationFetchEndpoint,
+            edge.target,
+            parent.info.ec,
+          );
+
+          currentNode.info.ec.subordinates[parent.info.ec.entity] =
+            subordinateStatements;
+        } catch (e) {
+          console.error(e);
+        }
+      }
 
       return {
         id: label,
         label,
-        subStatement: currentNode.info.ec.subordinate,
+        subStatement: currentNode.info.ec.subordinates[parent.info.ec.entity],
         source: edge.source,
         target: edge.target,
       };
