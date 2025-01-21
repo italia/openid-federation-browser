@@ -41,7 +41,9 @@ export const WarningModalAtom = ({
           <div className="modal-body">
             <p>
               {description !== undefined ? (
-                <span className={style.contextAccordinTitle}>{description}</span>
+                <span className={style.contextAccordinTitle}>
+                  {description}
+                </span>
               ) : (
                 <FormattedMessage id={descriptionID} />
               )}

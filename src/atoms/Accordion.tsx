@@ -28,11 +28,7 @@ export const AccordionAtom = ({
           aria-controls="detail-collapse"
         >
           <span className={titleClassName || style.contextAccordinTitle}>
-            {labelId ? (
-              <FormattedMessage id={labelId} />
-            ) : (
-              <>{label}</>
-            )}
+            {labelId ? <FormattedMessage id={labelId} /> : <>{label}</>}
           </span>
         </button>
       </div>
