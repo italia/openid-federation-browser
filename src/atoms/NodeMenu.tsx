@@ -10,6 +10,8 @@ import { useEffect, useState } from "react";
 import { WarningModalAtom } from "./WarningModal";
 import { showModal, fmtValidity } from "../lib/utils";
 import { validateEntityConfiguration } from "../lib/openid-federation/schema";
+import { FormattedMessage } from "react-intl";
+import style from "../css/ContextMenu.module.css";
 
 export interface ContextMenuProps {
   data: GraphNode;
@@ -203,13 +205,31 @@ export const NodeMenuAtom = ({
                 }
               />
             )}
-          {data.info.immDependants.length > 0 && (
+          {immDependants.length > 0 && (
             <AccordionAtom
               accordinId="immediate-subordinates-list"
               labelId="subordinate_list"
               hiddenElement={
+                <>
+                <div
+                  className="toggles"
+                  style={{ width: "100%", paddingLeft: "18px" }}
+                >
+                  <label
+                    htmlFor="filteredToggle"
+                    className={style.contextAccordinText}
+                  >
+                    <FormattedMessage id="filter_discovered" />
+                    <input
+                      type="checkbox"
+                      id="filteredToggle"
+                      onChange={() => setFilterDiscovered(!filterDiscovered)}
+                    />
+                    <span className="lever"></span>
+                  </label>
+                </div>
                 <PaginatedListAtom
-                  items={data.info.immDependants}
+                  items={immDependants}
                   itemsPerPage={5}
                   ItemsRenderer={EntityItemsRenderer({
                     isDiscovered,
@@ -222,6 +242,7 @@ export const NodeMenuAtom = ({
                   filterFn={immediateFilter}
                   onItemsFiltered={onFilteredList}
                 />
+                </>
               }
             />
           )}
