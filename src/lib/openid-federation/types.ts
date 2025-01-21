@@ -76,6 +76,7 @@ export interface EntityConfigurationPayload {
     keys: jose.JWK[];
   };
   authority_hints: string[] | undefined;
+  trust_marks: Record<string, string>[] | undefined;
 }
 
 export interface EntityConfiguration {
@@ -85,7 +86,7 @@ export interface EntityConfiguration {
   payload: EntityConfigurationPayload;
   valid: boolean;
   invalidReason?: string;
-  subordinate?: SubordianteStatement | undefined;
+  subordinates: Record<string, SubordianteStatement>;
   startNode?: boolean;
 }
 
@@ -94,6 +95,12 @@ export interface NodeInfo {
   immDependants: string[];
   startNode?: boolean;
   type: EntityType;
+  trustMarks?: {
+    id: string;
+    header: Record<string, any>;
+    payload: Record<string, any>;
+    jwt: string;
+  }[];
 }
 
 type MetadataValue = string | string[] | { [key: string]: string };

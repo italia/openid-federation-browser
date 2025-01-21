@@ -3,27 +3,26 @@ import { truncateMiddle } from "../lib/utils";
 import style from "../css/ContextMenu.module.css";
 import { on } from "events";
 
-export interface SubListItemsRendererProps {
+export interface EntityItemsRendererProps {
   discovering: boolean;
   isDiscovered: (dep: string) => boolean;
   isInDiscovery: (dep: string) => boolean;
-  removeSubordinates: (dep: string | string[]) => void;
-  addSubordinates: (dep?: string | string[]) => void;
-  removeAllSubordinates: () => void;
+  removeEntity: (dep: string | string[]) => void;
+  addEntities: (dep?: string | string[]) => void;
+  removeAllEntities: () => void;
   isFailed: (node: string) => boolean;
   onSelection: (node: string) => void;
 }
 
-export const SubListItemsRenderer = ({
+export const EntityItemsRenderer = ({
   discovering,
   isDiscovered,
   isInDiscovery,
-  removeSubordinates,
-  addSubordinates,
-  removeAllSubordinates,
+  removeEntity,
+  addEntities,
+  removeAllEntities,
   isFailed,
-  onSelection,
-}: SubListItemsRendererProps): React.ComponentType<{ items: any[] }> => {
+}: EntityItemsRendererProps): React.ComponentType<{ items: any[] }> => {
   const getButtonColor = (dep: string) => {
     if (isFailed(dep)) return "btn-secondary";
     if (isDiscovered(dep)) return "btn-danger";
@@ -38,8 +37,8 @@ export const SubListItemsRenderer = ({
 
   const getButtonAction = (dep: string) => {
     if (isFailed(dep)) return () => {};
-    if (isDiscovered(dep)) return () => removeSubordinates(dep);
-    return () => addSubordinates(dep);
+    if (isDiscovered(dep)) return () => removeEntity(dep);
+    return () => addEntities(dep);
   };
 
   return ({ items }: { items: any[] }) => {
@@ -109,7 +108,7 @@ export const SubListItemsRenderer = ({
                 className="btn btn-primary btn-icon btn-xs py-1 px-1"
                 title="Discovery"
                 aria-label="Discovery"
-                onClick={() => addSubordinates(items)}
+                onClick={() => addEntities(items)}
                 disabled={discovering}
               >
                 <IconAtom
@@ -127,7 +126,7 @@ export const SubListItemsRenderer = ({
                 className="btn btn-secondary btn-icon btn-xs py-1 px-1"
                 title="Discovery"
                 aria-label="Discovery"
-                onClick={() => addSubordinates()}
+                onClick={() => addEntities()}
                 disabled={discovering}
               >
                 <IconAtom
@@ -145,7 +144,7 @@ export const SubListItemsRenderer = ({
                 className="btn btn-warning btn-icon btn-xs py-1 px-1"
                 title="Discovery"
                 aria-label="Discovery"
-                onClick={removeAllSubordinates}
+                onClick={removeAllEntities}
                 disabled={discovering}
               >
                 <IconAtom
@@ -154,7 +153,7 @@ export const SubListItemsRenderer = ({
                   isRounded={false}
                 />
                 <span className={style.contextAccordinButton}>
-                  Remove All Subordinate
+                  Remove All
                 </span>
               </button>
             </div>
