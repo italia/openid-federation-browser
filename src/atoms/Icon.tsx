@@ -4,15 +4,23 @@ interface IconProps {
   iconID: string;
   className?: string;
   isRounded?: boolean;
-  style?: React.CSSProperties
+  style?: React.CSSProperties;
 }
 
-export const IconAtom = ({ iconID, className, isRounded, style }: IconProps) => {
+export const IconAtom = ({
+  iconID,
+  className,
+  isRounded,
+  style,
+}: IconProps) => {
   const currentStyle = style ? style : {};
 
   return (
     <span className={isRounded ? "rounded-icon" : ""}>
-      <svg className={`icon ${className ? className.toString() : ""}`} style={{...currentStyle}}>
+      <svg
+        className={`icon ${className ? className.toString() : ""}`}
+        style={{ ...currentStyle }}
+      >
         <use xlinkHref={sprite + iconID}></use>
       </svg>
     </span>

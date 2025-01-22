@@ -214,38 +214,38 @@ export const NodeMenuAtom = ({
               labelId="subordinate_list"
               hiddenElement={
                 <>
-                <div
-                  className="toggles"
-                  style={{ width: "100%", paddingLeft: "18px" }}
-                >
-                  <label
-                    htmlFor="filteredToggle"
-                    className={style.contextAccordinText}
+                  <div
+                    className="toggles"
+                    style={{ width: "100%", paddingLeft: "18px" }}
                   >
-                    <FormattedMessage id="filter_discovered" />
-                    <input
-                      type="checkbox"
-                      id="filteredToggle"
-                      onChange={() => setFilterDiscovered(!filterDiscovered)}
-                    />
-                    <span className="lever"></span>
-                  </label>
-                </div>
-                <PaginatedListAtom
-                  items={immDependants}
-                  itemsPerPage={5}
-                  ItemsRenderer={EntityItemsRenderer({
-                    isDiscovered,
-                    discoveringList: discoveryQueue,
-                    addEntities,
-                    removeEntity: removeSubordinates,
-                    removeAllEntities: removeAllSubordinates,
-                    isFailed,
-                    onSelection,
-                  })}
-                  filterFn={immediateFilter}
-                  onItemsFiltered={onFilteredList}
-                />
+                    <label
+                      htmlFor="filteredToggle"
+                      className={style.contextAccordinText}
+                    >
+                      <FormattedMessage id="filter_discovered" />
+                      <input
+                        type="checkbox"
+                        id="filteredToggle"
+                        onChange={() => setFilterDiscovered(!filterDiscovered)}
+                      />
+                      <span className="lever"></span>
+                    </label>
+                  </div>
+                  <PaginatedListAtom
+                    items={immDependants}
+                    itemsPerPage={5}
+                    ItemsRenderer={EntityItemsRenderer({
+                      isDiscovered,
+                      discoveringList: discoveryQueue,
+                      addEntities,
+                      removeEntity: removeSubordinates,
+                      removeAllEntities: removeAllSubordinates,
+                      isFailed,
+                      onSelection,
+                    })}
+                    filterFn={immediateFilter}
+                    onItemsFiltered={onFilteredList}
+                  />
                 </>
               }
             />

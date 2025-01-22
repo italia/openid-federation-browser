@@ -261,8 +261,7 @@ export const GraphViewComponent = () => {
                   />
                   <span style={{ marginLeft: "5px" }}>Upload View</span>
                 </button>
-
-</Link>
+              </Link>
 
               <button
                 className={`btn btn-success btn-sm py-1 px-2 mt-2 ${headerStyle.headerText}`}
