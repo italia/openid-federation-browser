@@ -15,6 +15,7 @@ import { WarningModalAtom } from "../atoms/WarningModal";
 import { showModal, hideModal } from "../lib/utils";
 import { persistSession } from "../lib/utils";
 import { InputModalAtom } from "../atoms/InputModal";
+import { Link } from "react-router-dom";
 
 enum ShowElement {
   Loading = "loading-atom",
@@ -248,8 +249,23 @@ export const GraphViewComponent = () => {
                 color: "white",
               }}
             >
+              <Link className="nav-link" to="/?viewUpload">
+                <button
+                  className={`btn btn-success btn-sm py-1 px-2 ${headerStyle.headerText}`}
+                  style={{ display: "block", width: "100%" }}
+                >
+                  <IconAtom
+                    iconID="#it-upload"
+                    className="icon-sm icon-white"
+                    isRounded={false}
+                  />
+                  <span style={{ marginLeft: "5px" }}>Upload View</span>
+                </button>
+
+</Link>
+
               <button
-                className={`btn btn-success btn-sm py-1 px-2 ${headerStyle.headerText}`}
+                className={`btn btn-success btn-sm py-1 px-2 mt-2 ${headerStyle.headerText}`}
                 style={{ display: "block", width: "100%" }}
                 onClick={() => showModal("export-modal")}
               >

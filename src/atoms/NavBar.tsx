@@ -52,13 +52,6 @@ export const NavBarAtom = () => {
                       </Link>
                     </li>
                     <li className="nav-item">
-                      <Link className="nav-link" to="/?viewUpload">
-                        <span className={style.headerText}>
-                          <FormattedMessage id="upload_entity_view_option" />
-                        </span>
-                      </Link>
-                    </li>
-                    <li className="nav-item">
                       <Link className="nav-link" to="/?restoreSession">
                         <span className={style.headerText}>
                           <FormattedMessage id="restore_session_label" />
