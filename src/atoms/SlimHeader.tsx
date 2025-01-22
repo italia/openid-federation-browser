@@ -15,6 +15,7 @@ export const SlimHeader = () => {
                     <IconAtom
                       iconID={"#it-designers-italia"}
                       isRounded={true}
+                      style={{ width: "32px", height: "32px" }}
                     />
                   </a>
                 </div>
