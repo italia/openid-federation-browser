@@ -43,6 +43,24 @@ export const updateGraph = (node: NodeInfo, graph: Graph): Graph => {
     ];
   }
 
+  nodes.forEach((n) => {
+    if (n.id === node.ec.entity) return;
+
+    if (
+      n.info.immDependants.includes(node.ec.entity) &&
+      !edges.find((e) => e.source === n.id && e.target === node.ec.entity)
+    ) {
+      edges = [...edges, genEdge(n.info, node)];
+    }
+
+    if (
+      n.info.ec.payload.authority_hints?.includes(node.ec.entity) &&
+      !edges.find((e) => e.source === node.ec.entity && e.target === n.id)
+    ) {
+      edges = [...edges, genEdge(node, n.info)];
+    }
+  });
+
   const immDependants = node.immDependants;
 
   const toConnectNodes = nodes.filter((n) => immDependants.includes(n.id));

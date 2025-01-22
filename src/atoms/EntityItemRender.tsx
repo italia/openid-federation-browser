@@ -1,25 +1,26 @@
 import { IconAtom } from "./Icon";
 import { truncateMiddle } from "../lib/utils";
 import style from "../css/ContextMenu.module.css";
+import { on } from "events";
 
 export interface EntityItemsRendererProps {
-  discovering: boolean;
   isDiscovered: (dep: string) => boolean;
-  isInDiscovery: (dep: string) => boolean;
+  discoveringList: string[];
   removeEntity: (dep: string | string[]) => void;
   addEntities: (dep?: string | string[]) => void;
   removeAllEntities: () => void;
   isFailed: (node: string) => boolean;
+  onSelection: (node: string) => void;
 }
 
 export const EntityItemsRenderer = ({
-  discovering,
   isDiscovered,
-  isInDiscovery,
+  discoveringList,
   removeEntity,
   addEntities,
   removeAllEntities,
   isFailed,
+  onSelection,
 }: EntityItemsRendererProps): React.ComponentType<{ items: any[] }> => {
   const getButtonColor = (dep: string) => {
     if (isFailed(dep)) return "btn-secondary";
@@ -52,7 +53,7 @@ export const EntityItemsRenderer = ({
               >
                 <div className="row justify-content-md-start">
                   <div className="col-md-auto">
-                    {discovering && isInDiscovery(dep) ? (
+                    {discoveringList.includes(dep) ? (
                       <div className="progress-spinner progress-spinner-double size-sm progress-spinner-active">
                         <span className="visually-hidden">Loading...</span>
                       </div>
@@ -62,7 +63,7 @@ export const EntityItemsRenderer = ({
                         title="Remove"
                         aria-label="Remove"
                         onClick={getButtonAction(dep)}
-                        disabled={discovering || isFailed(dep)}
+                        disabled={isFailed(dep)}
                       >
                         <IconAtom
                           iconID={getButtonIcon(dep)}
@@ -73,11 +74,26 @@ export const EntityItemsRenderer = ({
                     )}
                   </div>
                   <div className="col-md-auto">
+                    <button
+                      className="btn btn-icon btn-sm py-0 px-1 btn-primary"
+                      title="Highlight"
+                      aria-label="Highlight"
+                      onClick={() => onSelection(dep)}
+                      disabled={!isDiscovered(dep)}
+                    >
+                      <IconAtom
+                        iconID="#it-search"
+                        className="icon-xs icon-white"
+                        isRounded={false}
+                      />
+                    </button>
+                  </div>
+                  <div className="col-md-auto">
                     <span
                       className={style.contextAccordinText}
                       style={{ whiteSpace: "nowrap" }}
                     >
-                      {truncateMiddle(dep, 57)}
+                      {truncateMiddle(dep, 53)}
                     </span>
                   </div>
                 </div>
@@ -92,7 +108,6 @@ export const EntityItemsRenderer = ({
                 title="Discovery"
                 aria-label="Discovery"
                 onClick={() => addEntities(items)}
-                disabled={discovering}
               >
                 <IconAtom
                   iconID="#it-plus"
@@ -110,7 +125,6 @@ export const EntityItemsRenderer = ({
                 title="Discovery"
                 aria-label="Discovery"
                 onClick={() => addEntities()}
-                disabled={discovering}
               >
                 <IconAtom
                   iconID="#it-plus-circle"
@@ -128,16 +142,13 @@ export const EntityItemsRenderer = ({
                 title="Discovery"
                 aria-label="Discovery"
                 onClick={removeAllEntities}
-                disabled={discovering}
               >
                 <IconAtom
                   iconID="#it-restore"
                   className="icon-xs icon-white"
                   isRounded={false}
                 />
-                <span className={style.contextAccordinButton}>
-                  Remove All
-                </span>
+                <span className={style.contextAccordinButton}>Remove All</span>
               </button>
             </div>
           </div>

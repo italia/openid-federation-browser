@@ -18,6 +18,7 @@ export interface ContextMenuProps {
   onUpdate: (graph: Graph) => void;
   addToFailedList: (nodes: string[]) => void;
   isFailed: (node: string) => boolean;
+  onSelection: (node: string) => void;
 }
 
 export const ContextMenuComponent = ({
@@ -27,6 +28,7 @@ export const ContextMenuComponent = ({
   onUpdate,
   addToFailedList,
   isFailed,
+  onSelection,
 }: ContextMenuProps) => {
   const nodeCheck = isNode(data);
 
@@ -74,7 +76,10 @@ export const ContextMenuComponent = ({
             >
               <IconAtom iconID="#it-close" className="icon-sm icon-white" />
             </div>
-            <div className={`col-md-auto ${styles.contextHeaderText}`} style={{ userSelect: "none" }}>
+            <div
+              className={`col-md-auto ${styles.contextHeaderText}`}
+              style={{ userSelect: "none" }}
+            >
               {nodeCheck && <FormattedMessage id={"entity_id_label"} />}
               {data.label}
             </div>
@@ -86,6 +91,7 @@ export const ContextMenuComponent = ({
               onUpdate={onUpdate}
               addToFailedList={addToFailedList}
               isFailed={isFailed}
+              onSelection={onSelection}
             />
           ) : (
             <EdgeMenuAtom data={data as GraphEdge} />
