@@ -254,26 +254,37 @@ export const GraphViewComponent = () => {
                   className={`btn btn-success btn-sm py-1 px-2 ${headerStyle.headerText}`}
                   style={{ display: "block", width: "100%" }}
                 >
-                  <IconAtom
-                    iconID="#it-upload"
-                    className="icon-sm icon-white"
-                    isRounded={false}
-                  />
-                  <span style={{ marginLeft: "5px" }}>Upload View</span>
+                  <div className="row">
+                    <div className="col-2">
+                      <IconAtom
+                        iconID="#it-upload"
+                        className="icon-sm icon-white"
+                        isRounded={false}
+                      />
+                    </div>
+                    <div className="col-md-auto">
+                      <span>Upload View</span>
+                    </div>
+                  </div>
                 </button>
               </Link>
-
               <button
                 className={`btn btn-success btn-sm py-1 px-2 mt-2 ${headerStyle.headerText}`}
                 style={{ display: "block", width: "100%" }}
                 onClick={() => showModal("export-modal")}
               >
-                <IconAtom
-                  iconID="#it-download"
-                  className="icon-sm icon-white"
-                  isRounded={false}
-                />
-                <span style={{ marginLeft: "5px" }}>Export</span>
+                <div className="row align-items-start">
+                  <div className="col-2">
+                    <IconAtom
+                      iconID="#it-download"
+                      className="icon-sm icon-white"
+                      isRounded={false}
+                    />
+                  </div>
+                  <div className="col-md-auto">
+                    <span>Export</span>
+                  </div>
+                </div>
               </button>
               <button
                 className={`btn btn-success btn-sm py-1 px-2 mt-2 ${headerStyle.headerText}`}
@@ -293,12 +304,18 @@ export const GraphViewComponent = () => {
                   }
                 }}
               >
-                <IconAtom
-                  iconID="#it-bookmark"
-                  className="icon-sm icon-white"
-                  isRounded={false}
-                />
-                <span style={{ marginLeft: "5px" }}>Save</span>
+                <div className="row">
+                  <div className="col-2">
+                    <IconAtom
+                      iconID="#it-bookmark"
+                      className="icon-sm icon-white"
+                      isRounded={false}
+                    />
+                  </div>
+                  <div className="col-md-auto">
+                    <span>Save</span>
+                  </div>
+                </div>
               </button>
               {tc && (
                 <button
@@ -310,12 +327,18 @@ export const GraphViewComponent = () => {
                     showNotification();
                   }}
                 >
-                  <IconAtom
-                    iconID="#it-plug"
-                    className="icon-sm icon-white"
-                    isRounded={false}
-                  />
-                  <span style={{ marginLeft: "5px" }}>Export TC</span>
+                  <div className="row">
+                    <div className="col-2">
+                      <IconAtom
+                        iconID="#it-plug"
+                        className="icon-sm icon-white"
+                        isRounded={false}
+                      />
+                    </div>
+                    <div className="col-md-auto">
+                      <span>Export TC</span>
+                    </div>
+                  </div>
                 </button>
               )}
             </div>
