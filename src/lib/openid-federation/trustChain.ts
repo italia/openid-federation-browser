@@ -253,6 +253,100 @@ export const traverseUp = async (
   return graph;
 };
 
+export const evaluateTrustChain = (
+  { nodes, edges }: Graph,
+  selected: string[],
+): string | undefined => {
+  const selectedNodes = nodes.filter((node) => selected.includes(node.id));
+  const leafNodesNumber = selectedNodes.filter(
+    (node) => node.info.type === "Leaf",
+  ).length;
+  const anchorNodesNumber = selectedNodes.filter(
+    (node) => node.info.type === "Trust Anchor",
+  ).length;
+
+  if (leafNodesNumber !== 1 || anchorNodesNumber !== 1) {
+    return undefined;
+  }
+
+  const affectedEdges = edges.filter(
+    (edge) =>
+      selected.find(
+        (node) => node === edge.source && selected.includes(edge.target),
+      ) ||
+      selected.find(
+        (node) => node === edge.target && selected.includes(edge.source),
+      ),
+  );
+
+  if (affectedEdges.length === 0) {
+    return undefined;
+  } else if (affectedEdges.length !== selectedNodes.length - 1) {
+    return undefined;
+  }
+
+  const orderedEdges = affectedEdges.sort((a, b) => {
+    const aSource = selectedNodes.find((node) => node.id === a.source);
+    const aTarget = selectedNodes.find((node) => node.id === a.target);
+    const bSource = selectedNodes.find((node) => node.id === b.source);
+    const bTarget = selectedNodes.find((node) => node.id === b.target);
+
+    if (aSource && aTarget && bSource && bTarget) {
+      if (
+        aSource.info.type === "Trust Anchor" &&
+        aTarget.info.type === "Intermediate"
+      ) {
+        return -1;
+      } else if (
+        bSource.info.type === "Trust Anchor" &&
+        bTarget.info.type === "Intermediate"
+      ) {
+        return 1;
+      } else if (
+        aSource.info.type === "Intermediate" &&
+        aTarget.info.type === "Leaf"
+      ) {
+        return -1;
+      } else if (
+        bSource.info.type === "Intermediate" &&
+        bTarget.info.type === "Leaf"
+      ) {
+        return 1;
+      } else {
+        return 0;
+      }
+    } else {
+      return 0;
+    }
+  });
+
+  let currentEdge = orderedEdges[0];
+
+  for (let i = 1; i < orderedEdges.length; i++) {
+    if (currentEdge.target === orderedEdges[i].source) {
+      currentEdge = orderedEdges[i];
+    } else {
+      return undefined;
+    }
+  }
+
+  const reversedOrderedEdges = orderedEdges.reverse();
+
+  const trustChain = reversedOrderedEdges.map((edge) => edge.subStatement?.jwt);
+  trustChain.unshift(
+    selectedNodes.find((node) => node.id == reversedOrderedEdges[0].target)
+      ?.info.ec.jwt as string,
+  );
+  trustChain.push(
+    selectedNodes.find(
+      (node) =>
+        node.id == reversedOrderedEdges[reversedOrderedEdges.length - 1].source,
+    )?.info.ec.jwt as string,
+  );
+
+  return JSON.stringify(trustChain);
+};
+
 export const exportView = (
   graph: Graph,
   staticExport: boolean = false,

@@ -15,7 +15,7 @@ import { WarningModalAtom } from "../atoms/WarningModal";
 import { showModal, hideModal } from "../lib/utils";
 import { persistSession } from "../lib/utils";
 import { InputModalAtom } from "../atoms/InputModal";
-import { Link } from "react-router-dom";
+import { evaluateTrustChain } from "../lib/openid-federation/trustChain";
 
 enum ShowElement {
   Loading = "loading-atom",
@@ -173,7 +173,10 @@ export const GraphViewComponent = () => {
     setTc(JSON.stringify(trustChain));
   };
 
-  useEffect(() => evaluateTrustChain(), [selected]);
+  useEffect(
+    () => setTc(evaluateTrustChain({ nodes, edges }, selected)),
+    [selected],
+  );
 
   useEffect(() => {
     window.addEventListener("trustAnchorUrl", () => {
