@@ -20,7 +20,7 @@ export const SlimHeader = () => {
                   </a>
                 </div>
                 <div className="col-8">
-                  <a href="/" className="d-lg-block navbar-brand">
+                  <a href="/" className="d-lg-block navbar-brand mt-1">
                     <h1 className={style.pageTitle}>
                       <FormattedMessage id="title" />
                     </h1>
