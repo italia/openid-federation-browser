@@ -75,9 +75,9 @@ export const GraphViewComponent = () => {
       setNotification(`Saved: ${sessionName.replace("session-", "")}`);
       persistSession();
       showNotification();
-        } else {
+    } else {
       showModal("save-title-modal");
-      }
+    }
   };
 
   const onExport = () => showModal("export-modal");

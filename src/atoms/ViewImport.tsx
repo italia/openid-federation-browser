@@ -2,10 +2,11 @@ import { useState, ChangeEvent } from "react";
 import { FormattedMessage } from "react-intl";
 import { getTranslations } from "../lib/translations";
 import { useSearchParams } from "react-router-dom";
+import style from "../css/ContextMenu.module.css";
 
 export const ViewImportAtom = () => {
   const [file, setFile] = useState<string | undefined>(undefined);
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [, setSearchParams] = useSearchParams();
 
   const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -44,7 +45,9 @@ export const ViewImportAtom = () => {
             onClick={() => uploadFile()}
             disabled={!file}
           >
-            <FormattedMessage id="trust_anchor_url_button" />
+            <span className={style.contextAccordinButton}>
+              <FormattedMessage id="trust_anchor_url_button" />
+            </span>
           </button>
         </div>
       </div>
