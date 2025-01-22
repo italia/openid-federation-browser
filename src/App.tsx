@@ -8,7 +8,7 @@ function App() {
   return (
     <div className="App">
       <IntlProvider
-        locale={navigator.language}
+        locale={navigator.language.split(",")[0]}
         defaultLocale="en-EN"
         messages={getTranslations(navigator.language)}
       >

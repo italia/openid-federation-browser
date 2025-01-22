@@ -56,7 +56,7 @@ export const ContextMenuComponent = ({
   return (
     <div ref={ref}>
       <IntlProvider
-        locale={navigator.language}
+        locale={navigator.language.split(",")[0]}
         defaultLocale="en-EN"
         messages={getTranslations(navigator.language)}
       >
