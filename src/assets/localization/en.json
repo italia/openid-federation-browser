@@ -59,7 +59,7 @@
   "validate_schema": "Validate Schema",
   "invalid_schema": "Invalid Schema",
   "valid_schema": "Valid Schema",
-  "filter_discovered": "Filter discovered entities",
+  "filter_discovered": "Do not list already uploaded entities",
   "current_page": "Current Page",
   "save_name_title": "Insert the name of the View",
   "save_name_message": "Insert the name of the View to save it",
