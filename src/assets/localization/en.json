@@ -69,6 +69,7 @@
   "restore_view_file": "Restore View from File",
   "restore_view_previous": "Restore View from saved Previous Sessions",
   "upload_view": "Upload View",
-  "export": "Export",
-  "export_tc": "Export TC"
+  "export": "Export View",
+  "export_tc": "Export TC",
+  "save_view": "Save View"
 }

@@ -70,5 +70,6 @@
   "restore_view_previous": "Ripristina View precedente",
   "upload_view": "Upload View",
   "export": "Esporta",
-  "export_tc": "Esporta TC"
+  "export_tc": "Esporta TC",
+  "save_view": "Salva View"
 }

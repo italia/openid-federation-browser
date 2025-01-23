@@ -84,7 +84,7 @@ export const GraphControlMenuAtom = ({
           </div>
           <div className="col-md-auto">
             <span className={style.contextAccordinButton}>
-              <FormattedMessage id="save" />
+              <FormattedMessage id="save_view" />
             </span>
           </div>
         </div>
