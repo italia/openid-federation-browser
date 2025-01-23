@@ -14,6 +14,7 @@ function App() {
       >
         <Header />
         <BodyComponent />
+        <canvas id="canvas" style={{ display: "none" }}></canvas>
       </IntlProvider>
     </div>
   );

@@ -15,7 +15,7 @@
   "error_details": "Error Details",
   "insert_entity_node_url_option": "Insert an Entity",
   "upload_entity_view_option": "Upload View",
-  "restore_session_label": "Restore Session",
+  "restore_session_label": "Restore View",
   "node_info": "Node Information",
   "subordinate_list": "Immediate Subordinates List",
   "authority_hints_list": "Authority Hints List",
@@ -59,11 +59,16 @@
   "validate_schema": "Validate Schema",
   "invalid_schema": "Invalid Schema",
   "valid_schema": "Valid Schema",
-  "filter_discovered": "Filter discovered entities",
+  "filter_discovered": "Do not list already uploaded entities",
   "current_page": "Current Page",
   "save_name_title": "Insert the name of the View",
   "save_name_message": "Insert the name of the View to save it",
   "save": "Save",
-  "no_session_available": "No session available",
-  "trust_marks": "Trust Marks"
+  "no_session_available": "No previous session available",
+  "trust_marks": "Trust Marks",
+  "restore_view_file": "Restore View from File",
+  "restore_view_previous": "Restore View from saved Previous Sessions",
+  "upload_view": "Upload View",
+  "export": "Export",
+  "export_tc": "Export TC"
 }

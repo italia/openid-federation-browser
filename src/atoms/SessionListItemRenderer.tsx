@@ -3,23 +3,36 @@ import { PaginatedListAtom } from "./PaginatedList";
 import { IconAtom } from "./Icon";
 import { getSessionsList, restoreSession } from "../lib/utils";
 import { deleteSession } from "../lib/utils";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { FormattedMessage } from "react-intl";
+import { ViewImportAtom } from "./ViewImport";
+import style from "../css/ContextMenu.module.css";
 
 export const SessionListItemRendererAtom = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [sessions, setSessions] = useState<any[]>(getSessionsList());
-  const [refresh, setRefresh] = useState(false);
 
   const ItemsRenderer = ({ items }: { items: any[] }) => {
-    console.log(items);
     return (
-      <ul style={{ listStyleType: "none" }}>
-        {items &&
-          items.map((d) => (
-            <li key={d.sessionName}>
-              <div className="row justify-content-md-start">
-                <div className="col-md-auto">
+      <table style={{ listStyleType: "none", width: "100%" }}>
+        <tbody>
+          {items &&
+            items.map((d) => (
+              <tr key={d.sessionName}>
+                <th>
+                  <img
+                    src={d.screenShot}
+                    style={{ width: "10rem", height: "5rem" }}
+                    alt="screenshot"
+                  />
+                </th>
+                <th>
+                  <span className={style.contextAccordinText}>{d.label}</span>
+                </th>
+                <th>
+                  <span className={style.contextAccordinText}>{d.date}</span>
+                </th>
+                <th>
                   <button
                     className={`btn btn-icon btn-sm py-0 px-1 btn-success`}
                     title="Load"
@@ -30,14 +43,12 @@ export const SessionListItemRendererAtom = () => {
                     }}
                   >
                     <IconAtom
-                      iconID="#it-search"
+                      iconID="#it-plus"
                       className="icon-xs icon-white"
                       isRounded={false}
                     />
-                    Load
+                    <span className={style.contextAccordinButton}>Restore</span>
                   </button>
-                </div>
-                <div className="col-md-auto">
                   <button
                     className={`btn btn-icon btn-sm py-0 px-1 btn-danger`}
                     title="Delete"
@@ -45,46 +56,60 @@ export const SessionListItemRendererAtom = () => {
                     onClick={() => {
                       deleteSession(d.sessionName);
                       setSessions([...getSessionsList()]);
-                      setRefresh(false);
                     }}
                   >
                     <IconAtom
-                      iconID="#it-search"
+                      iconID="#it-minus"
                       className="icon-xs icon-white"
                       isRounded={false}
                     />
-                    Delete
+                    <span className={style.contextAccordinButton}>Delete</span>
                   </button>
-                </div>
-                <div className="col-md-auto">{d.label}</div>
-              </div>
-            </li>
-          ))}
-      </ul>
+                </th>
+              </tr>
+            ))}
+        </tbody>
+      </table>
     );
   };
 
-  useEffect(() => {
-    console.error("sessions", sessions);
-    setRefresh(true);
-  }, [sessions]);
-
   return (
     <>
-      {sessions.length === 0 && (
-        <div>
-          <h5>
-            <FormattedMessage id="no_session_available" />
-          </h5>
+      <div className="row">
+        <div className="col">
+          <h6>
+            <FormattedMessage id="restore_view_file" />
+          </h6>
         </div>
-      )}
-      {refresh && (
-        <PaginatedListAtom
-          itemsPerPage={5}
-          items={sessions}
-          ItemsRenderer={ItemsRenderer}
-          filterFn={undefined}
-        />
+      </div>
+      <div className="row mt-2">
+        <div className="col">
+          <ViewImportAtom />
+        </div>
+      </div>
+      <hr />
+      {sessions.length === 0 ? (
+        <div>
+          <h6>
+            <FormattedMessage id="no_session_available" />
+          </h6>
+        </div>
+      ) : (
+        <>
+          <div className="row">
+            <div className="col">
+              <h6>
+                <FormattedMessage id="restore_view_previous" />
+              </h6>
+            </div>
+          </div>
+          <PaginatedListAtom
+            itemsPerPage={5}
+            items={sessions}
+            ItemsRenderer={ItemsRenderer}
+            filterFn={undefined}
+          />
+        </>
       )}
     </>
   );

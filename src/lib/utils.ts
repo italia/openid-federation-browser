@@ -84,7 +84,7 @@ export const downloadJsonFile = (
   a.remove();
 };
 
-export const persistSession = () => {
+export const persistSession = async (screenShot: string) => {
   let currentSessionName = sessionStorage.getItem("currentSessionName");
 
   if (!currentSessionName) {
@@ -93,26 +93,86 @@ export const persistSession = () => {
     currentSessionName = newName;
   }
 
-  localStorage.setItem(
-    currentSessionName,
-    sessionStorage.getItem("currentSession") || "",
-  );
+  const croppedImage = await cropImage(screenShot, 60, 40);
+
+  const currentSession = JSON.stringify({
+    screenShot: croppedImage,
+    graph: sessionStorage.getItem("currentSession") || "",
+    date: new Date().toLocaleString(),
+  });
+
+  localStorage.setItem(currentSessionName, currentSession);
 };
 
 export const restoreSession = (sessionName: string) => {
   const currentSession = localStorage.getItem(sessionName);
+  if (!currentSession) return;
+
   sessionStorage.setItem("currentSessionName", sessionName);
-  sessionStorage.setItem("currentSession", currentSession || "");
+  sessionStorage.setItem("currentSession", JSON.parse(currentSession)["graph"]);
 };
 
 export const getSessionsList = () => {
   return Object.keys(localStorage)
     .filter((key) => key.startsWith("session-"))
     .map((key) => {
-      return { label: key.replace("session-", ""), sessionName: key };
+      const data = JSON.parse(localStorage.getItem(key) || "");
+
+      return {
+        label: key.replace("session-", ""),
+        sessionName: key,
+        date: data.date,
+        screenShot: data.screenShot,
+      };
     });
 };
 
 export const deleteSession = (sessionName: string) => {
   localStorage.removeItem(sessionName);
+};
+
+export const cropImage = (
+  image: string,
+  percentageX: number,
+  percentageY: number,
+) => {
+  const originalImage = new Image();
+  originalImage.src = image;
+
+  const canvas = document.getElementById("canvas") as HTMLCanvasElement;
+
+  const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
+
+  return new Promise((resolve, reject) => {
+    originalImage.addEventListener("load", function () {
+      const width = originalImage.width;
+      const height = originalImage.height;
+
+      const size = {
+        left: (width - (width * percentageX) / 100) / 2,
+        top: (height - (height * percentageY) / 100) / 2,
+        right: (width + (width * percentageX) / 100) / 2,
+        bottom: (height + (height * percentageY) / 100) / 2,
+      };
+
+      const newWidth = width - (width * percentageX) / 100;
+      const newHeight = height - (height * percentageY) / 100;
+
+      canvas.width = newWidth;
+      canvas.height = newHeight;
+
+      ctx.drawImage(
+        originalImage,
+        size.left,
+        size.top,
+        size.right,
+        size.bottom,
+        0,
+        0,
+        newWidth,
+        newHeight,
+      );
+      return resolve(canvas.toDataURL());
+    });
+  });
 };

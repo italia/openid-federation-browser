@@ -63,7 +63,9 @@ export const UrlInputAtom = () => {
             style={{ fontSize: "14px" }}
             onClick={() => setDoCheck(true)}
           >
-            <FormattedMessage id="trust_anchor_url_button" />
+            <span className={style.contextAccordinButton}>
+              <FormattedMessage id="trust_anchor_url_button" />
+            </span>
           </button>
         </div>
       </div>

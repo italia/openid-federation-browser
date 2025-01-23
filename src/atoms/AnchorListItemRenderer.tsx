@@ -2,6 +2,7 @@ import { useSearchParams } from "react-router-dom";
 import trustChainList from "../assets/trustChainList.json";
 import { PaginatedListAtom } from "./PaginatedList";
 import { IconAtom } from "./Icon";
+import style from "../css/ContextMenu.module.css";
 
 export const AnchorListItemRendererAtom = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -30,14 +31,14 @@ export const AnchorListItemRendererAtom = () => {
                     }}
                   >
                     <IconAtom
-                      iconID="#it-search"
+                      iconID="#it-plus"
                       className="icon-xs icon-white"
                       isRounded={false}
                     />
-                    Load
+                    <span className={style.contextAccordinButton}>Add</span>
                   </button>
                 </div>
-                <div className="col-md-auto">
+                <div className={`col-md-auto ${style.contextAccordinText}`}>
                   {d.name} - {d.url}
                 </div>
               </div>

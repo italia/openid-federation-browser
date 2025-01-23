@@ -1,21 +1,21 @@
 import { useEffect, useState } from "react";
 import { discovery, traverseUp } from "../lib/openid-federation/trustChain";
-import { GraphCanvas } from "reagraph";
+import { GraphCanvas, GraphCanvasRef } from "reagraph";
 import { GraphNode, GraphEdge, Graph } from "../lib/graph-data/types";
 import { ContextMenuComponent } from "./ContextMenu";
 import { LoadingAtom } from "../atoms/Loading";
-import styles from "../css/BodyComponent.module.css";
-import headerStyle from "../css/Header.module.css";
 import { fromNodeInfo } from "../lib/graph-data/utils";
 import { ErrorViewAtom } from "../atoms/ErrorView";
-import { IconAtom } from "../atoms/Icon";
 import { downloadJsonFile } from "../lib/utils";
 import { exportView, importView } from "../lib/openid-federation/trustChain";
 import { WarningModalAtom } from "../atoms/WarningModal";
-import { showModal, hideModal } from "../lib/utils";
+import { showModal } from "../lib/utils";
 import { persistSession } from "../lib/utils";
 import { InputModalAtom } from "../atoms/InputModal";
-import { Link } from "react-router-dom";
+import { GraphControlMenuAtom } from "../atoms/GraphControlMenu";
+import { evaluateTrustChain } from "../lib/openid-federation/trustChain";
+import styles from "../css/BodyComponent.module.css";
+import { useRef } from "react";
 
 enum ShowElement {
   Loading = "loading-atom",
@@ -24,6 +24,7 @@ enum ShowElement {
 }
 
 export const GraphViewComponent = () => {
+  const ref = useRef<GraphCanvasRef | null>(null);
   const [update, setUpdate] = useState(false);
   const [nodes, setNodes] = useState<GraphNode[]>([]);
   const [edges, setEdges] = useState<GraphEdge[]>([]);
@@ -69,111 +70,35 @@ export const GraphViewComponent = () => {
     }
   };
 
-  const evaluateTrustChain = () => {
-    const selectedNodes = nodes.filter((node) => selected.includes(node.id));
-    const leafNodesNumber = selectedNodes.filter(
-      (node) => node.info.type === "Leaf",
-    ).length;
-    const anchorNodesNumber = selectedNodes.filter(
-      (node) => node.info.type === "Trust Anchor",
-    ).length;
-
-    if (leafNodesNumber !== 1 || anchorNodesNumber !== 1) {
-      console.log("Invalid selection");
-      setTc(undefined);
-      return;
-    }
-
-    const affectedEdges = edges.filter(
-      (edge) =>
-        selected.find(
-          (node) => node === edge.source && selected.includes(edge.target),
-        ) ||
-        selected.find(
-          (node) => node === edge.target && selected.includes(edge.source),
-        ),
-    );
-
-    if (affectedEdges.length === 0) {
-      console.log("No edges");
-      setTc(undefined);
-      return;
-    } else if (affectedEdges.length !== selectedNodes.length - 1) {
-      console.log(affectedEdges);
-      console.log(affectedEdges.length, selectedNodes.length);
-      console.log("Invalid edges");
-      setTc(undefined);
-      return;
-    }
-
-    const orderedEdges = affectedEdges.sort((a, b) => {
-      const aSource = selectedNodes.find((node) => node.id === a.source);
-      const aTarget = selectedNodes.find((node) => node.id === a.target);
-      const bSource = selectedNodes.find((node) => node.id === b.source);
-      const bTarget = selectedNodes.find((node) => node.id === b.target);
-
-      if (aSource && aTarget && bSource && bTarget) {
-        if (
-          aSource.info.type === "Trust Anchor" &&
-          aTarget.info.type === "Intermediate"
-        ) {
-          return -1;
-        } else if (
-          bSource.info.type === "Trust Anchor" &&
-          bTarget.info.type === "Intermediate"
-        ) {
-          return 1;
-        } else if (
-          aSource.info.type === "Intermediate" &&
-          aTarget.info.type === "Leaf"
-        ) {
-          return -1;
-        } else if (
-          bSource.info.type === "Intermediate" &&
-          bTarget.info.type === "Leaf"
-        ) {
-          return 1;
-        } else {
-          return 0;
-        }
-      } else {
-        return 0;
-      }
-    });
-
-    let currentEdge = orderedEdges[0];
-
-    for (let i = 1; i < orderedEdges.length; i++) {
-      if (currentEdge.target === orderedEdges[i].source) {
-        currentEdge = orderedEdges[i];
-      } else {
-        console.log("Invalid chain");
-        setTc(undefined);
-        return;
-      }
-    }
-
-    const reversedOrderedEdges = orderedEdges.reverse();
-
-    const trustChain = reversedOrderedEdges.map(
-      (edge) => edge.subStatement?.jwt,
-    );
-    trustChain.unshift(
-      selectedNodes.find((node) => node.id == reversedOrderedEdges[0].target)
-        ?.info.ec.jwt as string,
-    );
-    trustChain.push(
-      selectedNodes.find(
-        (node) =>
-          node.id ==
-          reversedOrderedEdges[reversedOrderedEdges.length - 1].source,
-      )?.info.ec.jwt as string,
-    );
-
-    setTc(JSON.stringify(trustChain));
+  const saveSession = (name: string) => {
+    setNotification(`Saved: ${name.replace("session-", "")}`);
+    persistSession(ref.current?.exportCanvas() as string);
+    showNotification();
   };
 
-  useEffect(() => evaluateTrustChain(), [selected]);
+  const onSessionSave = () => {
+    const sessionName = sessionStorage.getItem("currentSessionName");
+
+    if (sessionName) {
+      saveSession(sessionName);
+    } else {
+      showModal("save-title-modal");
+    }
+  };
+
+  const onExport = () => showModal("export-modal");
+
+  const onTCCopy = () => {
+    if (!tc) return;
+    navigator.clipboard.writeText(tc);
+    setNotification("Trust Chain copied to clipboard");
+    showNotification();
+  };
+
+  useEffect(
+    () => setTc(evaluateTrustChain({ nodes, edges }, selected)),
+    [selected],
+  );
 
   useEffect(() => {
     window.addEventListener("trustAnchorUrl", () => {
@@ -228,7 +153,7 @@ export const GraphViewComponent = () => {
         onAccept={(name) => {
           sessionStorage.setItem("currentSessionName", `session-${name}`);
           setNotification(`Saved: ${name.replace("session-", "")}`);
-          persistSession();
+          persistSession(ref.current?.exportCanvas() as string);
           showNotification();
         }}
       />
@@ -239,87 +164,14 @@ export const GraphViewComponent = () => {
           <ErrorViewAtom error={error} />
         ) : (
           <>
-            <div
-              style={{
-                zIndex: 9,
-                position: "absolute",
-                top: 15,
-                right: 15,
-                padding: 1,
-                color: "white",
-              }}
-            >
-              <Link className="nav-link" to="/?viewUpload">
-                <button
-                  className={`btn btn-success btn-sm py-1 px-2 ${headerStyle.headerText}`}
-                  style={{ display: "block", width: "100%" }}
-                >
-                  <IconAtom
-                    iconID="#it-upload"
-                    className="icon-sm icon-white"
-                    isRounded={false}
-                  />
-                  <span style={{ marginLeft: "5px" }}>Upload View</span>
-                </button>
-              </Link>
-
-              <button
-                className={`btn btn-success btn-sm py-1 px-2 mt-2 ${headerStyle.headerText}`}
-                style={{ display: "block", width: "100%" }}
-                onClick={() => showModal("export-modal")}
-              >
-                <IconAtom
-                  iconID="#it-download"
-                  className="icon-sm icon-white"
-                  isRounded={false}
-                />
-                <span style={{ marginLeft: "5px" }}>Export</span>
-              </button>
-              <button
-                className={`btn btn-success btn-sm py-1 px-2 mt-2 ${headerStyle.headerText}`}
-                style={{ display: "block", width: "100%" }}
-                onClick={() => {
-                  const sessionName =
-                    sessionStorage.getItem("currentSessionName");
-
-                  if (sessionName) {
-                    setNotification(
-                      `Saved: ${sessionName.replace("session-", "")}`,
-                    );
-                    persistSession();
-                    showNotification();
-                  } else {
-                    showModal("save-title-modal");
-                  }
-                }}
-              >
-                <IconAtom
-                  iconID="#it-bookmark"
-                  className="icon-sm icon-white"
-                  isRounded={false}
-                />
-                <span style={{ marginLeft: "5px" }}>Save</span>
-              </button>
-              {tc && (
-                <button
-                  className={`btn btn-success btn-sm py-1 px-2 mt-2 ${headerStyle.headerText}`}
-                  style={{ display: "block", width: "100%" }}
-                  onClick={() => {
-                    navigator.clipboard.writeText(tc);
-                    setNotification("Trust Chain copied to clipboard");
-                    showNotification();
-                  }}
-                >
-                  <IconAtom
-                    iconID="#it-plug"
-                    className="icon-sm icon-white"
-                    isRounded={false}
-                  />
-                  <span style={{ marginLeft: "5px" }}>Export TC</span>
-                </button>
-              )}
-            </div>
+            <GraphControlMenuAtom
+              onSessionSave={onSessionSave}
+              onExport={onExport}
+              onTCCopy={onTCCopy}
+              showTCButton={tc != undefined}
+            />
             <GraphCanvas
+              ref={ref}
               nodes={nodes}
               edges={edges}
               onNodeClick={(node) => {
