@@ -43,6 +43,15 @@ export const updateGraph = (node: NodeInfo, graph: Graph): Graph => {
     ];
   }
 
+  const immDependants = node.immDependants;
+
+  const toConnectNodes = nodes.filter((n) => immDependants.includes(n.id));
+
+  edges = [
+    ...edges,
+    ...toConnectNodes.map((pNode) => genEdge(node, pNode.info)),
+  ];
+
   nodes.forEach((n) => {
     if (n.id === node.ec.entity) return;
 
@@ -62,15 +71,6 @@ export const updateGraph = (node: NodeInfo, graph: Graph): Graph => {
       edges = [...edges, genEdge(node, n.info)];
     }
   });
-
-  const immDependants = node.immDependants;
-
-  const toConnectNodes = nodes.filter((n) => immDependants.includes(n.id));
-
-  edges = [
-    ...edges,
-    ...toConnectNodes.map((pNode) => genEdge(node, pNode.info)),
-  ];
 
   return { nodes, edges };
 };
