@@ -14,11 +14,24 @@ export const SessionListItemRendererAtom = () => {
 
   const ItemsRenderer = ({ items }: { items: any[] }) => {
     return (
-      <table style={{ listStyleType: "none" }}>
+      <table style={{ listStyleType: "none", width: "100%" }}>
         <tbody>
           {items &&
             items.map((d) => (
               <tr key={d.sessionName}>
+                <th>
+                  <img
+                    src={d.screenShot}
+                    style={{ width: "10rem", height: "5rem" }}
+                    alt="screenshot"
+                  />
+                </th>
+                <th>
+                  <span className={style.contextAccordinText}>{d.label}</span>
+                </th>
+                <th>
+                  <span className={style.contextAccordinText}>{d.date}</span>
+                </th>
                 <th>
                   <button
                     className={`btn btn-icon btn-sm py-0 px-1 btn-success`}
@@ -52,19 +65,6 @@ export const SessionListItemRendererAtom = () => {
                     />
                     <span className={style.contextAccordinButton}>Delete</span>
                   </button>
-                </th>
-                <th>
-                  <img
-                    src={d.screenShot}
-                    style={{ width: "10rem", height: "5rem" }}
-                    alt="screenshot"
-                  />
-                </th>
-                <th>
-                  <span className={style.contextAccordinText}>{d.date}</span>
-                </th>
-                <th>
-                  <span className={style.contextAccordinText}>{d.label}</span>
                 </th>
               </tr>
             ))}
