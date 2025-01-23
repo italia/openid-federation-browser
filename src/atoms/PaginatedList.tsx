@@ -53,7 +53,7 @@ export const PaginatedListAtom = ({
   return (
     <div
       className={`it-list-wrapper container`}
-      style={{ width: "100%", padding: "14px 24px" }}
+      style={{ width: "100%" }}
     >
       {filterFn && (
         <div className="row justify-content-md-start">
@@ -69,7 +69,7 @@ export const PaginatedListAtom = ({
         </div>
       )}
       <div className="row justify-content-md-start pt-4">
-        <div className="col-md-auto">
+        <div className="col" >
           <ItemsRenderer items={currentItems} />
         </div>
       </div>
