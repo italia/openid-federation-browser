@@ -5,7 +5,7 @@
   "cors_warning": "Neither CORS proxy or CORS disabler Plug-in are set. You may experience issues with fetching data.",
   "read_more": "Read More",
   "insert_anchor_url_label": "Insert Trust Anchor HTTP URL",
-  "insert_entity_url_label": "Insert Entity Anchor HTTP URL",
+  "insert_entity_url_label": "Insert Entity ID HTTP URL",
   "view_upload_label": "View/Upload",
   "current_view_label": "Current View",
   "entity_id_label": "Entity ID: ",
@@ -69,6 +69,7 @@
   "restore_view_file": "Restore View from File",
   "restore_view_previous": "Restore View from saved Previous Sessions",
   "upload_view": "Upload View",
-  "export": "Export",
-  "export_tc": "Export TC"
+  "export": "Export View",
+  "export_tc": "Export TC",
+  "save_view": "Save View"
 }

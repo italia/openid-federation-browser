@@ -9,7 +9,7 @@ import { ViewImportAtom } from "./ViewImport";
 import style from "../css/ContextMenu.module.css";
 
 export const SessionListItemRendererAtom = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [, setSearchParams] = useSearchParams();
   const [sessions, setSessions] = useState<any[]>(getSessionsList());
 
   const ItemsRenderer = ({ items }: { items: any[] }) => {

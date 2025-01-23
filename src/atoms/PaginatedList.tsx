@@ -24,19 +24,6 @@ export const PaginatedListAtom = ({
   const [pageCount, setPageCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(0);
 
-  const setCurrentItemsBySearch = (searchValue: string, itemOffset: number) => {
-    const endOffset = itemOffset + itemsPerPage;
-    const filteredItems = filterFn
-      ? items.filter((item) => filterFn(item, searchValue))
-      : items;
-    const currentItems = filteredItems.slice(itemOffset, endOffset);
-    const pageCount = Math.ceil(filteredItems.length / itemsPerPage);
-
-    setCurrentItems(currentItems);
-    setPageCount(pageCount);
-    onItemsFiltered && onItemsFiltered(filteredItems);
-  };
-
   const handlePageClick = (event: { selected: number }) => {
     const newOffset = (event.selected * itemsPerPage) % items.length;
     setCurrentPage(event.selected);
@@ -46,14 +33,27 @@ export const PaginatedListAtom = ({
   const changeSearchValue = (e: any) => setSearchValue(e.target.value);
 
   useEffect(
-    () => setCurrentItemsBySearch(searchValue, itemOffset),
+    () => {
+      const endOffset = itemOffset + itemsPerPage;
+      const filteredItems = filterFn
+        ? items.filter((item) => filterFn(item, searchValue))
+        : items;
+      const currentItems = filteredItems.slice(itemOffset, endOffset);
+      const pageCount = Math.ceil(filteredItems.length / itemsPerPage);
+  
+      setCurrentItems(currentItems);
+      setPageCount(pageCount);
+      onItemsFiltered && onItemsFiltered(filteredItems);
+    },
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [searchValue, itemOffset, items],
   );
 
   return (
     <div
       className={`it-list-wrapper container`}
-      style={{ width: "100%", padding: "14px 24px" }}
+      style={{ width: "100%" }}
     >
       {filterFn && (
         <div className="row justify-content-md-start">
@@ -69,7 +69,7 @@ export const PaginatedListAtom = ({
         </div>
       )}
       <div className="row justify-content-md-start pt-4">
-        <div className="col-md-auto">
+        <div className="col" >
           <ItemsRenderer items={currentItems} />
         </div>
       </div>
