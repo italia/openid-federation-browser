@@ -42,10 +42,9 @@ export const GraphControlMenuAtom = ({
               />
             </div>
             <div className="col-md-auto">
-                
               <span className={style.contextAccordinButton}>
                 <FormattedMessage id="upload_view" />
-            </span>
+              </span>
             </div>
           </div>
         </button>
@@ -64,7 +63,9 @@ export const GraphControlMenuAtom = ({
             />
           </div>
           <div className="col-md-auto">
-            <span className={style.contextAccordinButton}><FormattedMessage id="export" /></span>
+            <span className={style.contextAccordinButton}>
+              <FormattedMessage id="export" />
+            </span>
           </div>
         </div>
       </button>
@@ -82,7 +83,9 @@ export const GraphControlMenuAtom = ({
             />
           </div>
           <div className="col-md-auto">
-            <span className={style.contextAccordinButton}><FormattedMessage id="save" /></span>
+            <span className={style.contextAccordinButton}>
+              <FormattedMessage id="save" />
+            </span>
           </div>
         </div>
       </button>
@@ -101,7 +104,9 @@ export const GraphControlMenuAtom = ({
               />
             </div>
             <div className="col-md-auto">
-              <span className={style.contextAccordinButton}><FormattedMessage id="export_tc" /></span>
+              <span className={style.contextAccordinButton}>
+                <FormattedMessage id="export_tc" />
+              </span>
             </div>
           </div>
         </button>

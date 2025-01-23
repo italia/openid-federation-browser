@@ -14,12 +14,12 @@ export const SessionListItemRendererAtom = () => {
 
   const ItemsRenderer = ({ items }: { items: any[] }) => {
     return (
-      <ul style={{ listStyleType: "none" }}>
-        {items &&
-          items.map((d) => (
-            <li key={d.sessionName}>
-              <div className="row justify-content-md-start">
-                <div className="col-md-auto">
+      <table style={{ listStyleType: "none" }}>
+        <tbody>
+          {items &&
+            items.map((d) => (
+              <tr key={d.sessionName}>
+                <th>
                   <button
                     className={`btn btn-icon btn-sm py-0 px-1 btn-success`}
                     title="Load"
@@ -36,8 +36,6 @@ export const SessionListItemRendererAtom = () => {
                     />
                     <span className={style.contextAccordinButton}>Restore</span>
                   </button>
-                </div>
-                <div className="col-md-auto">
                   <button
                     className={`btn btn-icon btn-sm py-0 px-1 btn-danger`}
                     title="Delete"
@@ -54,12 +52,24 @@ export const SessionListItemRendererAtom = () => {
                     />
                     <span className={style.contextAccordinButton}>Delete</span>
                   </button>
-                </div>
-                <div className="col-md-auto">{d.label}</div>
-              </div>
-            </li>
-          ))}
-      </ul>
+                </th>
+                <th>
+                  <img
+                    src={d.screenShot}
+                    style={{ width: "10rem", height: "5rem" }}
+                    alt="screenshot"
+                  />
+                </th>
+                <th>
+                  <span className={style.contextAccordinText}>{d.date}</span>
+                </th>
+                <th>
+                  <span className={style.contextAccordinText}>{d.label}</span>
+                </th>
+              </tr>
+            ))}
+        </tbody>
+      </table>
     );
   };
 

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { discovery, traverseUp } from "../lib/openid-federation/trustChain";
-import { GraphCanvas } from "reagraph";
+import { GraphCanvas, GraphCanvasRef } from "reagraph";
 import { GraphNode, GraphEdge, Graph } from "../lib/graph-data/types";
 import { ContextMenuComponent } from "./ContextMenu";
 import { LoadingAtom } from "../atoms/Loading";
@@ -15,6 +15,7 @@ import { InputModalAtom } from "../atoms/InputModal";
 import { GraphControlMenuAtom } from "../atoms/GraphControlMenu";
 import { evaluateTrustChain } from "../lib/openid-federation/trustChain";
 import styles from "../css/BodyComponent.module.css";
+import { useRef } from "react";
 
 enum ShowElement {
   Loading = "loading-atom",
@@ -23,6 +24,7 @@ enum ShowElement {
 }
 
 export const GraphViewComponent = () => {
+  const ref = useRef<GraphCanvasRef | null>(null);
   const [update, setUpdate] = useState(false);
   const [nodes, setNodes] = useState<GraphNode[]>([]);
   const [edges, setEdges] = useState<GraphEdge[]>([]);
@@ -68,13 +70,17 @@ export const GraphViewComponent = () => {
     }
   };
 
+  const saveSession = (name: string) => {
+    setNotification(`Saved: ${name.replace("session-", "")}`);
+    persistSession(ref.current?.exportCanvas() as string);
+    showNotification();
+  };
+
   const onSessionSave = () => {
     const sessionName = sessionStorage.getItem("currentSessionName");
 
     if (sessionName) {
-      setNotification(`Saved: ${sessionName.replace("session-", "")}`);
-      persistSession();
-      showNotification();
+      saveSession(sessionName);
     } else {
       showModal("save-title-modal");
     }
@@ -147,7 +153,7 @@ export const GraphViewComponent = () => {
         onAccept={(name) => {
           sessionStorage.setItem("currentSessionName", `session-${name}`);
           setNotification(`Saved: ${name.replace("session-", "")}`);
-          persistSession();
+          persistSession(ref.current?.exportCanvas() as string);
           showNotification();
         }}
       />
@@ -165,6 +171,7 @@ export const GraphViewComponent = () => {
               showTCButton={tc != undefined}
             />
             <GraphCanvas
+              ref={ref}
               nodes={nodes}
               edges={edges}
               onNodeClick={(node) => {
