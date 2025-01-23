@@ -48,14 +48,16 @@ export const updateGraph = (node: NodeInfo, graph: Graph): Graph => {
 
     if (
       n.info.immDependants.includes(node.ec.entity) &&
-      !edges.find((e) => e.source === n.id && e.target === node.ec.entity)
+      !edges.find((e) => e.source === n.id && e.target === node.ec.entity) &&
+      !edges.find((e) => e.source === node.ec.entity && e.target === n.id)
     ) {
       edges = [...edges, genEdge(n.info, node)];
     }
 
     if (
       n.info.ec.payload.authority_hints?.includes(node.ec.entity) &&
-      !edges.find((e) => e.source === node.ec.entity && e.target === n.id)
+      !edges.find((e) => e.source === node.ec.entity && e.target === n.id) &&
+      !edges.find((e) => e.source === n.id && e.target === node.ec.entity)
     ) {
       edges = [...edges, genEdge(node, n.info)];
     }
@@ -82,7 +84,7 @@ export const removeSubGraph = (
   id: string,
   subordinate: boolean = true,
 ): Graph => {
-  const nodes = graph.nodes.filter((node) => node.id !== id);
+  const nodes = graph.nodes.filter((node) => !node.id.startsWith(id) && !id.startsWith(node.id));
   const edges = graph.edges.filter(
     (edge) => edge.source !== id && edge.target !== id,
   );
