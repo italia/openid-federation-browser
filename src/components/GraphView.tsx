@@ -97,6 +97,8 @@ export const GraphViewComponent = () => {
 
   useEffect(
     () => setTc(evaluateTrustChain({ nodes, edges }, selected)),
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [selected],
   );
 
@@ -168,7 +170,7 @@ export const GraphViewComponent = () => {
               onSessionSave={onSessionSave}
               onExport={onExport}
               onTCCopy={onTCCopy}
-              showTCButton={tc != undefined}
+              showTCButton={tc !== undefined}
             />
             <GraphCanvas
               ref={ref}
