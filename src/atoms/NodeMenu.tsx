@@ -119,9 +119,8 @@ export const NodeMenuAtom = ({
   const isDisconnected = (node: string) => {
     return !graph.edges.some(
       (edge) =>
-        edge.source === node ||
-        (edge.target === node && edge.source === data.id) ||
-        edge.target === data.id,
+        (edge.source === node && edge.target === data.id) ||
+        (edge.target === node && edge.source === data.id)
     );
   };
 
