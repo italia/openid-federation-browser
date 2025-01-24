@@ -32,7 +32,10 @@ export const NavBarAtom = () => {
                   <ul className="navbar-nav">
                     <li className="nav-item active">
                       <Link className="nav-link" to="/?insertUrl">
-                        <span className={style.headerText} style={{padding: "2px 24px"}}>
+                        <span
+                          className={style.headerText}
+                          style={{ padding: "2px 24px" }}
+                        >
                           <FormattedMessage id="insert_trust_node_url_option" />
                         </span>
                       </Link>

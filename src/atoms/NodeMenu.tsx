@@ -69,7 +69,9 @@ export const NodeMenuAtom = ({
   const removeAuthorityHints = removeEntities(false);
 
   const isDiscovered = (dep: string) =>
-    graph.nodes.some((node) => node.id.startsWith(dep) || dep.startsWith(node.id));
+    graph.nodes.some(
+      (node) => node.id.startsWith(dep) || dep.startsWith(node.id),
+    );
 
   const removeAllEntities =
     (subordinate: boolean = false) =>
