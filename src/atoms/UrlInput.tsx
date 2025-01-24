@@ -35,6 +35,8 @@ export const UrlInputAtom = () => {
       handleCollapseVisibility("invalid-input-collapse", true);
     }
     setDoCheck(false);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [doCheck]);
 
   useEffect(() => handleKeyDownEvent("Enter", () => setDoCheck(true)), []);

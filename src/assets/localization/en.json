@@ -73,6 +73,7 @@
   "export": "Export View",
   "export_tc": "Export TC",
   "save_view": "Save View",
+  "schema_validation_url": "Schema Validation URL"
   "source": "Source",
   "target": "Target"
 }

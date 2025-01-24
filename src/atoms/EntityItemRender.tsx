@@ -1,7 +1,6 @@
 import { IconAtom } from "./Icon";
 import { truncateMiddle } from "../lib/utils";
 import style from "../css/ContextMenu.module.css";
-import { on } from "events";
 
 export interface EntityItemsRendererProps {
   isDiscovered: (dep: string) => boolean;

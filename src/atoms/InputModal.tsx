@@ -57,7 +57,7 @@ export const InputModalAtom = ({
                   onChange={changeValue}
                   placeholder={
                     placeorderID
-                      ? getTranslations(navigator.language)[placeorderID]
+                      ? getTranslations(navigator.language)[`${placeorderID}`]
                       : ""
                   }
                   style={{ fontSize: "14px" }}

@@ -155,6 +155,7 @@ export const NodeMenuAtom = ({
       return;
     }
     showModal("warning-modal");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [toDiscoverList]);
 
   useEffect(() => {
@@ -163,6 +164,7 @@ export const NodeMenuAtom = ({
     discoverNodes([discovery], graph)
       .then(handleDiscoveryResult)
       .then(() => setDiscoveryQueue(rest));
+      // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [discoveryQueue]);
 
   useEffect(() => {
@@ -171,6 +173,7 @@ export const NodeMenuAtom = ({
         ? data.info.immDependants.filter((dep) => !isDiscovered(dep))
         : data.info.immDependants,
     );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filterDiscovered]);
 
   const displayedInfo = [
@@ -299,6 +302,7 @@ export const NodeMenuAtom = ({
                 decodedPayload={data.info.ec.payload as any}
                 decodedHeader={data.info.ec.header as any}
                 validationFn={validateEntityConfiguration}
+                schemaUrl={process.env.REACT_APP_ENTITY_CONFIG_SCHEMA}
               />
             }
           />

@@ -30,12 +30,16 @@ In the .env file there are some option that can be optionally set:
 # REACT_APP_BASENAME=/
 # REACT_APP_CORS_DOCS_URL=/
 # REACT_APP_VERSION=1.0.0
+# REACT_APP_SUB_STATEMENT_SCHEMA=
+# REACT_APP_ENTITY_CONFIG_SCHEMA=
 ```
 
 - REACT_APP_CORS_PROXY: sets an url of a service that provide CORS suppression.
 - REACT_APP_BASENAME: sets a base name if the page is not served under '/' .
 - REACT_APP_CORS_DOCS_URL: sets the url where read about the CORS documentation.
 - REACT_APP_VERSION: sets the version in the header.
+- REACT_APP_SUB_STATEMENT_SCHEMA: sets the url of the schema for the subordinate statement.
+- REACT_APP_ENTITY_CONFIG_SCHEMA: sets the url of the schema for the entity configuration.
 
 ### Build
 

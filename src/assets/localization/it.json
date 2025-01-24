@@ -73,6 +73,7 @@
   "export": "Esporta",
   "export_tc": "Esporta TC",
   "save_view": "Salva View",
+  "schema_validation_url": "URL dello schema di validazione"
   "source": "Sorgente",
   "target": "Destinazione"
 }

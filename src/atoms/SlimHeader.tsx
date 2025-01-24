@@ -28,9 +28,8 @@ export const SlimHeader = () => {
                 </div>
               </div>
               <div className="it-header-slim-right-zone">
-                <a
+                <span
                   className="btn btn-primary btn-icon btn-full"
-                  href="#"
                   title="Fork on Github"
                   aria-label="Fork on Github"
                 >
@@ -42,7 +41,7 @@ export const SlimHeader = () => {
                   <span className={`d-none d-lg-block ${style.headerText}`}>
                     <FormattedMessage id="fork_on_github" />
                   </span>
-                </a>
+                </span>
                 {process.env.REACT_APP_VERSION && (
                   <div
                     className={style.headerText}
