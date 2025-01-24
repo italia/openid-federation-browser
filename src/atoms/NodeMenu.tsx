@@ -174,6 +174,7 @@ export const NodeMenuAtom = ({
   }, [filterDiscovered]);
 
   const displayedInfo = [
+    ["entity_id_label", data.info.ec.entity],
     ["federation_entity_type_label", data.info.type],
     ["immediate_subordinate_count_label", data.info.immDependants.length],
     [
