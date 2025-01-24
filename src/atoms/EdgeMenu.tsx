@@ -49,6 +49,7 @@ export const EdgeMenuAtom = ({ data }: EdgeMenuAtomProps) => {
                   decodedPayload={data.subStatement.payload as any}
                   decodedHeader={data.subStatement.header as any}
                   validationFn={validateSubordinateStatement}
+                  schemaUrl={process.env.REACT_APP_SUB_STATEMENT_SCHEMA}
                 />
               }
             />

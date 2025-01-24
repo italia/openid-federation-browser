@@ -4,6 +4,7 @@ import { FormattedMessage } from "react-intl";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { oneLight } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 type SchemaValidity = "UNKNOWN" | "VALID" | "INVALID";
 
@@ -13,6 +14,7 @@ export interface ECViewerProps {
   decodedPayload: { [key: string]: string };
   decodedHeader: { [key: string]: string };
   validationFn?: (payload: any) => Promise<boolean>;
+  schemaUrl?: string;
 }
 
 export const JWTViewer = ({
@@ -21,6 +23,7 @@ export const JWTViewer = ({
   decodedPayload,
   decodedHeader,
   validationFn,
+  schemaUrl,
 }: ECViewerProps) => {
   const decodedPayloadStr = JSON.stringify(decodedPayload, null, 4);
   const decodedHeaderStr = JSON.stringify(decodedHeader, null, 4);
@@ -77,6 +80,13 @@ export const JWTViewer = ({
                       )}
                     </span>
                   </td>
+                  {schemaUrl && (
+                    <td>
+                      <a href={schemaUrl} className={style.contextAccordinText}>
+                        <FormattedMessage id="schema_validation_url" />
+                      </a>
+                    </td>
+                  )}
                 </tr>
               </tbody>
             </table>

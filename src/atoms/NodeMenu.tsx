@@ -260,6 +260,7 @@ export const NodeMenuAtom = ({
                 decodedPayload={data.info.ec.payload as any}
                 decodedHeader={data.info.ec.header as any}
                 validationFn={validateEntityConfiguration}
+                schemaUrl={process.env.REACT_APP_ENTITY_CONFIG_SCHEMA}
               />
             }
           />

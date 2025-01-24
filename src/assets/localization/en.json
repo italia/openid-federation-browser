@@ -71,5 +71,6 @@
   "upload_view": "Upload View",
   "export": "Export View",
   "export_tc": "Export TC",
-  "save_view": "Save View"
+  "save_view": "Save View",
+  "schema_validation_url": "Schema Validation URL"
 }
