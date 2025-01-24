@@ -29,8 +29,8 @@ export const EntityItemsRenderer = ({
   const getButtonColor = (dep: string) => {
     if (isFailed(dep)) return "btn-secondary";
 
-    if(isDiscovered(dep)) {
-      if(isDisconnected(dep)) return "btn-warning";
+    if (isDiscovered(dep)) {
+      if (isDisconnected(dep)) return "btn-warning";
       return "btn-danger";
     }
 
@@ -40,8 +40,8 @@ export const EntityItemsRenderer = ({
   const getButtonIcon = (dep: string) => {
     if (isFailed(dep)) return "#it-warning";
 
-    if(isDiscovered(dep)) {
-      if(isDisconnected(dep)) return "#it-plug";
+    if (isDiscovered(dep)) {
+      if (isDisconnected(dep)) return "#it-plug";
       return "#it-minus";
     }
 
@@ -52,7 +52,7 @@ export const EntityItemsRenderer = ({
     if (isFailed(dep)) return () => {};
 
     if (isDiscovered(dep)) {
-      if(isDisconnected(dep)) return () => addEdge(dep);
+      if (isDisconnected(dep)) return () => addEdge(dep);
       return () => removeEntity(dep);
     }
 

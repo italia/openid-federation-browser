@@ -63,7 +63,9 @@ export const removeSubGraph = (
   id: string,
   subordinate: boolean = true,
 ): Graph => {
-  const nodes = graph.nodes.filter((node) => !node.id.startsWith(id) && !id.startsWith(node.id));
+  const nodes = graph.nodes.filter(
+    (node) => !node.id.startsWith(id) && !id.startsWith(node.id),
+  );
   const edges = graph.edges.filter(
     (edge) => edge.source !== id && edge.target !== id,
   );

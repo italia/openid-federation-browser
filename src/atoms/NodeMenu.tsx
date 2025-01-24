@@ -69,7 +69,9 @@ export const NodeMenuAtom = ({
   const removeAuthorityHints = removeEntities(false);
 
   const isDiscovered = (dep: string) =>
-    graph.nodes.some((node) => node.id.startsWith(dep) || dep.startsWith(node.id));
+    graph.nodes.some(
+      (node) => node.id.startsWith(dep) || dep.startsWith(node.id),
+    );
 
   const removeAllEntities =
     (subordinate: boolean = false) =>
@@ -115,24 +117,37 @@ export const NodeMenuAtom = ({
   };
 
   const isDisconnected = (node: string) => {
-    return !graph.edges.some((edge) => edge.source === node || edge.target === node && edge.source === data.id || edge.target === data.id);
-  }
+    return !graph.edges.some(
+      (edge) =>
+        edge.source === node ||
+        (edge.target === node && edge.source === data.id) ||
+        edge.target === data.id,
+    );
+  };
 
   const addEdge = (nodeId: string) => {
-    const nodeData = graph.nodes.find((node) => node.id.startsWith(nodeId) || nodeId.startsWith(node.id));
+    const nodeData = graph.nodes.find(
+      (node) => node.id.startsWith(nodeId) || nodeId.startsWith(node.id),
+    );
 
     if (!nodeData) return;
 
-    const isAuthorityHint = nodeData.info.ec.payload.authority_hints?.some((ah) => ah.startsWith(data.id) || data.id.startsWith(ah));
+    const isAuthorityHint = nodeData.info.ec.payload.authority_hints?.some(
+      (ah) => ah.startsWith(data.id) || data.id.startsWith(ah),
+    );
 
     const newGraph = {
       nodes: graph.nodes,
-      edges: [...graph.edges, !isAuthorityHint ? genEdge(nodeData.info, data.info) : genEdge(data.info, nodeData.info)],
+      edges: [
+        ...graph.edges,
+        !isAuthorityHint
+          ? genEdge(nodeData.info, data.info)
+          : genEdge(data.info, nodeData.info),
+      ],
     };
 
     onUpdate(newGraph);
   };
-
 
   useEffect(() => {
     if (toDiscoverList.length === 0) return;
@@ -222,7 +237,7 @@ export const NodeMenuAtom = ({
                       isFailed,
                       onSelection,
                       isDisconnected,
-                      addEdge
+                      addEdge,
                     })}
                     filterFn={immediateFilter}
                     onItemsFiltered={onFilteredList}
@@ -265,7 +280,7 @@ export const NodeMenuAtom = ({
                       isFailed,
                       onSelection,
                       isDisconnected,
-                      addEdge
+                      addEdge,
                     })}
                     filterFn={immediateFilter}
                     onItemsFiltered={onFilteredList}
