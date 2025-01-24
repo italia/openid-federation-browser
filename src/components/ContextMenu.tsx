@@ -1,7 +1,7 @@
 import { IntlProvider } from "react-intl";
 import { getTranslations } from "../lib/translations";
 import { GraphEdge, GraphNode, Graph } from "../lib/graph-data/types";
-import { isNode } from "../lib/graph-data/utils";
+import { isNode, removeSubGraph } from "../lib/graph-data/utils";
 import { NodeMenuAtom } from "../atoms/NodeMenu";
 import { EdgeMenuAtom } from "../atoms/EdgeMenu";
 import { FormattedMessage } from "react-intl";
@@ -53,6 +53,15 @@ export const ContextMenuComponent = ({
 
   useEffect(() => handleKeyDownEvent("Escape", onClose), []);
 
+  const removeEntity = () => {
+    if(nodeCheck) {
+      onUpdate(removeSubGraph(graph, data.id));
+    } else {
+      const edges = graph.edges.filter((edge) => edge.id !== data.id);
+      onUpdate({ nodes: graph.nodes, edges });
+    }
+  };
+
   return (
     <div ref={ref}>
       <IntlProvider
@@ -77,11 +86,18 @@ export const ContextMenuComponent = ({
               <IconAtom iconID="#it-close" className="icon-sm icon-white" />
             </div>
             <div
-              className={`col-md-auto ${styles.contextHeaderText}`}
+              className={`col-md-10 ${styles.contextHeaderText}`}
               style={{ userSelect: "none" }}
             >
               {nodeCheck && <FormattedMessage id={"entity_id_label"} />}
               {data.label}
+            </div>
+            <div
+              className="col-md-auto"
+              style={{ marginRight: "-65px" }}
+              onClick={removeEntity}
+            >
+              <IconAtom iconID="#it-delete" className="icon-sm icon-white" />
             </div>
           </div>
           {nodeCheck ? (
