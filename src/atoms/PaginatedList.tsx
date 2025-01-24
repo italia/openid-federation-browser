@@ -40,7 +40,7 @@ export const PaginatedListAtom = ({
         : items;
       const currentItems = filteredItems.slice(itemOffset, endOffset);
       const pageCount = Math.ceil(filteredItems.length / itemsPerPage);
-  
+
       setCurrentItems(currentItems);
       setPageCount(pageCount);
       onItemsFiltered && onItemsFiltered(filteredItems);
@@ -51,10 +51,7 @@ export const PaginatedListAtom = ({
   );
 
   return (
-    <div
-      className={`it-list-wrapper container`}
-      style={{ width: "100%" }}
-    >
+    <div className={`it-list-wrapper container`} style={{ width: "100%" }}>
       {filterFn && (
         <div className="row justify-content-md-start">
           <div className="col-md-12">
@@ -69,7 +66,7 @@ export const PaginatedListAtom = ({
         </div>
       )}
       <div className="row justify-content-md-start pt-4">
-        <div className="col" >
+        <div className="col">
           <ItemsRenderer items={currentItems} />
         </div>
       </div>

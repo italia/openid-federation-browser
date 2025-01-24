@@ -54,7 +54,7 @@ export const ContextMenuComponent = ({
   useEffect(() => handleKeyDownEvent("Escape", onClose), []);
 
   const removeEntity = () => {
-    if(nodeCheck) {
+    if (nodeCheck) {
       onUpdate(removeSubGraph(graph, data.id));
     } else {
       const edges = graph.edges.filter((edge) => edge.id !== data.id);
