@@ -17,6 +17,7 @@
   "upload_entity_view_option": "Upload View",
   "restore_session_label": "Restore View",
   "node_info": "Node Information",
+  "edge_info": "Edge Information",
   "subordinate_list": "Immediate Subordinates List",
   "authority_hints_list": "Authority Hints List",
   "entity_configuration_data": "Entity Configuration Data",
@@ -73,4 +74,6 @@
   "export_tc": "Export TC",
   "save_view": "Save View",
   "schema_validation_url": "Schema Validation URL"
+  "source": "Source",
+  "target": "Target"
 }

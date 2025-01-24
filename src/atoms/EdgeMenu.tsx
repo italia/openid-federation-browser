@@ -17,11 +17,19 @@ export const EdgeMenuAtom = ({ data }: EdgeMenuAtomProps) => {
           <>
             <AccordionAtom
               accordinId="info-details"
-              labelId="node_info"
+              labelId="edge_info"
               hiddenElement={
                 <InfoView
                   id={`${data.label}-view`}
                   infos={[
+                    [
+                      "source",
+                      data.source,
+                    ],
+                    [
+                      "target",
+                      data.target,
+                    ],
                     [
                       "substatement_status_label",
                       fmtValidity(

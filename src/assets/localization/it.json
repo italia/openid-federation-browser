@@ -8,7 +8,7 @@
   "insert_entity_url_label": "Inserisci l'URL HTTP dell'Entity",
   "view_upload_label": "Visualizza/Carica",
   "current_view_label": "Vista Corrente",
-  "entity_id_label": "Entity ID: ",
+  "entity_id_label": "Entity ID",
   "url_input_label": "URL: ",
   "error": "Errore",
   "message": "Messaggio",
@@ -17,6 +17,7 @@
   "upload_entity_view_option": "Importa View",
   "restore_session_label": "Ripristina View",
   "node_info": "Informazioni del Nodo",
+  "edge_info": "Informazioni del Collegamento",
   "subordinate_list": "Lista degli Immediate Subordinates",
   "authority_hints_list": "Lista degli Authority Hints",
   "entity_configuration_data": "Dati dell'Entity Configuration",
@@ -73,4 +74,6 @@
   "export_tc": "Esporta TC",
   "save_view": "Salva View",
   "schema_validation_url": "URL dello schema di validazione"
+  "source": "Sorgente",
+  "target": "Destinazione"
 }
