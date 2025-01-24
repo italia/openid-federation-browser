@@ -2,7 +2,7 @@ import { AccordionAtom } from "./Accordion";
 import { JWTViewer } from "./JWTViewer";
 import { InfoView } from "../atoms/InfoView";
 import { GraphNode, Graph } from "../lib/graph-data/types";
-import { removeSubGraph } from "../lib/graph-data/utils";
+import { removeSubGraph, genEdge } from "../lib/graph-data/utils";
 import { discoverNodes } from "../lib/openid-federation/trustChain";
 import { PaginatedListAtom } from "../atoms/PaginatedList";
 import { EntityItemsRenderer } from "./EntityItemRender";
@@ -114,6 +114,26 @@ export const NodeMenuAtom = ({
     setToDiscoverList([]);
   };
 
+  const isDisconnected = (node: string) => {
+    return !graph.edges.some((edge) => edge.source === node || edge.target === node && edge.source === data.id || edge.target === data.id);
+  }
+
+  const addEdge = (nodeId: string) => {
+    const nodeData = graph.nodes.find((node) => node.id.startsWith(nodeId) || nodeId.startsWith(node.id));
+
+    if (!nodeData) return;
+
+    const isAuthorityHint = nodeData.info.ec.payload.authority_hints?.some((ah) => ah.startsWith(data.id) || data.id.startsWith(ah));
+
+    const newGraph = {
+      nodes: graph.nodes,
+      edges: [...graph.edges, !isAuthorityHint ? genEdge(nodeData.info, data.info) : genEdge(data.info, nodeData.info)],
+    };
+
+    onUpdate(newGraph);
+  };
+
+
   useEffect(() => {
     if (toDiscoverList.length === 0) return;
     if (toDiscoverList.length === 1) {
@@ -201,6 +221,8 @@ export const NodeMenuAtom = ({
                       removeAllEntities: removeAllAuthorityHints,
                       isFailed,
                       onSelection,
+                      isDisconnected,
+                      addEdge
                     })}
                     filterFn={immediateFilter}
                     onItemsFiltered={onFilteredList}
@@ -242,6 +264,8 @@ export const NodeMenuAtom = ({
                       removeAllEntities: removeAllSubordinates,
                       isFailed,
                       onSelection,
+                      isDisconnected,
+                      addEdge
                     })}
                     filterFn={immediateFilter}
                     onItemsFiltered={onFilteredList}
