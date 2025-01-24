@@ -4,7 +4,6 @@ import { FormattedMessage } from "react-intl";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { oneLight } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { useState } from "react";
-import { Link } from "react-router-dom";
 
 type SchemaValidity = "UNKNOWN" | "VALID" | "INVALID";
 

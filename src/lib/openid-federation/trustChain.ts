@@ -14,7 +14,7 @@ import {
   EntityType,
   SubordinateStatementPayload,
 } from "./types";
-import { Graph, GraphEdge, GraphNode } from "../graph-data/types";
+import { Graph, GraphEdge } from "../graph-data/types";
 import { genNode, updateGraph } from "../graph-data/utils";
 import { setEntityType } from "./utils";
 import { checkViewValidity } from "./utils";
@@ -320,13 +320,15 @@ export const evaluateTrustChain = (
     }
   });
 
-  let currentEdge = orderedEdges[0];
+  if(orderedEdges.length === 0) {
+    let currentEdge = orderedEdges[0];
 
-  for (let i = 1; i < orderedEdges.length; i++) {
-    if (currentEdge.target === orderedEdges[i].source) {
-      currentEdge = orderedEdges[i];
-    } else {
-      return undefined;
+    for (let i = 1; i < orderedEdges.length; i++) {
+      if (currentEdge.target === orderedEdges[i].source) {
+        currentEdge = orderedEdges[i];
+      } else {
+        return undefined;
+      }
     }
   }
 
@@ -334,13 +336,13 @@ export const evaluateTrustChain = (
 
   const trustChain = reversedOrderedEdges.map((edge) => edge.subStatement?.jwt);
   trustChain.unshift(
-    selectedNodes.find((node) => node.id == reversedOrderedEdges[0].target)
+    selectedNodes.find((node) => node.id === reversedOrderedEdges[0].target)
       ?.info.ec.jwt as string,
   );
   trustChain.push(
     selectedNodes.find(
       (node) =>
-        node.id == reversedOrderedEdges[reversedOrderedEdges.length - 1].source,
+        node.id === reversedOrderedEdges[reversedOrderedEdges.length - 1].source,
     )?.info.ec.jwt as string,
   );
 

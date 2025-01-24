@@ -123,6 +123,7 @@ export const NodeMenuAtom = ({
       return;
     }
     showModal("warning-modal");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [toDiscoverList]);
 
   useEffect(() => {
@@ -131,6 +132,7 @@ export const NodeMenuAtom = ({
     discoverNodes([discovery], graph)
       .then(handleDiscoveryResult)
       .then(() => setDiscoveryQueue(rest));
+      // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [discoveryQueue]);
 
   useEffect(() => {
@@ -139,6 +141,7 @@ export const NodeMenuAtom = ({
         ? data.info.immDependants.filter((dep) => !isDiscovered(dep))
         : data.info.immDependants,
     );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filterDiscovered]);
 
   const displayedInfo = [

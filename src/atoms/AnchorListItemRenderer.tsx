@@ -5,7 +5,7 @@ import { IconAtom } from "./Icon";
 import style from "../css/ContextMenu.module.css";
 
 export const AnchorListItemRendererAtom = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [, setSearchParams] = useSearchParams();
 
   const ItemsRenderer = ({ items }: { items: any[] }) => {
     return (

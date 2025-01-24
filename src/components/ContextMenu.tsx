@@ -51,7 +51,10 @@ export const ContextMenuComponent = ({
     }
   };
 
-  useEffect(() => handleKeyDownEvent("Escape", onClose), []);
+  useEffect(() => 
+    handleKeyDownEvent("Escape", onClose), 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  []);
 
   const removeEntity = () => {
     if (nodeCheck) {
