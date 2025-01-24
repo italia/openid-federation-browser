@@ -89,8 +89,7 @@ export const ContextMenuComponent = ({
               className={`col-md-10 ${styles.contextHeaderText}`}
               style={{ userSelect: "none" }}
             >
-              {nodeCheck && <FormattedMessage id={"entity_id_label"} />}
-              {data.label}
+              Inspection Window
             </div>
             <div
               className="col-md-auto"
