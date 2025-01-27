@@ -55,17 +55,13 @@ export const NodeMenuAtom = ({
     }
   };
 
-  const removeEntities =
-    (subordinate: boolean) => (entityIDs: string | string[]) => {
+  const removeEntities = (entityIDs: string | string[]) => {
       const newGraph = Array.isArray(entityIDs)
         ? entityIDs.reduce((acc, id) => removeNode(acc, id), graph)
         : removeNode(graph, entityIDs);
 
       onUpdate(newGraph);
     };
-
-  const removeSubordinates = removeEntities(true);
-  const removeAuthorityHints = removeEntities(false);
 
   const isDiscovered = (dep: string) =>
     graph.nodes.some(
@@ -76,7 +72,7 @@ export const NodeMenuAtom = ({
     (subordinate: boolean = false) =>
     () => {
       if (subordinate) {
-        removeSubordinates(
+        removeEntities(
           data.info.immDependants.filter((dep) => isDiscovered(dep)),
         );
       } else {
@@ -84,7 +80,7 @@ export const NodeMenuAtom = ({
 
         if (!authorityHints) return;
 
-        removeAuthorityHints(authorityHints.filter((dep) => isDiscovered(dep)));
+        removeEntities(authorityHints.filter((dep) => isDiscovered(dep)));
       }
     };
 
@@ -247,7 +243,7 @@ export const NodeMenuAtom = ({
                       isDiscovered,
                       discoveringList: discoveryQueue,
                       addEntities,
-                      removeEntity: removeAuthorityHints,
+                      removeEntity: removeEntities,
                       removeAllEntities: removeAllAuthorityHints,
                       isFailed,
                       onSelection,
@@ -290,7 +286,7 @@ export const NodeMenuAtom = ({
                       isDiscovered,
                       discoveringList: discoveryQueue,
                       addEntities,
-                      removeEntity: removeSubordinates,
+                      removeEntity: removeEntities,
                       removeAllEntities: removeAllSubordinates,
                       isFailed,
                       onSelection,
