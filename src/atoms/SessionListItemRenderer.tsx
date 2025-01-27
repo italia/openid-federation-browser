@@ -6,6 +6,7 @@ import { deleteSession } from "../lib/utils";
 import { useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { ViewImportAtom } from "./ViewImport";
+import { timestampToLocaleString } from "../lib/utils";
 import style from "../css/ContextMenu.module.css";
 
 export const SessionListItemRendererAtom = () => {
@@ -30,7 +31,7 @@ export const SessionListItemRendererAtom = () => {
                   <span className={style.contextAccordinText}>{d.label}</span>
                 </th>
                 <th>
-                  <span className={style.contextAccordinText}>{d.date}</span>
+                  <span className={style.contextAccordinText}>{timestampToLocaleString(d.date)}</span>
                 </th>
                 <th>
                   <button

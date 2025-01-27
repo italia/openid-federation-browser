@@ -98,7 +98,7 @@ export const persistSession = async (screenShot: string) => {
   const currentSession = JSON.stringify({
     screenShot: croppedImage,
     graph: sessionStorage.getItem("currentSession") || "",
-    date: new Date().toLocaleString(),
+    date: Math.floor(Date.now() / 1000),
   });
 
   localStorage.setItem(currentSessionName, currentSession);
