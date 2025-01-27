@@ -12,6 +12,7 @@ import { showModal, fmtValidity } from "../lib/utils";
 import { validateEntityConfiguration } from "../lib/openid-federation/schema";
 import { FormattedMessage } from "react-intl";
 import { timestampToLocaleString } from "../lib/utils";
+import { cleanEntityID } from "../lib/utils";
 import style from "../css/ContextMenu.module.css";
 
 export interface ContextMenuProps {
@@ -160,6 +161,22 @@ export const NodeMenuAtom = ({
     if (discoveryQueue.length === 0) return;
     const [discovery, ...rest] = discoveryQueue;
     discoverNodes([discovery], graph)
+      .then((result) => {
+        const isAuthorityHint = data.info.ec.payload.authority_hints?.some(
+          (ah) => ah.startsWith(discovery) || discovery.startsWith(ah),
+        );
+
+        const newGraph = {
+          nodes: result.graph.nodes,
+          edges: [
+            ...result.graph.edges,
+            isAuthorityHint
+              ? genEdge(result.graph.nodes.find((n) => n.id === discovery)!.info, data.info)
+              : genEdge(data.info, result.graph.nodes.find((n) => n.id === discovery)!.info),
+          ],
+        };
+        return { graph: newGraph, failed: result.failed };
+      })
       .then(handleDiscoveryResult)
       .then(() => setDiscoveryQueue(rest));
     // eslint-disable-next-line react-hooks/exhaustive-deps
