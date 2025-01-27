@@ -3,6 +3,7 @@ import { AccordionAtom } from "./Accordion";
 import { JWTViewer } from "./JWTViewer";
 import { fmtValidity } from "../lib/utils";
 import { InfoView } from "./InfoView";
+import { timestampToLocaleString } from "../lib/utils";
 import { validateSubordinateStatement } from "../lib/openid-federation/schema";
 
 export interface EdgeMenuAtomProps {
@@ -22,14 +23,8 @@ export const EdgeMenuAtom = ({ data }: EdgeMenuAtomProps) => {
                 <InfoView
                   id={`${data.label}-view`}
                   infos={[
-                    [
-                      "source",
-                      data.source,
-                    ],
-                    [
-                      "target",
-                      data.target,
-                    ],
+                    ["source", data.source],
+                    ["target", data.target],
                     [
                       "substatement_status_label",
                       fmtValidity(
@@ -39,9 +34,7 @@ export const EdgeMenuAtom = ({ data }: EdgeMenuAtomProps) => {
                     ],
                     [
                       "expiring_date_label",
-                      new Date(
-                        data.subStatement.payload.exp * 1000,
-                      ).toLocaleString(),
+                      timestampToLocaleString(data.subStatement.payload.exp),
                     ],
                   ]}
                 />

@@ -320,7 +320,7 @@ export const evaluateTrustChain = (
     }
   });
 
-  if(orderedEdges.length === 0) {
+  if (orderedEdges.length === 0) {
     let currentEdge = orderedEdges[0];
 
     for (let i = 1; i < orderedEdges.length; i++) {
@@ -342,7 +342,8 @@ export const evaluateTrustChain = (
   trustChain.push(
     selectedNodes.find(
       (node) =>
-        node.id === reversedOrderedEdges[reversedOrderedEdges.length - 1].source,
+        node.id ===
+        reversedOrderedEdges[reversedOrderedEdges.length - 1].source,
     )?.info.ec.jwt as string,
   );
 

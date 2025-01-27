@@ -73,7 +73,10 @@
   "export": "Export View",
   "export_tc": "Export TC",
   "save_view": "Save View",
-  "schema_validation_url": "Schema Validation URL"
+  "schema_validation_url": "Schema Validation URL",
   "source": "Source",
-  "target": "Target"
+  "target": "Target",
+  "add_entity": "Add Entity",
+  "add_entity_label": "Add an entity",
+  "add": "Add"
 }

@@ -98,7 +98,7 @@ export const persistSession = async (screenShot: string) => {
   const currentSession = JSON.stringify({
     screenShot: croppedImage,
     graph: sessionStorage.getItem("currentSession") || "",
-    date: new Date().toLocaleString(),
+    date: Math.floor(Date.now() / 1000),
   });
 
   localStorage.setItem(currentSessionName, currentSession);
@@ -176,3 +176,9 @@ export const cropImage = (
     });
   });
 };
+
+export const cleanEntityID = (entityID: string) =>
+  entityID.endsWith("/") ? entityID.slice(0, -1) : entityID;
+
+export const timestampToLocaleString = (timestamp: number) =>
+  new Date(timestamp * 1000).toLocaleString(navigator.language.split(",")[0]);

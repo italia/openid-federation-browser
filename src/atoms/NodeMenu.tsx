@@ -2,7 +2,7 @@ import { AccordionAtom } from "./Accordion";
 import { JWTViewer } from "./JWTViewer";
 import { InfoView } from "../atoms/InfoView";
 import { GraphNode, Graph } from "../lib/graph-data/types";
-import { removeSubGraph, genEdge } from "../lib/graph-data/utils";
+import { removeNode, genEdge } from "../lib/graph-data/utils";
 import { discoverNodes } from "../lib/openid-federation/trustChain";
 import { PaginatedListAtom } from "../atoms/PaginatedList";
 import { EntityItemsRenderer } from "./EntityItemRender";
@@ -11,6 +11,8 @@ import { WarningModalAtom } from "./WarningModal";
 import { showModal, fmtValidity } from "../lib/utils";
 import { validateEntityConfiguration } from "../lib/openid-federation/schema";
 import { FormattedMessage } from "react-intl";
+import { timestampToLocaleString } from "../lib/utils";
+import { cleanEntityID } from "../lib/utils";
 import style from "../css/ContextMenu.module.css";
 
 export interface ContextMenuProps {
@@ -53,31 +55,22 @@ export const NodeMenuAtom = ({
     }
   };
 
-  const removeEntities =
-    (subordinate: boolean) => (entityIDs: string | string[]) => {
-      const newGraph = Array.isArray(entityIDs)
-        ? entityIDs.reduce(
-            (acc, id) => removeSubGraph(acc, id, subordinate),
-            graph,
-          )
-        : removeSubGraph(graph, entityIDs, subordinate);
+  const removeEntities = (entityIDs: string | string[]) => {
+    const newGraph = Array.isArray(entityIDs)
+      ? entityIDs.reduce((acc, id) => removeNode(acc, id), graph)
+      : removeNode(graph, entityIDs);
 
-      onUpdate(newGraph);
-    };
-
-  const removeSubordinates = removeEntities(true);
-  const removeAuthorityHints = removeEntities(false);
+    onUpdate(newGraph);
+  };
 
   const isDiscovered = (dep: string) =>
-    graph.nodes.some(
-      (node) => node.id.startsWith(dep) || dep.startsWith(node.id),
-    );
+    graph.nodes.some((node) => cleanEntityID(node.id) === cleanEntityID(dep));
 
   const removeAllEntities =
     (subordinate: boolean = false) =>
     () => {
       if (subordinate) {
-        removeSubordinates(
+        removeEntities(
           data.info.immDependants.filter((dep) => isDiscovered(dep)),
         );
       } else {
@@ -85,7 +78,7 @@ export const NodeMenuAtom = ({
 
         if (!authorityHints) return;
 
-        removeAuthorityHints(authorityHints.filter((dep) => isDiscovered(dep)));
+        removeEntities(authorityHints.filter((dep) => isDiscovered(dep)));
       }
     };
 
@@ -120,7 +113,7 @@ export const NodeMenuAtom = ({
     return !graph.edges.some(
       (edge) =>
         (edge.source === node && edge.target === data.id) ||
-        (edge.target === node && edge.source === data.id)
+        (edge.target === node && edge.source === data.id),
     );
   };
 
@@ -162,9 +155,31 @@ export const NodeMenuAtom = ({
     if (discoveryQueue.length === 0) return;
     const [discovery, ...rest] = discoveryQueue;
     discoverNodes([discovery], graph)
+      .then((result) => {
+        const isAuthorityHint = data.info.ec.payload.authority_hints?.some(
+          (ah) => ah.startsWith(discovery) || discovery.startsWith(ah),
+        );
+
+        const newGraph = {
+          nodes: result.graph.nodes,
+          edges: [
+            ...result.graph.edges,
+            isAuthorityHint
+              ? genEdge(
+                  result.graph.nodes.find((n) => n.id === discovery)!.info,
+                  data.info,
+                )
+              : genEdge(
+                  data.info,
+                  result.graph.nodes.find((n) => n.id === discovery)!.info,
+                ),
+          ],
+        };
+        return { graph: newGraph, failed: result.failed };
+      })
       .then(handleDiscoveryResult)
       .then(() => setDiscoveryQueue(rest));
-      // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [discoveryQueue]);
 
   useEffect(() => {
@@ -184,10 +199,7 @@ export const NodeMenuAtom = ({
       "status_label",
       fmtValidity(data.info.ec.valid, data.info.ec.invalidReason),
     ],
-    [
-      "expiring_date_label",
-      new Date(data.info.ec.payload.exp * 1000).toLocaleString(),
-    ],
+    ["expiring_date_label", timestampToLocaleString(data.info.ec.payload.exp)],
   ];
 
   return (
@@ -235,7 +247,7 @@ export const NodeMenuAtom = ({
                       isDiscovered,
                       discoveringList: discoveryQueue,
                       addEntities,
-                      removeEntity: removeAuthorityHints,
+                      removeEntity: removeEntities,
                       removeAllEntities: removeAllAuthorityHints,
                       isFailed,
                       onSelection,
@@ -278,7 +290,7 @@ export const NodeMenuAtom = ({
                       isDiscovered,
                       discoveringList: discoveryQueue,
                       addEntities,
-                      removeEntity: removeSubordinates,
+                      removeEntity: removeEntities,
                       removeAllEntities: removeAllSubordinates,
                       isFailed,
                       onSelection,
