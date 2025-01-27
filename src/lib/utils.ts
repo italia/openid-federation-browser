@@ -177,6 +177,8 @@ export const cropImage = (
   });
 };
 
-export const cleanEntityID = (entityID: string) => entityID.endsWith("/") ? entityID.slice(0, -1) : entityID;
+export const cleanEntityID = (entityID: string) =>
+  entityID.endsWith("/") ? entityID.slice(0, -1) : entityID;
 
-export const timestampToLocaleString = (timestamp: number) => new Date(timestamp * 1000).toLocaleString(navigator.language.split(",")[0]);
+export const timestampToLocaleString = (timestamp: number) =>
+  new Date(timestamp * 1000).toLocaleString(navigator.language.split(",")[0]);

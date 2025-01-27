@@ -76,20 +76,20 @@ export const ContextMenuComponent = ({
   };
 
   useEffect(() => {
-    document.addEventListener('mousemove', handleMove);
-    document.addEventListener('mouseup', handleMouseUp);
+    document.addEventListener("mousemove", handleMove);
+    document.addEventListener("mouseup", handleMouseUp);
 
     return () => {
-      document.removeEventListener('mousemove', handleMove);
-      document.removeEventListener('mouseup', handleMouseUp);
+      document.removeEventListener("mousemove", handleMove);
+      document.removeEventListener("mouseup", handleMouseUp);
     };
   }, [isDragging]);
 
-
-  useEffect(() => 
-    handleKeyDownEvent("Escape", () => onClose(true)), 
+  useEffect(
+    () => handleKeyDownEvent("Escape", () => onClose(true)),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  []);
+    [],
+  );
 
   const removeEntity = () => {
     if (nodeCheck) {

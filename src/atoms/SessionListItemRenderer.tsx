@@ -31,7 +31,9 @@ export const SessionListItemRendererAtom = () => {
                   <span className={style.contextAccordinText}>{d.label}</span>
                 </th>
                 <th>
-                  <span className={style.contextAccordinText}>{timestampToLocaleString(d.date)}</span>
+                  <span className={style.contextAccordinText}>
+                    {timestampToLocaleString(d.date)}
+                  </span>
                 </th>
                 <th>
                   <button

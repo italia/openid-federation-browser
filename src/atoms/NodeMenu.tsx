@@ -57,10 +57,7 @@ export const NodeMenuAtom = ({
   const removeEntities =
     (subordinate: boolean) => (entityIDs: string | string[]) => {
       const newGraph = Array.isArray(entityIDs)
-        ? entityIDs.reduce(
-            (acc, id) => removeNode(acc, id),
-            graph,
-          )
+        ? entityIDs.reduce((acc, id) => removeNode(acc, id), graph)
         : removeNode(graph, entityIDs);
 
       onUpdate(newGraph);
@@ -121,7 +118,7 @@ export const NodeMenuAtom = ({
     return !graph.edges.some(
       (edge) =>
         (edge.source === node && edge.target === data.id) ||
-        (edge.target === node && edge.source === data.id)
+        (edge.target === node && edge.source === data.id),
     );
   };
 
@@ -165,7 +162,7 @@ export const NodeMenuAtom = ({
     discoverNodes([discovery], graph)
       .then(handleDiscoveryResult)
       .then(() => setDiscoveryQueue(rest));
-      // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [discoveryQueue]);
 
   useEffect(() => {
@@ -185,10 +182,7 @@ export const NodeMenuAtom = ({
       "status_label",
       fmtValidity(data.info.ec.valid, data.info.ec.invalidReason),
     ],
-    [
-      "expiring_date_label",
-      timestampToLocaleString(data.info.ec.payload.exp),
-    ],
+    ["expiring_date_label", timestampToLocaleString(data.info.ec.payload.exp)],
   ];
 
   return (

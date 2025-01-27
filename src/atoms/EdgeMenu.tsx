@@ -23,14 +23,8 @@ export const EdgeMenuAtom = ({ data }: EdgeMenuAtomProps) => {
                 <InfoView
                   id={`${data.label}-view`}
                   infos={[
-                    [
-                      "source",
-                      data.source,
-                    ],
-                    [
-                      "target",
-                      data.target,
-                    ],
+                    ["source", data.source],
+                    ["target", data.target],
                     [
                       "substatement_status_label",
                       fmtValidity(
@@ -40,8 +34,7 @@ export const EdgeMenuAtom = ({ data }: EdgeMenuAtomProps) => {
                     ],
                     [
                       "expiring_date_label",
-                      timestampToLocaleString(
-                        data.subStatement.payload.exp),
+                      timestampToLocaleString(data.subStatement.payload.exp),
                     ],
                   ]}
                 />

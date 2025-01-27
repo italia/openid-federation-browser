@@ -60,9 +60,13 @@ export const fromNodeInfo = (node: NodeInfo): Graph => {
 };
 
 export const removeNode = (graph: Graph, id: string): Graph => {
-  const nodes = graph.nodes.filter((node) => cleanEntityID(node.id) !== cleanEntityID(id));
+  const nodes = graph.nodes.filter(
+    (node) => cleanEntityID(node.id) !== cleanEntityID(id),
+  );
   const edges = graph.edges.filter(
-    (edge) => cleanEntityID(edge.source) !== cleanEntityID(id) && cleanEntityID(edge.target) !== cleanEntityID(id),
+    (edge) =>
+      cleanEntityID(edge.source) !== cleanEntityID(id) &&
+      cleanEntityID(edge.target) !== cleanEntityID(id),
   );
 
   return { nodes, edges };
