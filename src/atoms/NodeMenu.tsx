@@ -56,17 +56,15 @@ export const NodeMenuAtom = ({
   };
 
   const removeEntities = (entityIDs: string | string[]) => {
-      const newGraph = Array.isArray(entityIDs)
-        ? entityIDs.reduce((acc, id) => removeNode(acc, id), graph)
-        : removeNode(graph, entityIDs);
+    const newGraph = Array.isArray(entityIDs)
+      ? entityIDs.reduce((acc, id) => removeNode(acc, id), graph)
+      : removeNode(graph, entityIDs);
 
-      onUpdate(newGraph);
-    };
+    onUpdate(newGraph);
+  };
 
   const isDiscovered = (dep: string) =>
-    graph.nodes.some(
-      (node) => cleanEntityID(node.id) === cleanEntityID(dep)
-    );
+    graph.nodes.some((node) => cleanEntityID(node.id) === cleanEntityID(dep));
 
   const removeAllEntities =
     (subordinate: boolean = false) =>
@@ -167,8 +165,14 @@ export const NodeMenuAtom = ({
           edges: [
             ...result.graph.edges,
             isAuthorityHint
-              ? genEdge(result.graph.nodes.find((n) => n.id === discovery)!.info, data.info)
-              : genEdge(data.info, result.graph.nodes.find((n) => n.id === discovery)!.info),
+              ? genEdge(
+                  result.graph.nodes.find((n) => n.id === discovery)!.info,
+                  data.info,
+                )
+              : genEdge(
+                  data.info,
+                  result.graph.nodes.find((n) => n.id === discovery)!.info,
+                ),
           ],
         };
         return { graph: newGraph, failed: result.failed };

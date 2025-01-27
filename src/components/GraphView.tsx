@@ -1,5 +1,9 @@
 import { useEffect, useState } from "react";
-import { discovery, discoverNode, traverseUp } from "../lib/openid-federation/trustChain";
+import {
+  discovery,
+  discoverNode,
+  traverseUp,
+} from "../lib/openid-federation/trustChain";
 import { GraphCanvas, GraphCanvasRef } from "reagraph";
 import { GraphNode, GraphEdge, Graph } from "../lib/graph-data/types";
 import { ContextMenuComponent } from "./ContextMenu";
@@ -173,7 +177,10 @@ export const GraphViewComponent = () => {
         dismissActionID="modal_cancel"
         acceptActionID="add"
         inputVerifyFn={(name) => !isValidUrl(name)}
-        onAccept={(entityID) => discoverNode(entityID, {nodes, edges}).then(updateGraph).catch(showErrorMessage)
+        onAccept={(entityID) =>
+          discoverNode(entityID, { nodes, edges })
+            .then(updateGraph)
+            .catch(showErrorMessage)
         }
       />
       <div className={styles.graphAtom}>

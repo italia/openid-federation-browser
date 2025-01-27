@@ -17,7 +17,7 @@ export const GraphControlMenuAtom = ({
   onSessionSave,
   onExport,
   onTCCopy,
-  onEntityAdd
+  onEntityAdd,
 }: GraphControlMenuAtomProps) => {
   return (
     <div

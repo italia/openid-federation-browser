@@ -68,7 +68,10 @@ export const InputModalAtom = ({
                 />
               </div>
             </div>
-            <div className="collapse row" id={`${modalID}-invalid-input-collapse`}>
+            <div
+              className="collapse row"
+              id={`${modalID}-invalid-input-collapse`}
+            >
               <div
                 className="alert alert-danger alert-dismissible fade show"
                 role="alert"
