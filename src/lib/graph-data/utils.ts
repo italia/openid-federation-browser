@@ -29,30 +29,7 @@ export const updateGraph = (node: NodeInfo, graph: Graph): Graph => {
   const newGraphNode = genNode(node);
   const nodes = [...graph.nodes, newGraphNode];
 
-  let edges = graph.edges;
-
-  const immDependants = node.immDependants;
-
-  const toConnectNodes = nodes.filter((n) => immDependants.includes(n.id));
-
-  edges = [
-    ...edges,
-    ...toConnectNodes.map((pNode) => genEdge(node, pNode.info)),
-  ];
-
-  nodes.forEach((n) => {
-    if (n.id === node.ec.entity) return;
-
-    if (
-      n.info.immDependants.includes(node.ec.entity) &&
-      !edges.find((e) => e.source === n.id && e.target === node.ec.entity) &&
-      !edges.find((e) => e.source === node.ec.entity && e.target === n.id)
-    ) {
-      edges = [...edges, genEdge(n.info, node)];
-    }
-  });
-
-  return { nodes, edges };
+  return { nodes, edges: graph.edges };
 };
 
 export const fromNodeInfo = (node: NodeInfo): Graph => {
