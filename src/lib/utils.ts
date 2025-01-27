@@ -176,3 +176,5 @@ export const cropImage = (
     });
   });
 };
+
+export const cleanEntityID = (entityID: string) => entityID.endsWith("/") ? entityID.slice(0, -1) : entityID;

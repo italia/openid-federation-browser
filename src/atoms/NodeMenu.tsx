@@ -2,7 +2,7 @@ import { AccordionAtom } from "./Accordion";
 import { JWTViewer } from "./JWTViewer";
 import { InfoView } from "../atoms/InfoView";
 import { GraphNode, Graph } from "../lib/graph-data/types";
-import { removeSubGraph } from "../lib/graph-data/utils";
+import { removeNode } from "../lib/graph-data/utils";
 import { discoverNodes } from "../lib/openid-federation/trustChain";
 import { PaginatedListAtom } from "../atoms/PaginatedList";
 import { EntityItemsRenderer } from "./EntityItemRender";
@@ -57,10 +57,10 @@ export const NodeMenuAtom = ({
     (subordinate: boolean) => (entityIDs: string | string[]) => {
       const newGraph = Array.isArray(entityIDs)
         ? entityIDs.reduce(
-            (acc, id) => removeSubGraph(acc, id, subordinate),
+            (acc, id) => removeNode(acc, id),
             graph,
           )
-        : removeSubGraph(graph, entityIDs, subordinate);
+        : removeNode(graph, entityIDs);
 
       onUpdate(newGraph);
     };

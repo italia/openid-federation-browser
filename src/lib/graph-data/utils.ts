@@ -1,5 +1,6 @@
 import { NodeInfo } from "../openid-federation/types";
 import { Graph, GraphNode, GraphEdge, EntityColor } from "./types";
+import { cleanEntityID } from "../utils";
 
 export const genNode = (node: NodeInfo): GraphNode => {
   return {
@@ -77,6 +78,15 @@ export const updateGraph = (node: NodeInfo, graph: Graph): Graph => {
 
 export const fromNodeInfo = (node: NodeInfo): Graph => {
   return { nodes: [genNode(node)], edges: [] };
+};
+
+export const removeNode = (graph: Graph, id: string): Graph => {
+  const nodes = graph.nodes.filter((node) => cleanEntityID(node.id) !== cleanEntityID(id));
+  const edges = graph.edges.filter(
+    (edge) => cleanEntityID(edge.source) !== cleanEntityID(id) && cleanEntityID(edge.target) !== cleanEntityID(id),
+  );
+
+  return { nodes, edges };
 };
 
 export const removeSubGraph = (

@@ -1,7 +1,7 @@
 import { IntlProvider } from "react-intl";
 import { getTranslations } from "../lib/translations";
 import { GraphEdge, GraphNode, Graph } from "../lib/graph-data/types";
-import { isNode, removeSubGraph } from "../lib/graph-data/utils";
+import { isNode, removeNode } from "../lib/graph-data/utils";
 import { NodeMenuAtom } from "../atoms/NodeMenu";
 import { EdgeMenuAtom } from "../atoms/EdgeMenu";
 import { FormattedMessage } from "react-intl";
@@ -58,7 +58,7 @@ export const ContextMenuComponent = ({
 
   const removeEntity = () => {
     if (nodeCheck) {
-      onUpdate(removeSubGraph(graph, data.id));
+      onUpdate(removeNode(graph, data.id));
     } else {
       const edges = graph.edges.filter((edge) => edge.id !== data.id);
       onUpdate({ nodes: graph.nodes, edges });
