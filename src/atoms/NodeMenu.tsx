@@ -68,7 +68,7 @@ export const NodeMenuAtom = ({
 
   const isDiscovered = (dep: string) =>
     graph.nodes.some(
-      (node) => node.id.startsWith(dep) || dep.startsWith(node.id),
+      (node) => cleanEntityID(node.id) === cleanEntityID(dep)
     );
 
   const removeAllEntities =
