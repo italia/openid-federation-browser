@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { discovery, traverseUp } from "../lib/openid-federation/trustChain";
+import { discovery, discoverNode, traverseUp } from "../lib/openid-federation/trustChain";
 import { GraphCanvas, GraphCanvasRef } from "reagraph";
 import { GraphNode, GraphEdge, Graph } from "../lib/graph-data/types";
 import { ContextMenuComponent } from "./ContextMenu";
@@ -14,8 +14,9 @@ import { persistSession } from "../lib/utils";
 import { InputModalAtom } from "../atoms/InputModal";
 import { GraphControlMenuAtom } from "../atoms/GraphControlMenu";
 import { evaluateTrustChain } from "../lib/openid-federation/trustChain";
-import styles from "../css/BodyComponent.module.css";
 import { useRef } from "react";
+import { isValidUrl } from "../lib/utils";
+import styles from "../css/BodyComponent.module.css";
 
 enum ShowElement {
   Loading = "loading-atom",
@@ -89,6 +90,8 @@ export const GraphViewComponent = () => {
     }
   };
 
+  const onEntityAdd = () => showModal("add-entity-modal");
+
   const onExport = () => showModal("export-modal");
 
   const onTCCopy = () => {
@@ -155,12 +158,23 @@ export const GraphViewComponent = () => {
         placeorderID="save_name_message"
         dismissActionID="modal_cancel"
         acceptActionID="save"
+        inputVerifyFn={(name) => name === ""}
         onAccept={(name) => {
           sessionStorage.setItem("currentSessionName", `session-${name}`);
           setNotification(`Saved: ${name.replace("session-", "")}`);
           persistSession(ref.current?.exportCanvas() as string);
           showNotification();
         }}
+      />
+      <InputModalAtom
+        modalID="add-entity-modal"
+        headerID="save_name_title"
+        placeorderID="insert_entity_url_label"
+        dismissActionID="modal_cancel"
+        acceptActionID="add"
+        inputVerifyFn={(name) => !isValidUrl(name)}
+        onAccept={(entityID) => discoverNode(entityID, {nodes, edges}).then(updateGraph).catch(showErrorMessage)
+        }
       />
       <div className={styles.graphAtom}>
         {showElement === ShowElement.Loading ? (
@@ -174,6 +188,7 @@ export const GraphViewComponent = () => {
               onExport={onExport}
               onTCCopy={onTCCopy}
               showTCButton={tc !== undefined}
+              onEntityAdd={onEntityAdd}
             />
             <GraphCanvas
               ref={ref}

@@ -9,6 +9,7 @@ export interface GraphControlMenuAtomProps {
   onSessionSave: () => void;
   onExport: () => void;
   onTCCopy: () => void;
+  onEntityAdd: () => void;
 }
 
 export const GraphControlMenuAtom = ({
@@ -16,6 +17,7 @@ export const GraphControlMenuAtom = ({
   onSessionSave,
   onExport,
   onTCCopy,
+  onEntityAdd
 }: GraphControlMenuAtomProps) => {
   return (
     <div
@@ -28,9 +30,29 @@ export const GraphControlMenuAtom = ({
         color: "white",
       }}
     >
+      <button
+        className={`btn btn-success btn-sm py-1 px-2 mt-2 ${headerStyle.headerText}`}
+        style={{ display: "block", width: "100%" }}
+        onClick={onEntityAdd}
+      >
+        <div className="row align-items-start">
+          <div className="col-2">
+            <IconAtom
+              iconID="#it-plus"
+              className="icon-xs icon-white"
+              isRounded={false}
+            />
+          </div>
+          <div className="col-md-auto">
+            <span className={style.contextAccordinButton}>
+              <FormattedMessage id="add_entity" />
+            </span>
+          </div>
+        </div>
+      </button>
       <Link className="nav-link" to="/?restoreSession">
         <button
-          className={`btn btn-success btn-sm py-1 px-2 ${headerStyle.headerText}`}
+          className={`btn btn-success btn-sm py-1 px-2 mt-2 ${headerStyle.headerText}`}
           style={{ display: "block", width: "100%" }}
         >
           <div className="row">

@@ -2,6 +2,7 @@ import { FormattedMessage } from "react-intl";
 import { useState } from "react";
 import { handleCollapseVisibility } from "../lib/utils";
 import { getTranslations } from "../lib/translations";
+import { cleanInput } from "../lib/utils";
 
 export interface InputModalProps {
   modalID: string;
@@ -11,6 +12,7 @@ export interface InputModalProps {
   acceptActionID?: string;
   onAccept: (value: string) => void;
   onDismiss?: () => void;
+  inputVerifyFn?: (value: string) => boolean;
 }
 
 export const InputModalAtom = ({
@@ -21,17 +23,19 @@ export const InputModalAtom = ({
   acceptActionID,
   onAccept,
   onDismiss,
+  inputVerifyFn,
 }: InputModalProps) => {
   const [inputValue, setInputValue] = useState("");
 
   const changeValue = (e: any) => setInputValue(e.target.value);
   const checkValue = () => {
-    if (inputValue === "") {
-      handleCollapseVisibility("invalid-input-collapse", true);
+    if (inputVerifyFn && inputVerifyFn(inputValue)) {
+      handleCollapseVisibility(`${modalID}-invalid-input-collapse`, true);
       return;
     }
     onAccept(inputValue);
-    handleCollapseVisibility("invalid-input-collapse", false);
+    cleanInput(`${modalID}-input-value`);
+    handleCollapseVisibility(`${modalID}-invalid-input-collapse`, false);
   };
 
   return (
@@ -53,7 +57,7 @@ export const InputModalAtom = ({
                 <input
                   type="text"
                   className="form-control"
-                  id="input-value"
+                  id={`${modalID}-input-value`}
                   onChange={changeValue}
                   placeholder={
                     placeorderID
@@ -64,7 +68,7 @@ export const InputModalAtom = ({
                 />
               </div>
             </div>
-            <div className="collapse row" id="invalid-input-collapse">
+            <div className="collapse row" id={`${modalID}-invalid-input-collapse`}>
               <div
                 className="alert alert-danger alert-dismissible fade show"
                 role="alert"
