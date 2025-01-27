@@ -11,6 +11,7 @@ import { WarningModalAtom } from "./WarningModal";
 import { showModal, fmtValidity } from "../lib/utils";
 import { validateEntityConfiguration } from "../lib/openid-federation/schema";
 import { FormattedMessage } from "react-intl";
+import { timestampToLocaleString } from "../lib/utils";
 import style from "../css/ContextMenu.module.css";
 
 export interface ContextMenuProps {
@@ -186,7 +187,7 @@ export const NodeMenuAtom = ({
     ],
     [
       "expiring_date_label",
-      new Date(data.info.ec.payload.exp * 1000).toLocaleString(),
+      timestampToLocaleString(data.info.ec.payload.exp),
     ],
   ];
 
