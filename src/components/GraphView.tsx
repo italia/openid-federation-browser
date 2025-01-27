@@ -33,6 +33,7 @@ export const GraphViewComponent = () => {
   const [notification, setNotification] = useState<string>("");
   const [error, setError] = useState<Error>(new Error(""));
   const [failedNodes, setFailedNodes] = useState<string[]>([]);
+  const [currentContextMenu, setCurrentContextMenu] = useState<string | undefined>(undefined);
   const [showElement, setShowElement] = useState<ShowElement>(
     ShowElement.Loading,
   );
@@ -185,11 +186,23 @@ export const GraphViewComponent = () => {
               }}
               draggable
               selections={selected}
+              onNodeContextMenu={(node) => { 
+                if (currentContextMenu) return;
+                setCurrentContextMenu(node.id);
+              }}
+              onEdgeContextMenu={(edge) => {
+                if (currentContextMenu || !edge) return;
+                setCurrentContextMenu(edge.id);
+              }}
               contextMenu={({ data, onClose }) => (
                 <ContextMenuComponent
                   data={data as any}
                   graph={{ nodes, edges }}
-                  onClose={onClose}
+                  currentContextMenu={currentContextMenu}
+                  onClose={(freeCM: boolean) => {
+                    onClose(); 
+                    if (freeCM) setCurrentContextMenu(undefined);
+                  }}
                   onUpdate={onUpdate}
                   addToFailedList={addToFailedList}
                   isFailed={isFailed}

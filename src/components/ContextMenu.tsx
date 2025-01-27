@@ -9,11 +9,13 @@ import { useEffect } from "react";
 import { handleKeyDownEvent } from "../lib/utils";
 import styles from "../css/ContextMenu.module.css";
 import { useState, useRef } from "react";
+import { on } from "events";
 
 export interface ContextMenuProps {
   data: GraphNode | GraphEdge;
   graph: Graph;
-  onClose: () => void;
+  currentContextMenu?: string;
+  onClose: (freeCM: boolean) => void;
   onUpdate: (graph: Graph) => void;
   addToFailedList: (nodes: string[]) => void;
   isFailed: (node: string) => boolean;
@@ -23,12 +25,17 @@ export interface ContextMenuProps {
 export const ContextMenuComponent = ({
   data,
   graph,
+  currentContextMenu,
   onClose,
   onUpdate,
   addToFailedList,
   isFailed,
   onSelection,
 }: ContextMenuProps) => {
+  if (currentContextMenu !== data.id) {
+    onClose(false);
+  }
+
   const nodeCheck = isNode(data);
   const [isDragging, setDragging] = useState(false);
   const ref = useRef<HTMLDivElement | null>(null);
@@ -80,7 +87,7 @@ export const ContextMenuComponent = ({
 
 
   useEffect(() => 
-    handleKeyDownEvent("Escape", onClose), 
+    handleKeyDownEvent("Escape", () => onClose(true)), 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   []);
 
@@ -108,7 +115,7 @@ export const ContextMenuComponent = ({
             <div
               className="col-md-auto"
               style={{ position: "relative", top: "-2px" }}
-              onClick={onClose}
+              onClick={() => onClose(true)}
             >
               <IconAtom iconID="#it-close" className="icon-sm icon-white" />
             </div>
