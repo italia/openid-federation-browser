@@ -31,19 +31,6 @@ export const updateGraph = (node: NodeInfo, graph: Graph): Graph => {
 
   let edges = graph.edges;
 
-  const authorityHints = node.ec.payload.authority_hints;
-
-  if (authorityHints) {
-    const toConnectNodes = nodes.filter((node) =>
-      authorityHints.some((ah) => ah.startsWith(node.id)),
-    );
-
-    edges = [
-      ...edges,
-      ...toConnectNodes.map((cNode) => genEdge(cNode.info, node)),
-    ];
-  }
-
   const immDependants = node.immDependants;
 
   const toConnectNodes = nodes.filter((n) => immDependants.includes(n.id));
@@ -62,14 +49,6 @@ export const updateGraph = (node: NodeInfo, graph: Graph): Graph => {
       !edges.find((e) => e.source === node.ec.entity && e.target === n.id)
     ) {
       edges = [...edges, genEdge(n.info, node)];
-    }
-
-    if (
-      n.info.ec.payload.authority_hints?.includes(node.ec.entity) &&
-      !edges.find((e) => e.source === node.ec.entity && e.target === n.id) &&
-      !edges.find((e) => e.source === n.id && e.target === node.ec.entity)
-    ) {
-      edges = [...edges, genEdge(node, n.info)];
     }
   });
 

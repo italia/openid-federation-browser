@@ -4,7 +4,6 @@ import { GraphEdge, GraphNode, Graph } from "../lib/graph-data/types";
 import { isNode, removeNode } from "../lib/graph-data/utils";
 import { NodeMenuAtom } from "../atoms/NodeMenu";
 import { EdgeMenuAtom } from "../atoms/EdgeMenu";
-import { FormattedMessage } from "react-intl";
 import { IconAtom } from "../atoms/Icon";
 import { useEffect } from "react";
 import { handleKeyDownEvent } from "../lib/utils";
@@ -92,8 +91,7 @@ export const ContextMenuComponent = ({
               className={`col-md-10 ${styles.contextHeaderText}`}
               style={{ userSelect: "none" }}
             >
-              {nodeCheck && <FormattedMessage id={"entity_id_label"} />}
-              {data.label}
+              Inspection Window
             </div>
             <div
               className="col-md-auto"
