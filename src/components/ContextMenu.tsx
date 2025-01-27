@@ -30,25 +30,54 @@ export const ContextMenuComponent = ({
   onSelection,
 }: ContextMenuProps) => {
   const nodeCheck = isNode(data);
-
-  const [pressed, setPressed] = useState(false);
-  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [isDragging, setDragging] = useState(false);
   const ref = useRef<HTMLDivElement | null>(null);
+  const frameID = useRef(0);
+  const lastX = useRef(0);
+  const lastY = useRef(0);
+  const dragX = useRef(0);
+  const dragY = useRef(0);
+
+  const handleMove = (e: MouseEvent) => {
+    if (!isDragging) {
+      return;
+    }
+
+    const deltaX = lastX.current - e.pageX;
+    const deltaY = lastY.current - e.pageY;
+    lastX.current = e.pageX;
+    lastY.current = e.pageY;
+    dragX.current -= deltaX;
+    dragY.current -= deltaY;
+
+    cancelAnimationFrame(frameID.current);
+    frameID.current = requestAnimationFrame(() => {
+      if (ref.current) {
+        ref.current.style.transform = `translate3d(${dragX.current}px, ${dragY.current}px, 0)`;
+      }
+    });
+  };
+
+  const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
+    lastX.current = e.pageX;
+    lastY.current = e.pageY;
+    setDragging(true);
+  };
+
+  const handleMouseUp = () => {
+    setDragging(false);
+  };
 
   useEffect(() => {
-    if (ref.current) {
-      ref.current.style.transform = `translate(${position.x}px, ${position.y}px)`;
-    }
-  }, [position]);
+    document.addEventListener('mousemove', handleMove);
+    document.addEventListener('mouseup', handleMouseUp);
 
-  const onMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
-    if (pressed) {
-      setPosition({
-        x: position.x + event.movementX,
-        y: position.y + event.movementY,
-      });
-    }
-  };
+    return () => {
+      document.removeEventListener('mousemove', handleMove);
+      document.removeEventListener('mouseup', handleMouseUp);
+    };
+  }, [isDragging]);
+
 
   useEffect(() => 
     handleKeyDownEvent("Escape", onClose), 
@@ -74,11 +103,7 @@ export const ContextMenuComponent = ({
         <div className={`container ${styles.contextMenu}`}>
           <div
             className="row primary-bg pt-1 pb-1"
-            onMouseMove={onMouseMove}
-            onMouseDown={() => setPressed(true)}
-            onMouseUp={() => setPressed(false)}
-            onDragEnd={() => setPressed(false)}
-            onMouseLeave={() => setPressed(false)}
+            onMouseDown={handleMouseDown}
           >
             <div
               className="col-md-auto"
