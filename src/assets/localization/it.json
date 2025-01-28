@@ -78,5 +78,8 @@
   "target": "Destinazione",
   "add_entity": "Aggiungi Entità",
   "add_entity_label": "Aggiungi un'entità",
-  "add": "Aggiungi"
+  "add": "Aggiungi",
+  "advanced_filters": "Filtri Avanzati",
+  "search": "Cerca",
+  "restore": "Ripristina"
 }
