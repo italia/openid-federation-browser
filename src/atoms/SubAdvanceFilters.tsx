@@ -50,6 +50,13 @@ export const SubAdvanceFiltersAtom = ({
 
       onListChange(response.data);
     } catch (error) {
+      const response = (error as any).response;
+
+      if(response.status === 400) {
+        showModalError(new Error(response.data.error_description));
+        return;
+      }
+
       showModalError(error as Error);
     }
   };
