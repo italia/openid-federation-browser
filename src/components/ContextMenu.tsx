@@ -92,8 +92,10 @@ export const ContextMenuComponent = ({
 
   const removeEntity = () => {
     if (nodeCheck) {
+      onClose(true);
       onUpdate(removeNode(graph, data.id));
     } else {
+      onClose(true);
       const edges = graph.edges.filter((edge) => edge.id !== data.id);
       onUpdate({ nodes: graph.nodes, edges });
     }
