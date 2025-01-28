@@ -21,6 +21,7 @@ import {
 } from "../lib/graph-data/utils";
 
 import style from "../css/ContextMenu.module.css";
+import { Form } from "react-router-dom";
 
 export interface ContextMenuProps {
   data: GraphNode;
@@ -298,7 +299,7 @@ export const NodeMenuAtom = ({
                         htmlFor="intermediate"
                         style={{ padding: "0 0.75rem" }}
                       >
-                        Advanced Filters
+                        <FormattedMessage id="advanced_filters" />
                       </label>
                     </div>
 
