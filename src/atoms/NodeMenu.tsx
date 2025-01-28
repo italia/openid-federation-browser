@@ -2,7 +2,7 @@ import { AccordionAtom } from "./Accordion";
 import { JWTViewer } from "./JWTViewer";
 import { InfoView } from "../atoms/InfoView";
 import { GraphNode, Graph } from "../lib/graph-data/types";
-import { removeNode, genEdge } from "../lib/graph-data/utils";
+import { genEdge } from "../lib/graph-data/utils";
 import { discoverNodes } from "../lib/openid-federation/trustChain";
 import { PaginatedListAtom } from "../atoms/PaginatedList";
 import { EntityItemsRenderer } from "./EntityItemRender";
@@ -12,7 +12,12 @@ import { showModal, fmtValidity } from "../lib/utils";
 import { validateEntityConfiguration } from "../lib/openid-federation/schema";
 import { FormattedMessage } from "react-intl";
 import { timestampToLocaleString } from "../lib/utils";
-import { cleanEntityID } from "../lib/utils";
+import {
+  isDiscovered as _isDiscovered,
+  removeEntities as _removeEntities,
+  areDisconnected,
+} from "../lib/graph-data/utils";
+
 import style from "../css/ContextMenu.module.css";
 
 export interface ContextMenuProps {
@@ -43,6 +48,11 @@ export const NodeMenuAtom = ({
     undefined,
   );
   const [discoveryQueue, setDiscoveryQueue] = useState<string[]>([]);
+  const isDisconnected = (node: string) =>
+    areDisconnected(graph, data.id, node);
+  const isDiscovered = (node: string) => _isDiscovered(graph, node);
+  const removeEntities = (entityID: string | string[]) =>
+    _removeEntities(graph, entityID);
 
   const addEntities = (entityID?: string | string[]) => {
     if (!entityID) setToDiscoverList(filteredItems);
@@ -54,17 +64,6 @@ export const NodeMenuAtom = ({
       setToDiscoverList(fiteredToDiscovery);
     }
   };
-
-  const removeEntities = (entityIDs: string | string[]) => {
-    const newGraph = Array.isArray(entityIDs)
-      ? entityIDs.reduce((acc, id) => removeNode(acc, id), graph)
-      : removeNode(graph, entityIDs);
-
-    onUpdate(newGraph);
-  };
-
-  const isDiscovered = (dep: string) =>
-    graph.nodes.some((node) => cleanEntityID(node.id) === cleanEntityID(dep));
 
   const removeAllEntities =
     (subordinate: boolean = false) =>
@@ -107,14 +106,6 @@ export const NodeMenuAtom = ({
 
     onUpdate(result.graph);
     setToDiscoverList([]);
-  };
-
-  const isDisconnected = (node: string) => {
-    return !graph.edges.some(
-      (edge) =>
-        (edge.source === node && edge.target === data.id) ||
-        (edge.target === node && edge.source === data.id),
-    );
   };
 
   const addEdge = (nodeId: string) => {
