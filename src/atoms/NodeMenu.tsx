@@ -21,7 +21,6 @@ import {
 } from "../lib/graph-data/utils";
 
 import style from "../css/ContextMenu.module.css";
-import { Form } from "react-router-dom";
 
 export interface ContextMenuProps {
   data: GraphNode;
@@ -60,7 +59,7 @@ export const NodeMenuAtom = ({
     areDisconnected(graph, data.id, node);
   const isDiscovered = (node: string) => _isDiscovered(graph, node);
   const removeEntities = (entityID: string | string[]) =>
-    _removeEntities(graph, entityID);
+    onUpdate(_removeEntities(graph, entityID));
 
   const addEntities = (entityID?: string | string[]) => {
     if (!entityID) setToDiscoverList(filteredItems);
