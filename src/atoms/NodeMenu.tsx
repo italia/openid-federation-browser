@@ -12,6 +12,8 @@ import { showModal, fmtValidity } from "../lib/utils";
 import { validateEntityConfiguration } from "../lib/openid-federation/schema";
 import { FormattedMessage } from "react-intl";
 import { timestampToLocaleString } from "../lib/utils";
+import { SubAdvanceFiltersAtom } from "./SubAdvanceFilters";
+
 import {
   isDiscovered as _isDiscovered,
   removeEntities as _removeEntities,
@@ -37,6 +39,9 @@ export const NodeMenuAtom = ({
   isFailed,
   onSelection,
 }: ContextMenuProps) => {
+  const federationListEndpoint =
+    data.info.ec.payload.metadata?.federation_entity?.federation_list_endpoint;
+
   const [filteredItems, setFilteredItems] = useState<string[]>([]);
   const [toDiscoverList, setToDiscoverList] = useState<string[]>([]);
   const [errorModalText, setErrorModalText] = useState(new Error());
@@ -48,6 +53,8 @@ export const NodeMenuAtom = ({
     undefined,
   );
   const [discoveryQueue, setDiscoveryQueue] = useState<string[]>([]);
+  const [advancedParams, setAdvancedParams] = useState<boolean>(false);
+
   const isDisconnected = (node: string) =>
     areDisconnected(graph, data.id, node);
   const isDiscovered = (node: string) => _isDiscovered(graph, node);
@@ -89,19 +96,23 @@ export const NodeMenuAtom = ({
   const immediateFilter = (anchor: string, filterValue: string) =>
     anchor.toLowerCase().includes(filterValue.toLowerCase());
 
+  const showModalError = (error: Error, details?: string[]) => {
+    setErrorModalText(error);
+    setErrorDetails(details);
+    showModal("error-modal");
+  };
+
   const handleDiscoveryResult = async (result: {
     graph: Graph;
     failed: { entity: string; error: Error }[];
   }) => {
     if (result.failed.length !== 0) {
       addToFailedList(result.failed.map((f) => f.entity));
-      setErrorModalText(
+
+      showModalError(
         new Error(`Failed to discover ${result.failed.length} entities`),
-      );
-      setErrorDetails(
         result.failed.map((f) => `${f.entity} - ${f.error.message}`),
       );
-      showModal("error-modal");
     }
 
     onUpdate(result.graph);
@@ -257,22 +268,49 @@ export const NodeMenuAtom = ({
               labelId="subordinate_list"
               hiddenElement={
                 <>
-                  <div
-                    className="toggles"
-                    style={{ width: "100%", paddingLeft: "18px" }}
-                  >
-                    <label
-                      htmlFor="filteredToggle"
-                      className={style.contextAccordinText}
-                    >
-                      <FormattedMessage id="filter_discovered" />
+                  <div style={{ width: "100%", paddingLeft: "8px" }}>
+                    <div className="toggles">
+                      <label
+                        htmlFor="filteredToggle"
+                        className={style.contextAccordinText}
+                      >
+                        <FormattedMessage id="filter_discovered" />
+                        <input
+                          type="checkbox"
+                          id="filteredToggle"
+                          onChange={() =>
+                            setFilterDiscovered(!filterDiscovered)
+                          }
+                        />
+                        <span className="lever"></span>
+                      </label>
+                    </div>
+
+                    <div className={`${style.contextAccordinText}`}>
                       <input
+                        className="form-check-input"
                         type="checkbox"
-                        id="filteredToggle"
-                        onChange={() => setFilterDiscovered(!filterDiscovered)}
+                        onChange={(e) => setAdvancedParams(e.target.checked)}
+                        id="intermediate"
                       />
-                      <span className="lever"></span>
-                    </label>
+                      <label
+                        className="form-check-label"
+                        htmlFor="intermediate"
+                        style={{ padding: "0 0.75rem" }}
+                      >
+                        Advanced Filters
+                      </label>
+                    </div>
+
+                    {advancedParams && (
+                      <SubAdvanceFiltersAtom
+                        id="subordinate-advance-search"
+                        subordinateUrl={federationListEndpoint || ""}
+                        originalList={data.info.immDependants}
+                        onListChange={setImmDependants}
+                        showModalError={showModalError}
+                      />
+                    )}
                   </div>
                   <PaginatedListAtom
                     items={immDependants}

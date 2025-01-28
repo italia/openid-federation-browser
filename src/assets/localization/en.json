@@ -78,5 +78,8 @@
   "target": "Target",
   "add_entity": "Add Entity",
   "add_entity_label": "Add an entity",
-  "add": "Add"
+  "add": "Add",
+  "advanced_search": "Advanced Search",
+  "search": "Search",
+  "restore": "Restore"
 }
