@@ -9,7 +9,6 @@ import { useEffect } from "react";
 import { handleKeyDownEvent } from "../lib/utils";
 import styles from "../css/ContextMenu.module.css";
 import { useState, useRef } from "react";
-import { on } from "events";
 
 export interface ContextMenuProps {
   data: GraphNode | GraphEdge;
