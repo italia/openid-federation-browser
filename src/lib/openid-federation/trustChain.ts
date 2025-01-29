@@ -134,6 +134,20 @@ export const discoverNode = async (
     currentNode.immDependants = response.data;
   }
 
+  if (currentNodeEC.payload.trust_marks) {
+    currentNode.trustMarks = currentNodeEC.payload.trust_marks.map(
+      (tm: Record<string, string>) => ({
+        id: tm.id,
+        header: jose.decodeProtectedHeader(tm.trust_mark) as Record<
+          string,
+          any
+        >,
+        payload: jose.decodeJwt(tm.trust_mark) as Record<string, any>,
+        jwt: tm.trust_mark,
+      }),
+    );
+  }
+
   setEntityType(currentNode);
 
   const authority_hints = currentNode.ec.payload.authority_hints;
