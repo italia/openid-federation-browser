@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import {
-  discovery,
   discoverNode,
   traverseUp,
 } from "../lib/openid-federation/trustChain";
@@ -138,7 +137,7 @@ export const GraphViewComponent = () => {
     const discoveryGraph =
       searchType === "entity"
         ? traverseUp(url)
-        : discovery(url).then(fromNodeInfo);
+        : discoverNode(url);
 
     discoveryGraph.then(updateGraph).catch(showErrorMessage);
 
