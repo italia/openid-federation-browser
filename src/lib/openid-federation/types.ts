@@ -55,6 +55,7 @@ export interface EntityConfigurationPayload {
       homepage_uri: string;
       organization_name: string;
       federation_list_endpoint: string;
+      federation_trust_mark_list_endpoint?: string;
     };
     openid_provider: {
       issuer: string;
