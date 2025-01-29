@@ -199,7 +199,7 @@ export const traverseUp = async (
   child: NodeInfo | undefined = undefined,
   graph: Graph = { nodes: [], edges: [] },
 ): Promise<Graph> => {
-  const newGraph = (await discoverNode(currenECUrl, graph));
+  const newGraph = await discoverNode(currenECUrl, graph);
   const discoveredNode = newGraph.nodes.find((node) => node.id === currenECUrl);
 
   if (!discoveredNode) return newGraph;

@@ -1,8 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-  discoverNode,
-  traverseUp,
-} from "../lib/openid-federation/trustChain";
+import { discoverNode, traverseUp } from "../lib/openid-federation/trustChain";
 import { GraphCanvas, GraphCanvasRef } from "reagraph";
 import { GraphNode, GraphEdge, Graph } from "../lib/graph-data/types";
 import { ContextMenuComponent } from "./ContextMenu";
@@ -135,9 +132,7 @@ export const GraphViewComponent = () => {
     const { url, searchType } = JSON.parse(trustAnchorUrl);
 
     const discoveryGraph =
-      searchType === "entity"
-        ? traverseUp(url)
-        : discoverNode(url);
+      searchType === "entity" ? traverseUp(url) : discoverNode(url);
 
     discoveryGraph.then(updateGraph).catch(showErrorMessage);
 
