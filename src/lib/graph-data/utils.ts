@@ -75,3 +75,22 @@ export const removeSubGraph = (
 export const isEdge = (elm: any) =>
   elm.hasOwnProperty("source") && elm.hasOwnProperty("target");
 export const isNode = (elm: any) => !isEdge(elm);
+
+export const isDiscovered = (graph: Graph, dep: string) =>
+  graph.nodes.some((node) => cleanEntityID(node.id) === cleanEntityID(dep));
+
+export const removeEntities = (graph: Graph, entityIDs: string | string[]) => {
+  return Array.isArray(entityIDs)
+    ? entityIDs.reduce((acc, id) => removeNode(acc, id), graph)
+    : removeNode(graph, entityIDs);
+};
+
+export const areDisconnected = (graph: Graph, nodeA: string, nodeB: string) => {
+  return !graph.edges.some(
+    (edge) =>
+      (cleanEntityID(edge.source) === cleanEntityID(nodeA) &&
+        cleanEntityID(edge.target) === cleanEntityID(nodeB)) ||
+      (cleanEntityID(edge.target) === cleanEntityID(nodeA) &&
+        cleanEntityID(edge.source) === cleanEntityID(nodeB)),
+  );
+};

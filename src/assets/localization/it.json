@@ -84,5 +84,8 @@
   "screenshot": "Screenshot",
   "session_name": "Nome della sessione",
   "date": "Data",
-  "actions": "Azioni"
+  "actions": "Azioni",
+  "advanced_filters": "Filtri Avanzati",
+  "search": "Cerca",
+  "restore": "Ripristina"
 }
