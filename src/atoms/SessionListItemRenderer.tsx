@@ -16,58 +16,100 @@ export const SessionListItemRendererAtom = () => {
   const ItemsRenderer = ({ items }: { items: any[] }) => {
     return (
       <table style={{ listStyleType: "none", width: "100%" }}>
+        <thead>
+          <tr className={`primary-bg ${style.contextHeaderText}`}>
+            <th>
+              <div className={`row justify-content-center`}>
+                  <FormattedMessage id="screenshot" />
+              </div>
+            </th>
+            <th>
+              <div className={`row justify-content-center`}>
+                  <FormattedMessage id="session_name" />
+              </div>
+            </th>
+            <th>
+              <div className={`row justify-content-center`}>
+                  <FormattedMessage id="date" />
+              </div>
+            </th>
+            <th>
+              <div className={`row justify-content-center`}>
+                  <FormattedMessage id="actions" />
+              </div>
+            </th>
+          </tr>
+        </thead>
         <tbody>
           {items &&
             items.map((d) => (
               <tr key={d.sessionName}>
-                <th>
-                  <img
-                    src={d.screenShot}
-                    style={{ width: "10rem", height: "5rem" }}
-                    alt="screenshot"
-                  />
+                <th style={{width: "162px"}}>
+                  <div className="row justify-content-center">
+                    <img
+                      src={d.screenShot}
+                      style={{ width: "160px", height: "60px" }}
+                      alt="screenshot"
+                    />
+                  </div>
                 </th>
-                <th>
-                  <span className={style.contextAccordinText}>{d.label}</span>
+                <th style={{width: "280px"}}>
+                  <div
+                    className={`row justify-content-center ${style.contextAccordinText}`}
+                  >
+                    {d.label}
+                  </div>
                 </th>
-                <th>
-                  <span className={style.contextAccordinText}>
+                <th style={{width: "160px"}}>
+                  <div
+                    className={`row justify-content-center ${style.contextAccordinText}`}
+                  >
                     {timestampToLocaleString(d.date)}
-                  </span>
+                  </div>
                 </th>
-                <th>
-                  <button
-                    className={`btn btn-icon btn-sm py-0 px-1 btn-success`}
-                    title="Load"
-                    aria-label="Load"
-                    onClick={() => {
-                      restoreSession(d.sessionName);
-                      setSearchParams({ graphView: "" });
-                    }}
-                  >
-                    <IconAtom
-                      iconID="#it-plus"
-                      className="icon-xs icon-white"
-                      isRounded={false}
-                    />
-                    <span className={style.contextAccordinButton}>Restore</span>
-                  </button>
-                  <button
-                    className={`btn btn-icon btn-sm py-0 px-1 btn-danger`}
-                    title="Delete"
-                    aria-label="Delete"
-                    onClick={() => {
-                      deleteSession(d.sessionName);
-                      setSessions([...getSessionsList()]);
-                    }}
-                  >
-                    <IconAtom
-                      iconID="#it-minus"
-                      className="icon-xs icon-white"
-                      isRounded={false}
-                    />
-                    <span className={style.contextAccordinButton}>Delete</span>
-                  </button>
+                <th style={{width: "90px"}}>
+                  <div className="row justify-content-center">
+                    <button
+                      className={`btn btn-icon btn-sm py-0 px-1 btn-success`}
+                      title="Load"
+                      aria-label="Load"
+                      style={{ width: "90px" }}
+                      onClick={() => {
+                        restoreSession(d.sessionName);
+                        setSearchParams({ graphView: "" });
+                      }}
+                    >
+                      <IconAtom
+                        iconID="#it-plus"
+                        className="icon-xs icon-white"
+                        isRounded={false}
+                      />
+                      <span className={style.contextAccordinButton}>
+                        Restore
+                      </span>
+                    </button>
+                  </div>
+                  <div className="row justify-content-center mt-1">
+                    <button
+                      className={`btn btn-icon btn-sm py-0 px-1 btn-danger`}
+                      title="Delete"
+                      aria-label="Delete"
+                      style={{ width: "90px" }}
+                      onClick={() => {
+                        deleteSession(d.sessionName);
+                        setSessions([...getSessionsList()]);
+                      }}
+                    >
+                      <IconAtom
+                        iconID="#it-minus"
+                        className="icon-xs icon-white"
+                        isRounded={false}
+                      />
+                      <span className={style.contextAccordinButton}>
+                        Delete
+                      </span>
+                    </button>
+                  </div>
                 </th>
               </tr>
             ))}
@@ -110,7 +152,11 @@ export const SessionListItemRendererAtom = () => {
           </a>
         </li>
       </ul>
-      <div className="tab-content" id="nav-tabContent" style={{marginTop: "40px"}}>
+      <div
+        className="tab-content"
+        id="nav-tabContent"
+        style={{ marginTop: "40px" }}
+      >
         <div
           className="tab-pane fade show active"
           id={`nav-header`}

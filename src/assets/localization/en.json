@@ -80,5 +80,9 @@
   "add_entity_label": "Add an entity",
   "add": "Add",
   "from_file": "From File",
-  "from_previous_session": "From Previous Session"
+  "from_previous_session": "From Previous Session",
+  "screenshot": "Screenshot",
+  "session_name": "Session Name",
+  "date": "Date",
+  "actions": "Actions"
 }
