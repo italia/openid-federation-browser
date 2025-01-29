@@ -78,5 +78,7 @@
   "target": "Destinazione",
   "add_entity": "Aggiungi Entità",
   "add_entity_label": "Aggiungi un'entità",
-  "add": "Aggiungi"
+  "add": "Aggiungi",
+  "from_file": "Da File",
+  "from_previous_session": "Da Sessione Precedente"
 }

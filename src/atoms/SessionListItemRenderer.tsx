@@ -78,42 +78,75 @@ export const SessionListItemRendererAtom = () => {
 
   return (
     <>
-      <div className="row">
-        <div className="col">
-          <h6>
-            <FormattedMessage id="restore_view_file" />
-          </h6>
-        </div>
-      </div>
-      <div className="row mt-2">
-        <div className="col">
-          <ViewImportAtom />
-        </div>
-      </div>
-      <hr />
-      {sessions.length === 0 ? (
-        <div>
-          <h6>
-            <FormattedMessage id="no_session_available" />
-          </h6>
-        </div>
-      ) : (
-        <>
+      <ul className="nav nav-tabs auto">
+        <li className="nav-item">
+          <a
+            className="nav-link active"
+            id={`nav-header-tab`}
+            data-bs-toggle="tab"
+            href={`#nav-header`}
+            role="tab"
+            aria-controls={`nav-header`}
+            aria-selected="true"
+          >
+            <span className={style.contextAccordinText}>
+              <FormattedMessage id="from_file" />
+            </span>
+          </a>
+        </li>
+        <li className="nav-item">
+          <a
+            className="nav-link"
+            id={`nav-payload-tab`}
+            data-bs-toggle="tab"
+            href={`#nav-payload`}
+            role="tab"
+            aria-controls={`nav-payload`}
+            aria-selected="false"
+          >
+            <span className={style.contextAccordinText}>
+              <FormattedMessage id="from_previous_session" />
+            </span>
+          </a>
+        </li>
+      </ul>
+      <div className="tab-content" id="nav-tabContent" style={{marginTop: "40px"}}>
+        <div
+          className="tab-pane fade show active"
+          id={`nav-header`}
+          role="tabpanel"
+          aria-labelledby="nav-header-tab"
+          style={{ width: "100%" }}
+        >
           <div className="row">
-            <div className="col">
+            <ViewImportAtom />
+          </div>
+        </div>
+        <div
+          className="tab-pane fade"
+          id={`nav-payload`}
+          role="tabpanel"
+          aria-labelledby="nav-payload-tab"
+          style={{ width: "100%" }}
+        >
+          {sessions.length === 0 ? (
+            <div>
               <h6>
-                <FormattedMessage id="restore_view_previous" />
+                <FormattedMessage id="no_session_available" />
               </h6>
             </div>
-          </div>
-          <PaginatedListAtom
-            itemsPerPage={5}
-            items={sessions}
-            ItemsRenderer={ItemsRenderer}
-            filterFn={undefined}
-          />
-        </>
-      )}
+          ) : (
+            <>
+              <PaginatedListAtom
+                itemsPerPage={5}
+                items={sessions}
+                ItemsRenderer={ItemsRenderer}
+                filterFn={undefined}
+              />
+            </>
+          )}
+        </div>
+      </div>
     </>
   );
 };
