@@ -79,6 +79,12 @@
   "add_entity": "Aggiungi Entità",
   "add_entity_label": "Aggiungi un'entità",
   "add": "Aggiungi",
+  "from_file": "Da File",
+  "from_previous_session": "Da Sessione Precedente",
+  "screenshot": "Screenshot",
+  "session_name": "Nome della sessione",
+  "date": "Data",
+  "actions": "Azioni",
   "advanced_filters": "Filtri Avanzati",
   "search": "Cerca",
   "restore": "Ripristina"
