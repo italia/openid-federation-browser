@@ -1,14 +1,9 @@
 import { useEffect, useState } from "react";
-import {
-  discovery,
-  discoverNode,
-  traverseUp,
-} from "../lib/openid-federation/trustChain";
+import { discoverNode, traverseUp } from "../lib/openid-federation/trustChain";
 import { GraphCanvas, GraphCanvasRef } from "reagraph";
 import { GraphNode, GraphEdge, Graph } from "../lib/graph-data/types";
 import { ContextMenuComponent } from "./ContextMenu";
 import { LoadingAtom } from "../atoms/Loading";
-import { fromNodeInfo } from "../lib/graph-data/utils";
 import { ErrorViewAtom } from "../atoms/ErrorView";
 import { downloadJsonFile } from "../lib/utils";
 import { exportView, importView } from "../lib/openid-federation/trustChain";
@@ -20,7 +15,10 @@ import { GraphControlMenuAtom } from "../atoms/GraphControlMenu";
 import { evaluateTrustChain } from "../lib/openid-federation/trustChain";
 import { useRef } from "react";
 import { isValidUrl } from "../lib/utils";
+import { cleanEntityID } from "../lib/utils";
 import styles from "../css/BodyComponent.module.css";
+import headerStyle from "../css/Header.module.css";
+import { FormattedMessage } from "react-intl";
 
 enum ShowElement {
   Loading = "loading-atom",
@@ -33,7 +31,9 @@ export const GraphViewComponent = () => {
   const [update, setUpdate] = useState(false);
   const [nodes, setNodes] = useState<GraphNode[]>([]);
   const [edges, setEdges] = useState<GraphEdge[]>([]);
-  const [selected, setSelected] = useState<string[]>([]);
+  const [actives, setActives] = useState<string[]>([]);
+  const [selections, setSelections] = useState<string[]>([]);
+  const [highlighting, setHighlighting] = useState<boolean>(false);
   const [tc, setTc] = useState<string | undefined>(undefined);
   const [notification, setNotification] = useState<string>("");
   const [error, setError] = useState<Error>(new Error(""));
@@ -106,11 +106,9 @@ export const GraphViewComponent = () => {
   };
 
   useEffect(
-    () => setTc(evaluateTrustChain({ nodes, edges }, selected)),
-
+    () => setTc(evaluateTrustChain({ nodes, edges }, selections)),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [selected],
-  );
+    [selections]);
 
   useEffect(() => {
     window.addEventListener("trustAnchorUrl", () => {
@@ -136,9 +134,7 @@ export const GraphViewComponent = () => {
     const { url, searchType } = JSON.parse(trustAnchorUrl);
 
     const discoveryGraph =
-      searchType === "entity"
-        ? traverseUp(url)
-        : discovery(url).then(fromNodeInfo);
+      searchType === "entity" ? traverseUp(url) : discoverNode(url);
 
     discoveryGraph.then(updateGraph).catch(showErrorMessage);
 
@@ -201,15 +197,25 @@ export const GraphViewComponent = () => {
               ref={ref}
               nodes={nodes}
               edges={edges}
+              selections={selections}
+              actives={actives}
               onNodeClick={(node) => {
-                if (!selected.includes(node.id)) {
-                  setSelected([...selected, node.id]);
-                } else {
-                  setSelected(selected.filter((id) => id !== node.id));
+                if(selections.includes(node.id)) {
+                  setSelections(selections.filter((n) => n !== node.id));
+                  setActives(actives.filter((n) => n !== node.id));
+                }else {
+                  setSelections([node.id, ...selections]);
+                  setActives([node.id, ...actives]);
                 }
               }}
+              onCanvasClick={() => {
+                if (highlighting || currentContextMenu) return;
+                setActives([]);
+                setSelections([])
+              }}
+              lassoType="node"
+              onLassoEnd={(selections) => setSelections(selections)}
               draggable
-              selections={selected}
               onNodeContextMenu={(node) => {
                 if (currentContextMenu) return;
                 setCurrentContextMenu(node.id);
@@ -231,9 +237,18 @@ export const GraphViewComponent = () => {
                   addToFailedList={addToFailedList}
                   isFailed={isFailed}
                   onSelection={(node: string) => {
-                    setSelected([node]);
+                    setHighlighting(true);
+                    setActives([cleanEntityID(node)]);
+                    setSelections([cleanEntityID(node)]);
+
                     onClose();
-                    setTimeout(() => setSelected([]), 2000);
+                    setCurrentContextMenu(undefined);
+
+                    setTimeout(() => {
+                      setHighlighting(false);
+                      setSelections([]);
+                      setActives([]);
+                    }, 2000);
                   }}
                 />
               )}
@@ -254,6 +269,9 @@ export const GraphViewComponent = () => {
         }}
       >
         <span className="badge bg-success">{notification}</span>
+      </div>
+      <div style={{ zIndex: 9, userSelect: 'none', position: 'absolute', bottom: 0, right: 0, background: 'rgba(0, 0, 0, .5)', color: 'white' }}>
+        <span className={headerStyle.headerText} style={{ margin: 5 }}><FormattedMessage id="drag_info" /></span>
       </div>
     </>
   );

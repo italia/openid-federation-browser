@@ -68,6 +68,7 @@
     ]
   },
   "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@babel/preset-env": "^7.26.0",
     "@types/eslint-plugin-security": "^3.0.0",
     "@types/jest": "^29.5.14",

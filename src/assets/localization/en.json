@@ -60,7 +60,7 @@
   "validate_schema": "Validate Schema",
   "invalid_schema": "Invalid Schema",
   "valid_schema": "Valid Schema",
-  "filter_discovered": "Do not list already uploaded entities",
+  "filter_discovered": "Do not list already displayed entities",
   "current_page": "Current Page",
   "save_name_title": "Insert the name of the View",
   "save_name_message": "Insert the name of the View to save it",
@@ -87,5 +87,6 @@
   "actions": "Actions",
   "advanced_filters": "Advanced Filters",
   "search": "Search",
-  "restore": "Restore"
+  "restore": "Restore",
+  "drag_info": "Hold Shift and Drag to Select Multiple Nodes"
 }

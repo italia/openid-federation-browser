@@ -82,6 +82,7 @@ export const ContextMenuComponent = ({
       document.removeEventListener("mousemove", handleMove);
       document.removeEventListener("mouseup", handleMouseUp);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isDragging]);
 
   useEffect(
