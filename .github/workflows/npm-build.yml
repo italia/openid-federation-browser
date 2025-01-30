@@ -31,60 +31,59 @@ concurrency:
 jobs:
 
   build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [ 10 ]
+    name: Node ${{ matrix.node }} sample
 
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    
-    runs-on: ubuntu-latest
 
     env:
         BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
 
-    strategy:
-      matrix:
-        node-version: [10.9]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-
     steps:
-    - uses: actions/checkout@v3
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
+      - uses: actions/checkout@v4
+      - name: Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+      - run: npm ci
+      - run: npm test
 
-    - name: npm version
-      run: npm -v
+      - name: npm version
+        run: npm -v
 
-    - name: npm install
-      run: npm install
+      - name: npm install
+        run: npm install
 
-    - name: npm build
-      run: npm run build
+      - name: npm build
+        run: npm run build
 
-    - name: Show env
-      run: echo "$GITHUB_CONTEXT"
+      - name: Show env
+        run: echo "$GITHUB_CONTEXT"
     
-    - name: Create html folder
-      run: mkdir html
+      - name: Create html folder
+        run: mkdir html
     
-    - name: Show folders
-      run: ls -al
+      - name: Show folders
+        run: ls -al
     
-    - name: Show branch name
-      run: echo "$BRANCH_NAME"
+      - name: Show branch name
+        run: echo "$BRANCH_NAME"
     
-    - name: rename
-      run: |
-        mv ./build ./$BRANCH_NAME
+      - name: rename
+        run: |
+          mv ./build ./$BRANCH_NAME
 
-    - name: Deploy to GitHub Pages
-      if: success()
-      uses: crazy-max/ghaction-github-pages@v2
-      with:
-        target_branch: gh-pages
-        build_dir: $BRANCH_NAME
-        keep_history: true
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Deploy to GitHub Pages
+        if: success()
+        uses: crazy-max/ghaction-github-pages@v2
+        with:
+          target_branch: gh-pages
+          build_dir: $BRANCH_NAME
+          keep_history: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
