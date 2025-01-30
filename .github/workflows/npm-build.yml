@@ -34,7 +34,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node: [ 10 ]
+        node: [ 22 ]
     name: Node ${{ matrix.node }} sample
 
     environment:
