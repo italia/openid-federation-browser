@@ -4,6 +4,8 @@ Welcome to the OpenID Federation Browser project!
 This tool is designed to facilitate the exploration and management of OpenID Federation entities,
 providing a user-friendly interface for navigating Trust Chains and Entity Configurations.
 
+<img src="images/preview.gif" width="768">
+
 ## Features
 
 - **Entity Discovery**: Easily discover and view OpenID Federation Entities and their configurations.
