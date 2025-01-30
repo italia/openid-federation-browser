@@ -15,7 +15,7 @@ import {
   SubordinateStatementPayload,
 } from "./types";
 import { Graph, GraphEdge } from "../graph-data/types";
-import { genNode, updateGraph } from "../graph-data/utils";
+import { genEdge, updateGraph } from "../graph-data/utils";
 import { setEntityType } from "./utils";
 import { checkViewValidity } from "./utils";
 import Ajv from "ajv";
@@ -75,44 +75,6 @@ const getEntityConfigurations = async (
   return ec;
 };
 
-export const discovery = async (currenECUrl: string): Promise<NodeInfo> => {
-  const currentNodeEC = await getEntityConfigurations(currenECUrl);
-
-  const nodeInfo: NodeInfo = {
-    ec: currentNodeEC,
-    immDependants: [],
-    type: EntityType.Leaf,
-  };
-
-  const federationListEndpoint =
-    currentNodeEC.payload.metadata?.federation_entity?.federation_list_endpoint;
-
-  if (federationListEndpoint) {
-    const response = await axios.get(cors_proxy + federationListEndpoint);
-    if (!Array.isArray(response.data))
-      throw new Error("Invalid subordinate list response");
-    nodeInfo.immDependants = response.data;
-  }
-
-  if (currentNodeEC.payload.trust_marks) {
-    nodeInfo.trustMarks = currentNodeEC.payload.trust_marks.map(
-      (tm: Record<string, string>) => ({
-        id: tm.id,
-        header: jose.decodeProtectedHeader(tm.trust_mark) as Record<
-          string,
-          any
-        >,
-        payload: jose.decodeJwt(tm.trust_mark) as Record<string, any>,
-        jwt: tm.trust_mark,
-      }),
-    );
-  }
-
-  setEntityType(nodeInfo);
-
-  return nodeInfo;
-};
-
 export const discoverNode = async (
   currenECUrl: string,
   graph: Graph = { nodes: [], edges: [] },
@@ -132,6 +94,20 @@ export const discoverNode = async (
     if (!Array.isArray(response.data))
       throw new Error("Invalid subordinate list response");
     currentNode.immDependants = response.data;
+  }
+
+  if (currentNodeEC.payload.trust_marks) {
+    currentNode.trustMarks = currentNodeEC.payload.trust_marks.map(
+      (tm: Record<string, string>) => ({
+        id: tm.id,
+        header: jose.decodeProtectedHeader(tm.trust_mark) as Record<
+          string,
+          any
+        >,
+        payload: jose.decodeJwt(tm.trust_mark) as Record<string, any>,
+        jwt: tm.trust_mark,
+      }),
+    );
   }
 
   setEntityType(currentNode);
@@ -223,34 +199,19 @@ export const traverseUp = async (
   child: NodeInfo | undefined = undefined,
   graph: Graph = { nodes: [], edges: [] },
 ): Promise<Graph> => {
-  const discoveredNode = await discovery(currenECUrl);
+  const newGraph = await discoverNode(currenECUrl, graph);
+  const discoveredNode = newGraph.nodes.find((node) => node.id === currenECUrl);
 
-  const federationFetchEndpoint =
-    discoveredNode.ec.payload?.metadata?.federation_entity
-      ?.federation_fetch_endpoint;
+  if (!discoveredNode) return newGraph;
 
-  if (federationFetchEndpoint && child) {
-    try {
-      const subordinateStatements = await getSubordinateStatement(
-        federationFetchEndpoint,
-        child.ec.entity as string,
-        discoveredNode.ec,
-      );
-      child.ec.subordinates[discoveredNode.ec.entity] = subordinateStatements;
-    } catch (e) {
-      console.error(e);
-    }
-  }
+  if (child) newGraph.edges.push(genEdge(discoveredNode.info, child));
 
-  const authorityHints = discoveredNode.ec.payload?.authority_hints;
+  const authorityHints = discoveredNode.info.ec.payload?.authority_hints;
 
-  graph = updateGraph(discoveredNode, graph);
+  if (authorityHints && authorityHints.length > 0)
+    return traverseUp(authorityHints[0], discoveredNode.info, newGraph);
 
-  if (authorityHints && authorityHints.length > 0) {
-    return traverseUp(authorityHints[0], discoveredNode, graph);
-  }
-
-  return graph;
+  return newGraph;
 };
 
 export const evaluateTrustChain = (
@@ -396,7 +357,7 @@ export const importView = async (view: string): Promise<Graph> => {
   if (!checkViewValidity(parsed)) throw new Error("Invalid view data");
 
   const newNodes = await Promise.all(
-    parsed.nodes.map(async (entity) => genNode(await discovery(entity))),
+    parsed.nodes.map(async (entity) => (await discoverNode(entity)).nodes[0]),
   );
   const newEdges: GraphEdge[] = await Promise.all(
     parsed.edges.map(async (edge) => {

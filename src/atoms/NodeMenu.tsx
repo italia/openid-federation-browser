@@ -158,6 +158,11 @@ export const NodeMenuAtom = ({
     const [discovery, ...rest] = discoveryQueue;
     discoverNodes([discovery], graph)
       .then((result) => {
+
+        if(result.failed.find((f) => f.entity === discovery)) {
+          return { graph: result.graph, failed: result.failed };
+        }
+
         const isAuthorityHint = data.info.ec.payload.authority_hints?.some(
           (ah) => ah.startsWith(discovery) || discovery.startsWith(ah),
         );
