@@ -285,7 +285,9 @@ export const evaluateTrustChain = (
     let currentEdge = orderedEdges[0];
 
     for (let i = 1; i < orderedEdges.length; i++) {
+      // eslint-disable-next-line
       if (currentEdge.target === orderedEdges[i].source) {
+        // eslint-disable-next-line
         currentEdge = orderedEdges[i];
       } else {
         return undefined;
