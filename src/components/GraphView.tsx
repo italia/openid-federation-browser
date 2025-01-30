@@ -4,7 +4,6 @@ import { GraphCanvas, GraphCanvasRef } from "reagraph";
 import { GraphNode, GraphEdge, Graph } from "../lib/graph-data/types";
 import { ContextMenuComponent } from "./ContextMenu";
 import { LoadingAtom } from "../atoms/Loading";
-import { fromNodeInfo } from "../lib/graph-data/utils";
 import { ErrorViewAtom } from "../atoms/ErrorView";
 import { downloadJsonFile } from "../lib/utils";
 import { exportView, importView } from "../lib/openid-federation/trustChain";
@@ -204,6 +203,7 @@ export const GraphViewComponent = () => {
               }}
               draggable
               selections={selected}
+              onCanvasClick={() => setSelected([])}
               onNodeContextMenu={(node) => {
                 if (currentContextMenu) return;
                 setCurrentContextMenu(node.id);
