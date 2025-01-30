@@ -32,7 +32,7 @@ export const BodyComponent = () => {
   useEffect(() => {
     if (trustChainList.length) {
       const testUrl =
-        process.env.REACT_APP_CORS_PROXY ||
+      import.meta.env.VITE_CORS_PROXY ||
         "" + trustChainList[0].url + "/.well-known/openid-federation";
 
       axios.get(testUrl).catch((e) => {
@@ -51,7 +51,7 @@ export const BodyComponent = () => {
         >
           <FormattedMessage id="cors_warning" />
           <a
-            href={process.env.REACT_APP_CORS_DOCS_URL || "/"}
+            href={import.meta.env.VITE_CORS_DOCS_URL || "/"}
             className="alert-link"
             style={{ marginLeft: "10px" }}
           >
