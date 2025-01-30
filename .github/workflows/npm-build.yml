@@ -1,0 +1,87 @@
+name: gh-pages
+
+on:
+  # Runs on pushes targeting the default branch
+  push:
+    paths-ignore:
+      - README.md
+      - CONTRIBUTING.md
+      - LICENSE.md
+      - .gitignore
+    branches: ["*"]
+  release:
+    types:
+      - created
+      - edited
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+# Allow one concurrent deployment
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+
+  build:
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    
+    runs-on: ubuntu-latest
+
+    env:
+        BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
+
+    strategy:
+      matrix:
+        node-version: [10.9]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+
+    - name: npm install
+      run: npm install
+
+    - name: npm build
+      run: npm run build
+
+    - name: Show env
+      run: echo "$GITHUB_CONTEXT"
+    
+    - name: Create html folder
+      run: mkdir html
+    
+    - name: Show folders
+      run: ls -al
+    
+    - name: Show branch name
+      run: echo "$BRANCH_NAME"
+    
+    - name: rename
+      run: |
+        mv ./build ./$BRANCH_NAME
+
+    - name: Deploy to GitHub Pages
+      if: success()
+      uses: crazy-max/ghaction-github-pages@v2
+      with:
+        target_branch: gh-pages
+        build_dir: $BRANCH_NAME
+        keep_history: true
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
