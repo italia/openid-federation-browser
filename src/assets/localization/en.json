@@ -87,5 +87,6 @@
   "actions": "Actions",
   "advanced_filters": "Advanced Filters",
   "search": "Search",
-  "restore": "Restore"
+  "restore": "Restore",
+  "drag_info": "Hold Shift and Drag to Select Multiple Nodes"
 }
