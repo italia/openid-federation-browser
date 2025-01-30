@@ -60,7 +60,7 @@
   "validate_schema": "Valida Schema",
   "invalid_schema": "Schema non valido",
   "valid_schema": "Schema valido",
-  "filter_discovered": "Non elencare le entità già caricate",
+  "filter_discovered": "Non elencare le entità già visualizzate",
   "current_page": "Pagina corrente",
   "save_name_title": "Inserisci il nome della View",
   "save_name_message": "Inserisci il nome della View per salvarla",
