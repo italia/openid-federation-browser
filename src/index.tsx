@@ -10,7 +10,7 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-    <Router basename={import.meta.env.VITE_BASENAME}>
+    <Router>
       <App />
     </Router>
   </React.StrictMode>,
