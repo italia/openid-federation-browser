@@ -348,7 +348,7 @@ export const NodeMenuAtom = ({
                 decodedPayload={data.info.ec.payload as any}
                 decodedHeader={data.info.ec.header as any}
                 validationFn={validateEntityConfiguration}
-                schemaUrl={import.meta.env.VITE_ENTITY_CONFIG_SCHEMA}
+                schemaUrl={`${import.meta.env.VITE_ENTITY_CONFIG_SCHEMA}`}
               />
             }
           />

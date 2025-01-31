@@ -42,13 +42,13 @@ export const SlimHeader = () => {
                     <FormattedMessage id="fork_on_github" />
                   </span>
                 </span>
-                {import.meta.env.VITE_VERSION && (
+                {`${import.meta.env.VITE_VERSION}` && (
                   <div
                     className={style.headerText}
                     style={{ marginLeft: "20px" }}
                   >
                     <FormattedMessage id="version" />
-                    {import.meta.env.VITE_VERSION}
+                    {`${import.meta.env.VITE_VERSION}`}
                   </div>
                 )}
               </div>
