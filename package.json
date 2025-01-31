@@ -43,21 +43,6 @@
     "lint": "npx prettier . --write",
     "proxy": "node bin/proxy.js"
   },
-  "eslintConfig": {
-    "plugins": [
-      "no-secrets"
-    ],
-    "rules": {
-      "no-secrets/no-secrets": "error"
-    },
-    "extends": [
-      "react-app",
-      "react-app/jest",
-      "prettier",
-      "plugin:security/recommended-legacy",
-      "plugin:jsonc/base"
-    ]
-  },
   "browserslist": {
     "production": [
       ">0.2%",
@@ -77,12 +62,15 @@
     "@types/jest": "^29.5.14",
     "@types/react-syntax-highlighter": "^15.5.13",
     "babel-jest": "^29.7.0",
+    "eslint": "^8.57.1",
     "eslint-config-prettier": "^9.1.0",
+    "eslint-config-react-app": "^7.0.1",
     "eslint-plugin-jsonc": "^2.18.2",
     "eslint-plugin-no-secrets": "^2.1.1",
     "eslint-plugin-security": "^3.0.1",
     "jest": "^29.7.0",
     "prettier": "3.4.2",
-    "ts-jest": "^29.2.5"
+    "ts-jest": "^29.2.5",
+    "vite-plugin-checker": "^0.8.0"
   }
 }
