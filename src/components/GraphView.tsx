@@ -108,7 +108,8 @@ export const GraphViewComponent = () => {
   useEffect(
     () => setTc(evaluateTrustChain({ nodes, edges }, selections)),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [selections]);
+    [selections],
+  );
 
   useEffect(() => {
     window.addEventListener("trustAnchorUrl", () => {
@@ -200,10 +201,10 @@ export const GraphViewComponent = () => {
               selections={selections}
               actives={actives}
               onNodeClick={(node) => {
-                if(selections.includes(node.id)) {
+                if (selections.includes(node.id)) {
                   setSelections(selections.filter((n) => n !== node.id));
                   setActives(actives.filter((n) => n !== node.id));
-                }else {
+                } else {
                   setSelections([node.id, ...selections]);
                   setActives([node.id, ...actives]);
                 }
@@ -211,7 +212,7 @@ export const GraphViewComponent = () => {
               onCanvasClick={() => {
                 if (highlighting || currentContextMenu) return;
                 setActives([]);
-                setSelections([])
+                setSelections([]);
               }}
               lassoType="node"
               onLassoEnd={(selections) => setSelections(selections)}
@@ -270,8 +271,20 @@ export const GraphViewComponent = () => {
       >
         <span className="badge bg-success">{notification}</span>
       </div>
-      <div style={{ zIndex: 9, userSelect: 'none', position: 'absolute', bottom: 0, right: 0, background: 'rgba(0, 0, 0, .5)', color: 'white' }}>
-        <span className={headerStyle.headerText} style={{ margin: 5 }}><FormattedMessage id="drag_info" /></span>
+      <div
+        style={{
+          zIndex: 9,
+          userSelect: "none",
+          position: "absolute",
+          bottom: 0,
+          right: 0,
+          background: "rgba(0, 0, 0, .5)",
+          color: "white",
+        }}
+      >
+        <span className={headerStyle.headerText} style={{ margin: 5 }}>
+          <FormattedMessage id="drag_info" />
+        </span>
       </div>
     </>
   );

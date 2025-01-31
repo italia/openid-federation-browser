@@ -158,8 +158,7 @@ export const NodeMenuAtom = ({
     const [discovery, ...rest] = discoveryQueue;
     discoverNodes([discovery], graph)
       .then((result) => {
-
-        if(result.failed.find((f) => f.entity === discovery)) {
+        if (result.failed.find((f) => f.entity === discovery)) {
           return { graph: result.graph, failed: result.failed };
         }
 

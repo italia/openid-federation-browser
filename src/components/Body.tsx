@@ -32,7 +32,7 @@ export const BodyComponent = () => {
   useEffect(() => {
     if (trustChainList.length) {
       const testUrl =
-      `${import.meta.env.VITE_CORS_PROXY}` ||
+        `${import.meta.env.VITE_CORS_PROXY}` ||
         "" + trustChainList[0].url + "/.well-known/openid-federation";
 
       axios.get(testUrl).catch((e) => {

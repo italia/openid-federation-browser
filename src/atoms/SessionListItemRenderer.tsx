@@ -20,22 +20,22 @@ export const SessionListItemRendererAtom = () => {
           <tr className={`primary-bg ${style.contextHeaderText}`}>
             <th>
               <div className={`row justify-content-center`}>
-                  <FormattedMessage id="screenshot" />
+                <FormattedMessage id="screenshot" />
               </div>
             </th>
             <th>
               <div className={`row justify-content-center`}>
-                  <FormattedMessage id="session_name" />
+                <FormattedMessage id="session_name" />
               </div>
             </th>
             <th>
               <div className={`row justify-content-center`}>
-                  <FormattedMessage id="date" />
+                <FormattedMessage id="date" />
               </div>
             </th>
             <th>
               <div className={`row justify-content-center`}>
-                  <FormattedMessage id="actions" />
+                <FormattedMessage id="actions" />
               </div>
             </th>
           </tr>
@@ -44,7 +44,7 @@ export const SessionListItemRendererAtom = () => {
           {items &&
             items.map((d) => (
               <tr key={d.sessionName}>
-                <th style={{width: "162px"}}>
+                <th style={{ width: "162px" }}>
                   <div className="row justify-content-center">
                     <img
                       src={d.screenShot}
@@ -53,21 +53,21 @@ export const SessionListItemRendererAtom = () => {
                     />
                   </div>
                 </th>
-                <th style={{width: "280px"}}>
+                <th style={{ width: "280px" }}>
                   <div
                     className={`row justify-content-center ${style.contextAccordinText}`}
                   >
                     {d.label}
                   </div>
                 </th>
-                <th style={{width: "160px"}}>
+                <th style={{ width: "160px" }}>
                   <div
                     className={`row justify-content-center ${style.contextAccordinText}`}
                   >
                     {timestampToLocaleString(d.date)}
                   </div>
                 </th>
-                <th style={{width: "90px"}}>
+                <th style={{ width: "90px" }}>
                   <div className="row justify-content-center">
                     <button
                       className={`btn btn-icon btn-sm py-0 px-1 btn-success`}
