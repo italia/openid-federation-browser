@@ -103,7 +103,7 @@ export const ContextMenuComponent = ({
   };
 
   return (
-    <div ref={ref}>
+    <div ref={ref} style={{minWidth: "33rem"}}>
       <IntlProvider
         locale={navigator.language.split(",")[0]}
         defaultLocale="en-EN"
