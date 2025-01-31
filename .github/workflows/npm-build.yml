@@ -29,7 +29,6 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-
   build:
     runs-on: ubuntu-latest
     strategy:
@@ -42,7 +41,7 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
 
     env:
-        BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
+      BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
 
     steps:
       - uses: actions/checkout@v4
@@ -62,16 +61,16 @@ jobs:
 
       - name: Show env
         run: echo "$GITHUB_CONTEXT"
-    
+
       - name: Create html folder
         run: mkdir html
-    
+
       - name: Show folders
         run: ls -al
-    
+
       - name: Show branch name
         run: echo "$BRANCH_NAME"
-    
+
       - name: rename
         run: |
           mv ./build ./$BRANCH_NAME

@@ -23,7 +23,7 @@ import schema from "../graph-data/graph.schema.json";
 
 const schemaValidator = new Ajv().compile(schema);
 
-const cors_proxy = process.env.REACT_APP_CORS_PROXY || "";
+const cors_proxy = import.meta.env.VITE_CORS_PROXY || "";
 
 const getSubordinateStatement = async (
   fetchEndpoint: string,

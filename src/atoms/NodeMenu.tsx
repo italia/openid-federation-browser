@@ -158,8 +158,7 @@ export const NodeMenuAtom = ({
     const [discovery, ...rest] = discoveryQueue;
     discoverNodes([discovery], graph)
       .then((result) => {
-
-        if(result.failed.find((f) => f.entity === discovery)) {
+        if (result.failed.find((f) => f.entity === discovery)) {
           return { graph: result.graph, failed: result.failed };
         }
 
@@ -348,7 +347,7 @@ export const NodeMenuAtom = ({
                 decodedPayload={data.info.ec.payload as any}
                 decodedHeader={data.info.ec.header as any}
                 validationFn={validateEntityConfiguration}
-                schemaUrl={process.env.REACT_APP_ENTITY_CONFIG_SCHEMA}
+                schemaUrl={`${import.meta.env.VITE_ENTITY_CONFIG_SCHEMA}`}
               />
             }
           />
