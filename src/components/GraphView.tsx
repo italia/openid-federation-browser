@@ -180,7 +180,7 @@ export const GraphViewComponent = () => {
             .catch(showErrorMessage)
         }
       />
-      <div className={styles.graphAtom}>
+      <div id="content-body" className={styles.graphAtom}>
         {showElement === ShowElement.Loading ? (
           <LoadingAtom />
         ) : showElement === ShowElement.Error ? (
