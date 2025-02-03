@@ -29,10 +29,11 @@ export const SlimHeader = () => {
                 </div>
               </div>
               <div className="it-header-slim-right-zone">
-                <span
+                <a
                   className="btn btn-primary btn-icon btn-full"
                   title="Fork on Github"
                   aria-label="Fork on Github"
+                  href={import.meta.env.VITE_GITHUB_URL || "./"}
                 >
                   <IconAtom
                     iconID={"#it-github"}
@@ -42,7 +43,7 @@ export const SlimHeader = () => {
                   <span className={`d-none d-lg-block ${style.headerText}`}>
                     <FormattedMessage id="fork_on_github" />
                   </span>
-                </span>
+                </a>
                 {config.version && (
                   <div
                     className={style.headerText}

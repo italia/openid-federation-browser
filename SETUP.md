@@ -27,6 +27,7 @@ In the .env file there are some option that can be optionally set:
 
 ```
 # VITE_CORS_PROXY=https://corsproxy.io/?url=
+# VITE_GITHUB_URL=
 # VITE_BASE_PATH=/
 # VITE_CORS_DOCS_URL=/
 # VITE_VERSION=1.0.0
@@ -35,6 +36,7 @@ In the .env file there are some option that can be optionally set:
 ```
 
 - VITE_CORS_PROXY: sets an url of a service that provide CORS suppression.
+- VITE_GITHUB_URL: sets the url of the github repository.
 - VITE_BASE_PATH: sets the base path of the application.
 - VITE_CORS_DOCS_URL: sets the url where read about the CORS documentation.
 - VITE_VERSION: sets the version in the header.
