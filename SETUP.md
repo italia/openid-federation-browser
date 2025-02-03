@@ -27,6 +27,7 @@ In the .env file there are some option that can be optionally set:
 
 ```
 # VITE_CORS_PROXY=https://corsproxy.io/?url=
+# VITE_BASE_PATH=/
 # VITE_CORS_DOCS_URL=/
 # VITE_VERSION=1.0.0
 # VITE_SUB_STATEMENT_SCHEMA=
@@ -34,6 +35,7 @@ In the .env file there are some option that can be optionally set:
 ```
 
 - VITE_CORS_PROXY: sets an url of a service that provide CORS suppression.
+- VITE_BASE_PATH: sets the base path of the application.
 - VITE_CORS_DOCS_URL: sets the url where read about the CORS documentation.
 - VITE_VERSION: sets the version in the header.
 - VITE_SUB_STATEMENT_SCHEMA: sets the url of the schema for the subordinate statement.
@@ -49,6 +51,8 @@ export default defineConfig({
   plugins: [...],
 });
 ```
+
+The base value must be the same of the VITE_BASE_PATH variable in the .env file.
 
 ### Build
 
