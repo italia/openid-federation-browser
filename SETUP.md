@@ -27,7 +27,6 @@ In the .env file there are some option that can be optionally set:
 
 ```
 # VITE_CORS_PROXY=https://corsproxy.io/?url=
-# VITE_BASENAME=/
 # VITE_CORS_DOCS_URL=/
 # VITE_VERSION=1.0.0
 # VITE_SUB_STATEMENT_SCHEMA=
@@ -35,11 +34,21 @@ In the .env file there are some option that can be optionally set:
 ```
 
 - VITE_CORS_PROXY: sets an url of a service that provide CORS suppression.
-- VITE_BASENAME: sets a base name if the page is not served under '/' .
 - VITE_CORS_DOCS_URL: sets the url where read about the CORS documentation.
 - VITE_VERSION: sets the version in the header.
 - VITE_SUB_STATEMENT_SCHEMA: sets the url of the schema for the subordinate statement.
 - VITE_ENTITY_CONFIG_SCHEMA: sets the url of the schema for the entity configuration.
+
+### Basename
+To set a basename different from the root you can set the base variable inside the vite.config.js file like this example:
+
+```
+export default defineConfig({
+  base: '/openid-federation-browser/',
+  build: {...},
+  plugins: [...],
+});
+```
 
 ### Build
 
