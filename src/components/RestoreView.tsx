@@ -1,16 +1,18 @@
-import { useSearchParams } from "react-router-dom";
-import { PaginatedListAtom } from "./PaginatedList";
-import { IconAtom } from "./Icon";
+import { useNavigate } from "react-router-dom";
+import { PaginatedListAtom } from "../atoms/PaginatedList";
+import { IconAtom } from "../atoms/Icon";
 import { getSessionsList, restoreSession } from "../lib/utils";
 import { deleteSession } from "../lib/utils";
 import { useState } from "react";
 import { FormattedMessage } from "react-intl";
-import { ViewImportAtom } from "./ViewImport";
+import { ViewImportAtom } from "../atoms/ViewImport";
 import { timestampToLocaleString } from "../lib/utils";
+import bodyStyle from "../css/BodyComponent.module.css";
 import style from "../css/ContextMenu.module.css";
 
-export const SessionListItemRendererAtom = () => {
-  const [, setSearchParams] = useSearchParams();
+export const RestoreView = () => {
+  const navigate = useNavigate();
+
   const [sessions, setSessions] = useState<any[]>(getSessionsList());
 
   const ItemsRenderer = ({ items }: { items: any[] }) => {
@@ -76,7 +78,7 @@ export const SessionListItemRendererAtom = () => {
                       style={{ width: "90px" }}
                       onClick={() => {
                         restoreSession(d.sessionName);
-                        setSearchParams({ graphView: "" });
+                        navigate("/graphView", { replace: true });
                       }}
                     >
                       <IconAtom
@@ -119,7 +121,7 @@ export const SessionListItemRendererAtom = () => {
   };
 
   return (
-    <>
+    <div className={bodyStyle.bodyElement}>
       <ul className="nav nav-tabs auto">
         <li className="nav-item">
           <a
@@ -176,23 +178,19 @@ export const SessionListItemRendererAtom = () => {
           style={{ width: "100%" }}
         >
           {sessions.length === 0 ? (
-            <div>
-              <h6>
-                <FormattedMessage id="no_session_available" />
-              </h6>
-            </div>
+            <h6>
+              <FormattedMessage id="no_session_available" />
+            </h6>
           ) : (
-            <>
-              <PaginatedListAtom
-                itemsPerPage={5}
-                items={sessions}
-                ItemsRenderer={ItemsRenderer}
-                filterFn={undefined}
-              />
-            </>
+            <PaginatedListAtom
+              itemsPerPage={5}
+              items={sessions}
+              ItemsRenderer={ItemsRenderer}
+              filterFn={undefined}
+            />
           )}
         </div>
       </div>
-    </>
+    </div>
   );
 };

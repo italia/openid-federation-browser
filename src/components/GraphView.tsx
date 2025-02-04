@@ -26,7 +26,7 @@ enum ShowElement {
   Graph = "graph-atom",
 }
 
-export const GraphViewComponent = () => {
+export const GraphView = () => {
   const ref = useRef<GraphCanvasRef | null>(null);
   const [update, setUpdate] = useState(false);
   const [nodes, setNodes] = useState<GraphNode[]>([]);

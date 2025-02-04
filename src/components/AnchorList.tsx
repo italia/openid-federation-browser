@@ -1,11 +1,12 @@
-import { useSearchParams } from "react-router-dom";
 import trustChainList from "../assets/trustChainList.json";
-import { PaginatedListAtom } from "./PaginatedList";
-import { IconAtom } from "./Icon";
+import { PaginatedListAtom } from "../atoms/PaginatedList";
+import { IconAtom } from "../atoms/Icon";
 import style from "../css/ContextMenu.module.css";
+import bodyStyle from "../css/BodyComponent.module.css";
+import { useNavigate } from "react-router-dom";
 
-export const AnchorListItemRendererAtom = () => {
-  const [, setSearchParams] = useSearchParams();
+export const AnchorList = () => {
+  const navigate = useNavigate();
 
   const ItemsRenderer = ({ items }: { items: any[] }) => {
     return (
@@ -27,7 +28,7 @@ export const AnchorListItemRendererAtom = () => {
                       sessionStorage.removeItem("currentSession");
                       sessionStorage.removeItem("currentSessionName");
                       window.dispatchEvent(new Event("trustAnchorUrl"));
-                      setSearchParams({ graphView: "" });
+                      navigate("/graphView", { replace: true });
                     }}
                   >
                     <IconAtom
@@ -52,11 +53,13 @@ export const AnchorListItemRendererAtom = () => {
     anchor.name.toLowerCase().includes(filterValue.toLowerCase());
 
   return (
-    <PaginatedListAtom
-      itemsPerPage={5}
-      items={trustChainList}
-      ItemsRenderer={ItemsRenderer}
-      filterFn={trustAnchorFilter}
-    />
+    <div className={bodyStyle.bodyElement}>
+      <PaginatedListAtom
+        itemsPerPage={5}
+        items={trustChainList}
+        ItemsRenderer={ItemsRenderer}
+        filterFn={trustAnchorFilter}
+      />
+    </div>
   );
 };

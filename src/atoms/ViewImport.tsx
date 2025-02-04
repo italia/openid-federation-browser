@@ -1,12 +1,12 @@
 import { useState, ChangeEvent } from "react";
 import { FormattedMessage } from "react-intl";
 import { getTranslations } from "../lib/translations";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import style from "../css/ContextMenu.module.css";
 
 export const ViewImportAtom = () => {
+  const navigate = useNavigate();
   const [file, setFile] = useState<string | undefined>(undefined);
-  const [, setSearchParams] = useSearchParams();
 
   const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -19,7 +19,7 @@ export const ViewImportAtom = () => {
     if (file) {
       sessionStorage.removeItem("currentSessionName");
       sessionStorage.setItem("currentSession", file);
-      setSearchParams({ graphView: "" });
+      navigate("/graphView", { replace: true });
     }
   };
 
