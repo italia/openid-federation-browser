@@ -45,9 +45,11 @@ export const ContextMenuComponent = ({
   const dragY = useRef(0);
 
   const handleMove = (e: MouseEvent) => {
-    if (!isDragging) {
+    if (!isDragging || !ref.current) {
       return;
     }
+
+    const container = document.getElementById('content-body') as HTMLDivElement;
 
     const deltaX = lastX.current - e.pageX;
     const deltaY = lastY.current - e.pageY;
@@ -55,6 +57,12 @@ export const ContextMenuComponent = ({
     lastY.current = e.pageY;
     dragX.current -= deltaX;
     dragY.current -= deltaY;
+
+    const maxDragX = (container.offsetWidth - ref.current.offsetWidth)/2;
+    const maxDragY = (container.offsetHeight - ref.current.offsetHeight)/2;
+
+    dragX.current = Math.max(-maxDragX, Math.min(dragX.current, maxDragX));
+    dragY.current = Math.max(-maxDragY, Math.min(dragY.current, maxDragY));
 
     cancelAnimationFrame(frameID.current);
     frameID.current = requestAnimationFrame(() => {

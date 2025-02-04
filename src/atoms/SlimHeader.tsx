@@ -12,7 +12,7 @@ export const SlimHeader = () => {
             <div className="it-header-slim-wrapper-content">
               <div className="row">
                 <div className="col-2">
-                  <a className="d-lg-block navbar-brand" href="/">
+                  <a className="d-lg-block navbar-brand" href="./">
                     <IconAtom
                       iconID={"#it-designers-italia"}
                       isRounded={true}
@@ -21,7 +21,7 @@ export const SlimHeader = () => {
                   </a>
                 </div>
                 <div className="col-8">
-                  <a href="/" className="d-lg-block navbar-brand mt-1">
+                  <a href="./" className="d-lg-block navbar-brand mt-1">
                     <h1 className={style.pageTitle}>
                       <FormattedMessage id="title" />
                     </h1>
@@ -29,10 +29,11 @@ export const SlimHeader = () => {
                 </div>
               </div>
               <div className="it-header-slim-right-zone">
-                <span
+                <a
                   className="btn btn-primary btn-icon btn-full"
                   title="Fork on Github"
                   aria-label="Fork on Github"
+                  href={import.meta.env.VITE_GITHUB_URL || "./"}
                 >
                   <IconAtom
                     iconID={"#it-github"}
@@ -42,7 +43,7 @@ export const SlimHeader = () => {
                   <span className={`d-none d-lg-block ${style.headerText}`}>
                     <FormattedMessage id="fork_on_github" />
                   </span>
-                </span>
+                </a>
                 {config.version && (
                   <div
                     className={style.headerText}
