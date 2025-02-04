@@ -2,7 +2,6 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import { BrowserRouter as Router } from "react-router-dom";
 import "bootstrap-italia/dist/css/bootstrap-italia.min.css";
 
 const root = ReactDOM.createRoot(
@@ -10,9 +9,7 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-    <Router basename={import.meta.env.VITE_BASE_PATH}>
-      <App />
-    </Router>
+    <App />
   </React.StrictMode>,
 );
 

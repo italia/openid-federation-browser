@@ -1,18 +1,18 @@
 import { FormattedMessage } from "react-intl";
 import { Link } from "react-router-dom";
 import style from "../css/Header.module.css";
-import { useSearchParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 export const NavBarAtom = () => {
-  const [searchParams] = useSearchParams();
+  const location = useLocation();
   const [hasGraphInitialized, setHasGraphInitialized] = useState(false);
 
   useEffect(() => {
-    if (searchParams.has("graphView")) {
+    if (location.pathname === "/graphView") {
       setHasGraphInitialized(true);
     }
-  }, [searchParams]);
+  }, [location.pathname]);
 
   return (
     <div className="it-header-navbar-wrapper">
@@ -31,7 +31,7 @@ export const NavBarAtom = () => {
                 <div className="menu-wrapper">
                   <ul className="navbar-nav">
                     <li className="nav-item active">
-                      <Link className="nav-link" to="/?insertUrl">
+                      <Link className="nav-link" to="/insertUrl">
                         <span
                           className={style.headerText}
                           style={{ padding: "2px 24px" }}
@@ -41,21 +41,21 @@ export const NavBarAtom = () => {
                       </Link>
                     </li>
                     <li className="nav-item">
-                      <Link className="nav-link" to="/?listUrl">
+                      <Link className="nav-link" to="/listUrl">
                         <span className={style.headerText}>
                           <FormattedMessage id="select_trust_node_url_option" />
                         </span>
                       </Link>
                     </li>
                     <li className="nav-item">
-                      <Link className="nav-link" to="/?insertEntityUrl">
+                      <Link className="nav-link" to="/insertEntityUrl">
                         <span className={style.headerText}>
                           <FormattedMessage id="insert_entity_node_url_option" />
                         </span>
                       </Link>
                     </li>
                     <li className="nav-item">
-                      <Link className="nav-link" to="/?restoreSession">
+                      <Link className="nav-link" to="/restoreSession">
                         <span className={style.headerText}>
                           <FormattedMessage id="restore_session_label" />
                         </span>
@@ -63,7 +63,7 @@ export const NavBarAtom = () => {
                     </li>
                     {hasGraphInitialized && (
                       <li className="nav-item">
-                        <Link className="nav-link" to="/?graphView">
+                        <Link className="nav-link" to="/graphView">
                           <span className={style.headerText}>
                             <FormattedMessage id="current_view_label" />
                           </span>

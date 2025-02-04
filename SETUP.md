@@ -44,6 +44,7 @@ In the .env file there are some option that can be optionally set:
 - VITE_ENTITY_CONFIG_SCHEMA: sets the url of the schema for the entity configuration.
 
 ### Basename
+
 To set a basename different from the root you can set the base variable inside the vite.config.js file like this example:
 
 ```

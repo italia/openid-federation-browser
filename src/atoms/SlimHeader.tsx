@@ -2,6 +2,7 @@ import { FormattedMessage } from "react-intl";
 import { IconAtom } from "./Icon";
 import style from "../css/Header.module.css";
 import config from "../../package.json";
+import { Link } from "react-router-dom";
 
 export const SlimHeader = () => {
   return (
@@ -12,20 +13,24 @@ export const SlimHeader = () => {
             <div className="it-header-slim-wrapper-content">
               <div className="row">
                 <div className="col-2">
-                  <a className="d-lg-block navbar-brand" href="./">
-                    <IconAtom
-                      iconID={"#it-designers-italia"}
-                      isRounded={true}
-                      style={{ width: "32px", height: "32px" }}
-                    />
-                  </a>
+                  <span className="d-lg-block navbar-brand">
+                    <Link to="/">
+                      <IconAtom
+                        iconID={"#it-designers-italia"}
+                        isRounded={true}
+                        style={{ width: "32px", height: "32px" }}
+                      />
+                    </Link>
+                  </span>
                 </div>
                 <div className="col-8">
-                  <a href="./" className="d-lg-block navbar-brand mt-1">
-                    <h1 className={style.pageTitle}>
-                      <FormattedMessage id="title" />
-                    </h1>
-                  </a>
+                  <Link to="/">
+                    <span className="d-lg-block navbar-brand mt-1">
+                      <h1 className={style.pageTitle}>
+                        <FormattedMessage id="title" />
+                      </h1>
+                    </span>
+                  </Link>
                 </div>
               </div>
               <div className="it-header-slim-right-zone">

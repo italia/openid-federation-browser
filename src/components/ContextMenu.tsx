@@ -49,7 +49,7 @@ export const ContextMenuComponent = ({
       return;
     }
 
-    const container = document.getElementById('content-body') as HTMLDivElement;
+    const container = document.getElementById("content-body") as HTMLDivElement;
 
     const deltaX = lastX.current - e.pageX;
     const deltaY = lastY.current - e.pageY;
@@ -58,8 +58,8 @@ export const ContextMenuComponent = ({
     dragX.current -= deltaX;
     dragY.current -= deltaY;
 
-    const maxDragX = (container.offsetWidth - ref.current.offsetWidth)/2;
-    const maxDragY = (container.offsetHeight - ref.current.offsetHeight)/2;
+    const maxDragX = (container.offsetWidth - ref.current.offsetWidth) / 2;
+    const maxDragY = (container.offsetHeight - ref.current.offsetHeight) / 2;
 
     dragX.current = Math.max(-maxDragX, Math.min(dragX.current, maxDragX));
     dragY.current = Math.max(-maxDragY, Math.min(dragY.current, maxDragY));
