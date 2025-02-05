@@ -48,12 +48,8 @@ export const EdgeMenuAtom = ({ data }: EdgeMenuAtomProps) => {
                 <JWTViewer
                   id="subordinate-statement-viewer"
                   raw={data.subStatement.jwt}
-                  decodedPayload={
-                    data.subStatement.payload as object
-                  }
-                  decodedHeader={
-                    data.subStatement.header as object
-                  }
+                  decodedPayload={data.subStatement.payload as object}
+                  decodedHeader={data.subStatement.header as object}
                   validationFn={validateSubordinateStatement}
                   schemaUrl={`${import.meta.env.VITE_SUB_STATEMENT_SCHEMA}`}
                 />

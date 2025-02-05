@@ -9,7 +9,11 @@ import { useNavigate } from "react-router-dom";
 export const AnchorList = () => {
   const navigate = useNavigate();
 
-  const ItemsRenderer = ({ items }: { items: {name: string, url: string}[] }) => {
+  const ItemsRenderer = ({
+    items,
+  }: {
+    items: { name: string; url: string }[];
+  }) => {
     return (
       <ul style={{ listStyleType: "none" }}>
         {items &&
@@ -50,8 +54,10 @@ export const AnchorList = () => {
     );
   };
 
-  const trustAnchorFilter = (anchor: {name: string, url: string}, filterValue: string) =>
-    anchor.name.toLowerCase().includes(filterValue.toLowerCase());
+  const trustAnchorFilter = (
+    anchor: { name: string; url: string },
+    filterValue: string,
+  ) => anchor.name.toLowerCase().includes(filterValue.toLowerCase());
 
   return (
     <div className={bodyStyle.bodyElement}>

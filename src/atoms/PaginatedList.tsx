@@ -34,7 +34,8 @@ export const PaginatedListAtom = ({
     setItemOffset(newOffset);
   };
 
-  const changeSearchValue = (e: React.ChangeEvent<HTMLInputElement>) => setSearchValue(e.target.value);
+  const changeSearchValue = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setSearchValue(e.target.value);
 
   useEffect(
     () => {
@@ -47,7 +48,7 @@ export const PaginatedListAtom = ({
 
       setCurrentItems(currentItems);
       setPageCount(pageCount);
-      if(onItemsFiltered) onItemsFiltered(filteredItems);
+      if (onItemsFiltered) onItemsFiltered(filteredItems);
     },
 
     // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -14,7 +14,8 @@ export const UrlInput = () => {
   const [doCheck, setDoCheck] = useState(false);
   const navigate = useNavigate();
 
-  const changeValue = (e: React.ChangeEvent<HTMLInputElement>) => setInputValue(e.target.value);
+  const changeValue = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setInputValue(e.target.value);
 
   const searchType =
     window.location.pathname === "/insertEntityUrl" ? "entity" : "anchor";

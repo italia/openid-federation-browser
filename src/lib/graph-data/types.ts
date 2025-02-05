@@ -5,7 +5,7 @@ export interface GraphNode extends InternalGraphNode {
   id: string;
   label: string;
   info: NodeInfo;
-};
+}
 
 export interface GraphEdge extends InternalGraphEdge {
   id: string;
@@ -13,7 +13,7 @@ export interface GraphEdge extends InternalGraphEdge {
   target: string;
   label: string;
   subStatement?: SubordianteStatement;
-};
+}
 
 export interface Graph {
   nodes: GraphNode[];
