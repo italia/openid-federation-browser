@@ -14,8 +14,34 @@ import style from "../css/ContextMenu.module.css";
 
 export const RestoreView = () => {
   const navigate = useNavigate();
-
   const [sessions, setSessions] = useState<Session[]>(getSessionsList());
+
+  const toggleTab = (tab: string) => {
+    const show = tab === "file" ? "file" : "previous";
+    const hide = tab === "file" ? "previous" : "file";
+
+    const showElement = document.getElementById(`nav-${show}`);
+    if (showElement) {
+      showElement.classList.add("active");
+      showElement.classList.add("show");
+    }
+
+    const showElementTab = document.getElementById(`nav-${show}-tab`);
+    if (showElementTab) {
+      showElementTab.classList.add("active");
+    }
+
+    const hideElement = document.getElementById(`nav-${hide}`);
+    if (hideElement) {
+      hideElement.classList.remove("active");
+      hideElement.classList.remove("show");
+    }
+
+    const hideElementTab = document.getElementById(`nav-${hide}-tab`);
+    if (hideElementTab) {
+      hideElementTab.classList.remove("active");
+    }
+  };
 
   const ItemsRenderer = ({ items }: { items: Session[] }) => {
     return (
@@ -126,29 +152,23 @@ export const RestoreView = () => {
     <div className={bodyStyle.bodyElement}>
       <ul className="nav nav-tabs auto">
         <li className="nav-item">
-          <a
+          <span
             className="nav-link active"
-            id={`nav-header-tab`}
-            data-bs-toggle="tab"
-            href={`#nav-header`}
+            id={`nav-file-tab`}
             role="tab"
-            aria-controls={`nav-header`}
-            aria-selected="true"
+            onClick={() => toggleTab("file")}
           >
             <span className={style.contextAccordinText}>
               <FormattedMessage id="from_file" />
             </span>
-          </a>
+          </span>
         </li>
         <li className="nav-item">
           <a
             className="nav-link"
-            id={`nav-payload-tab`}
-            data-bs-toggle="tab"
-            href={`#nav-payload`}
+            id={`nav-previous-tab`}
             role="tab"
-            aria-controls={`nav-payload`}
-            aria-selected="false"
+            onClick={() => toggleTab("previous")}
           >
             <span className={style.contextAccordinText}>
               <FormattedMessage id="from_previous_session" />
@@ -163,9 +183,9 @@ export const RestoreView = () => {
       >
         <div
           className="tab-pane fade show active"
-          id={`nav-header`}
+          id={`nav-file`}
           role="tabpanel"
-          aria-labelledby="nav-header-tab"
+          aria-labelledby="nav-file-tab"
           style={{ width: "100%" }}
         >
           <div className="row">
@@ -174,9 +194,9 @@ export const RestoreView = () => {
         </div>
         <div
           className="tab-pane fade"
-          id={`nav-payload`}
+          id={`nav-previous`}
           role="tabpanel"
-          aria-labelledby="nav-payload-tab"
+          aria-labelledby="nav-previous-tab"
           style={{ width: "100%" }}
         >
           {sessions.length === 0 ? (
