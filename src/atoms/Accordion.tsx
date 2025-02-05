@@ -16,16 +16,33 @@ export const AccordionAtom = ({
   hiddenElement,
   titleClassName,
 }: AccordinAtomProps) => {
+
+  const toggleCollapse = () => {
+    const collapseButton = document.getElementById(`${accordinId}-button`) as HTMLElement;
+    const collapseElement = document.getElementById(`${accordinId}-collapse`) as HTMLElement;
+    if (collapseElement) {
+      if (collapseElement.classList.contains("collapse")) {
+        collapseElement.classList.remove("collapse");
+        collapseElement.classList.add("show");
+        collapseButton.classList.remove("collapsed");
+      } else {
+        collapseElement.classList.remove("show");
+        collapseElement.classList.add("collapse");
+        collapseButton.classList.add("collapsed");
+      }
+    }
+  }
+
   return (
     <div className="accordion-item">
       <div className="accordion-header " id={accordinId}>
         <button
+          id={`${accordinId}-button`}
           className="accordion-button collapsed"
           type="button"
-          data-bs-toggle="collapse"
-          data-bs-target={`#${accordinId}-collapse`}
           aria-expanded="true"
           aria-controls="detail-collapse"
+          onClick={toggleCollapse}
         >
           <span className={titleClassName || style.contextAccordinTitle}>
             {labelId ? <FormattedMessage id={labelId} /> : <>{label}</>}
@@ -34,7 +51,7 @@ export const AccordionAtom = ({
       </div>
       <div
         id={`${accordinId}-collapse`}
-        className="accordion-collapse collapse hidden"
+        className="accordion-collapse collapse"
         role="region"
         aria-labelledby={accordinId}
       >
