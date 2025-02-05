@@ -14,7 +14,8 @@ export default defineConfig({
     checker({
       typescript: true,
       eslint: {
-        lintCommand: 'eslint "./src/**/*.{ts,tsx}"',
+        useFlatConfig: true,
+        lintCommand: 'eslint -c ./eslint.config.mjs "./src/**///*.{ts,tsx}"',
       },
     }),
   ],

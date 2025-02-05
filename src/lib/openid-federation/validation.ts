@@ -5,7 +5,7 @@ const isValidJWT = async (jwt: string, key: jose.JWK) => {
   try {
     await jose.jwtVerify(jwt, key);
     return true;
-  } catch (err) {
+  } catch {
     return false;
   }
 };

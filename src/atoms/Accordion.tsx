@@ -1,3 +1,4 @@
+import React from "react";
 import { FormattedMessage } from "react-intl";
 import style from "../css/ContextMenu.module.css";
 
@@ -5,7 +6,7 @@ export interface AccordinAtomProps {
   accordinId: string;
   labelId?: string;
   label?: string;
-  hiddenElement: JSX.Element;
+  hiddenElement: React.ReactNode;
   titleClassName?: string;
 }
 
@@ -16,10 +17,13 @@ export const AccordionAtom = ({
   hiddenElement,
   titleClassName,
 }: AccordinAtomProps) => {
-
   const toggleCollapse = () => {
-    const collapseButton = document.getElementById(`${accordinId}-button`) as HTMLElement;
-    const collapseElement = document.getElementById(`${accordinId}-collapse`) as HTMLElement;
+    const collapseButton = document.getElementById(
+      `${accordinId}-button`,
+    ) as HTMLElement;
+    const collapseElement = document.getElementById(
+      `${accordinId}-collapse`,
+    ) as HTMLElement;
     if (collapseElement) {
       if (collapseElement.classList.contains("collapse")) {
         collapseElement.classList.remove("collapse");
@@ -31,7 +35,7 @@ export const AccordionAtom = ({
         collapseButton.classList.add("collapsed");
       }
     }
-  }
+  };
 
   return (
     <div className="accordion-item">

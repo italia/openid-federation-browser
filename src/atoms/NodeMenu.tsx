@@ -1,3 +1,4 @@
+import React from "react";
 import { AccordionAtom } from "./Accordion";
 import { JWTViewer } from "./JWTViewer";
 import { InfoView } from "../atoms/InfoView";
@@ -8,7 +9,7 @@ import { PaginatedListAtom } from "../atoms/PaginatedList";
 import { EntityItemsRenderer } from "./EntityItemRender";
 import { useEffect, useState } from "react";
 import { WarningModalAtom } from "./WarningModal";
-import { showModal, fmtValidity } from "../lib/utils";
+import { showModal, fmtValidity, isModalShowed } from "../lib/utils";
 import { validateEntityConfiguration } from "../lib/openid-federation/schema";
 import { FormattedMessage } from "react-intl";
 import { timestampToLocaleString } from "../lib/utils";
@@ -96,8 +97,22 @@ export const NodeMenuAtom = ({
   const immediateFilter = (anchor: string, filterValue: string) =>
     anchor.toLowerCase().includes(filterValue.toLowerCase());
 
-  const showModalError = (error: Error, details?: string[]) => {
-    setErrorModalText(error);
+  const showModalError = (details?: string[]) => {
+    if (isModalShowed("error-modal")) {
+
+      const failed = [...(details || []), ...(errorDetails || [])];
+
+      setErrorModalText(
+        new Error(`Failed to discover ${failed.length} entities`)
+      );
+
+      setErrorDetails(failed);
+      return;
+    }
+
+    setErrorModalText(
+      new Error(`Failed to discover ${(details || []).length} entities`)
+    );
     setErrorDetails(details);
     showModal("error-modal");
   };
@@ -110,7 +125,6 @@ export const NodeMenuAtom = ({
       addToFailedList(result.failed.map((f) => f.entity));
 
       showModalError(
-        new Error(`Failed to discover ${result.failed.length} entities`),
         result.failed.map((f) => `${f.entity} - ${f.error.message}`),
       );
     }
@@ -344,8 +358,8 @@ export const NodeMenuAtom = ({
               <JWTViewer
                 id="entity-configuration-view"
                 raw={data.info.ec.jwt}
-                decodedPayload={data.info.ec.payload as any}
-                decodedHeader={data.info.ec.header as any}
+                decodedPayload={data.info.ec.payload as object}
+                decodedHeader={data.info.ec.header as object}
                 validationFn={validateEntityConfiguration}
                 schemaUrl={`${import.meta.env.VITE_ENTITY_CONFIG_SCHEMA}`}
               />
@@ -367,8 +381,8 @@ export const NodeMenuAtom = ({
                           <JWTViewer
                             id={`trust-mark-${i}-view`}
                             raw={tm.jwt}
-                            decodedPayload={tm.payload as any}
-                            decodedHeader={tm.header as any}
+                            decodedPayload={tm.payload as object}
+                            decodedHeader={tm.header as object}
                           />
                         }
                       />

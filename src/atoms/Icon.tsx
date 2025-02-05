@@ -1,3 +1,4 @@
+import React from "react";
 import sprite from "bootstrap-italia/dist/svg/sprites.svg";
 
 interface IconProps {

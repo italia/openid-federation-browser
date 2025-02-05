@@ -5,9 +5,13 @@ import { FormattedMessage } from "react-intl";
 
 export interface PaginatedListAtomProps {
   itemsPerPage: number;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   items: any[];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onItemsFiltered?: (items: any[]) => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ItemsRenderer: React.ComponentType<{ items: any[] }>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   filterFn: ((item: any, filterValue: string) => boolean) | undefined;
 }
 
@@ -30,7 +34,8 @@ export const PaginatedListAtom = ({
     setItemOffset(newOffset);
   };
 
-  const changeSearchValue = (e: any) => setSearchValue(e.target.value);
+  const changeSearchValue = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setSearchValue(e.target.value);
 
   useEffect(
     () => {
@@ -43,7 +48,7 @@ export const PaginatedListAtom = ({
 
       setCurrentItems(currentItems);
       setPageCount(pageCount);
-      onItemsFiltered && onItemsFiltered(filteredItems);
+      if (onItemsFiltered) onItemsFiltered(filteredItems);
     },
 
     // eslint-disable-next-line react-hooks/exhaustive-deps

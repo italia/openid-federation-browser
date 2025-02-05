@@ -35,7 +35,11 @@ const getSubordinateStatement = async (
   const payload = jose.decodeJwt(response.data) as SubordinateStatementPayload;
   const header = jose.decodeProtectedHeader(response.data) as JWTHeader;
 
-  payload.jwks.keys = payload.jwks.keys.map((jwk) => jsonToPublicKey(jwk));
+  const jwks = payload.jwks.keys as unknown as {
+    [key: string]: string | string[];
+  }[];
+
+  payload.jwks.keys = jwks.map((jwk) => jsonToPublicKey(jwk));
 
   const subordinate: SubordianteStatement = {
     jwt: response.data,
@@ -60,7 +64,12 @@ const getEntityConfigurations = async (
 
   const header = jose.decodeProtectedHeader(jwt) as JWTHeader;
   const payload = jose.decodeJwt(jwt) as EntityConfigurationPayload;
-  payload.jwks.keys = payload.jwks.keys.map((jwk) => jsonToPublicKey(jwk));
+
+  const jwks = payload.jwks.keys as unknown as {
+    [key: string]: string | string[];
+  }[];
+
+  payload.jwks.keys = jwks.map((jwk) => jsonToPublicKey(jwk));
 
   const ec: EntityConfiguration = {
     entity: subject,
@@ -102,9 +111,9 @@ export const discoverNode = async (
         id: tm.id,
         header: jose.decodeProtectedHeader(tm.trust_mark) as Record<
           string,
-          any
+          string
         >,
-        payload: jose.decodeJwt(tm.trust_mark) as Record<string, any>,
+        payload: jose.decodeJwt(tm.trust_mark),
         jwt: tm.trust_mark,
       }),
     );
@@ -337,7 +346,7 @@ export const importView = async (view: string): Promise<Graph> => {
 
   try {
     parsed = JSON.parse(view);
-  } catch (e) {
+  } catch {
     throw new Error("Not a valid JSON");
   }
 

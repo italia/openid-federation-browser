@@ -1,3 +1,4 @@
+import React from "react";
 import { SlimHeader } from "../atoms/SlimHeader";
 import { NavBarAtom } from "../atoms/NavBar";
 

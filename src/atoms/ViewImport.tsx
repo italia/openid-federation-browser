@@ -1,3 +1,4 @@
+import React from "react";
 import { useState, ChangeEvent } from "react";
 import { FormattedMessage } from "react-intl";
 import { getTranslations } from "../lib/translations";

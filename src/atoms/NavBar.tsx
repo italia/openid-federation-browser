@@ -1,3 +1,4 @@
+import React from "react";
 import { FormattedMessage } from "react-intl";
 import { Link } from "react-router-dom";
 import style from "../css/Header.module.css";

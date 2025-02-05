@@ -1,4 +1,5 @@
 import "./App.css";
+import React from "react";
 import { IntlProvider } from "react-intl";
 import { getTranslations } from "./lib/translations";
 import { Header } from "./components/Header";
@@ -19,8 +20,9 @@ const App = () => {
   useEffect(() => {
     if (trustChainList.length) {
       const testUrl =
-        `${import.meta.env.VITE_CORS_PROXY}` ||
-        "" + trustChainList[0].url + "/.well-known/openid-federation";
+        (import.meta.env.VITE_CORS_PROXY || "") +
+        trustChainList[0].url +
+        "/.well-known/openid-federation";
 
       axios.get(testUrl).catch((e) => {
         if (e.request.status === 0) setCorsEnabled(true);
@@ -69,6 +71,6 @@ const App = () => {
       </IntlProvider>
     </div>
   );
-}
+};
 
 export default App;

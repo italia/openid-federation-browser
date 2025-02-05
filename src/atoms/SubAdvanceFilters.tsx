@@ -1,7 +1,8 @@
+import React from "react";
 import { IconAtom } from "./Icon";
 import { useState } from "react";
 import { FormattedMessage } from "react-intl";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import style from "../css/ContextMenu.module.css";
 
 export interface SubAdvanceFilterProps {
@@ -9,7 +10,7 @@ export interface SubAdvanceFilterProps {
   subordinateUrl: string;
   originalList: string[];
   onListChange: (list: string[]) => void;
-  showModalError: (error: Error, details?: string[]) => void;
+  showModalError: (details?: string[]) => void;
 }
 
 export const SubAdvanceFiltersAtom = ({
@@ -50,14 +51,15 @@ export const SubAdvanceFiltersAtom = ({
 
       onListChange(response.data);
     } catch (error) {
-      const response = (error as any).response;
+      const response = (error as AxiosError).response;
 
-      if (response.status === 400) {
-        showModalError(new Error(response.data.error_description));
+      if (response?.status === 400) {
+        const errorData = response?.data as { error_description: string };
+        showModalError([errorData.error_description]);
         return;
       }
 
-      showModalError(error as Error);
+      showModalError([response?.statusText || "Unknown error"]);
     }
   };
 

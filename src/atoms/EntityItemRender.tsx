@@ -1,3 +1,4 @@
+import React from "react";
 import { IconAtom } from "./Icon";
 import { truncateMiddle } from "../lib/utils";
 import style from "../css/ContextMenu.module.css";
@@ -24,7 +25,7 @@ export const EntityItemsRenderer = ({
   onSelection,
   isDisconnected,
   addEdge,
-}: EntityItemsRendererProps): React.ComponentType<{ items: any[] }> => {
+}: EntityItemsRendererProps): React.ComponentType<{ items: string[] }> => {
   const getButtonColor = (dep: string) => {
     if (isFailed(dep)) return "btn-secondary";
 
@@ -47,7 +48,7 @@ export const EntityItemsRenderer = ({
     return "#it-plus";
   };
 
-  const getButtonAction = (dep: string) => {
+  const getButtonAction = (dep: string): (() => void) => {
     if (isFailed(dep)) return () => {};
 
     if (isDiscovered(dep)) {
@@ -58,7 +59,7 @@ export const EntityItemsRenderer = ({
     return () => addEntities(dep);
   };
 
-  return ({ items }: { items: any[] }) => {
+  const renderer = ({ items }: { items: string[] }) => {
     return (
       <>
         <ul style={{ listStyleType: "none", paddingLeft: "0.8rem" }}>
@@ -174,4 +175,6 @@ export const EntityItemsRenderer = ({
       </>
     );
   };
+
+  return renderer;
 };

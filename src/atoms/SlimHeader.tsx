@@ -1,3 +1,4 @@
+import React from "react";
 import { FormattedMessage } from "react-intl";
 import { IconAtom } from "./Icon";
 import style from "../css/Header.module.css";

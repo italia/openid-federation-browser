@@ -1,3 +1,4 @@
+import React from "react";
 import { useEffect, useState } from "react";
 import { discoverNode, traverseUp } from "../lib/openid-federation/trustChain";
 import { GraphCanvas, GraphCanvasRef } from "reagraph";
@@ -227,7 +228,7 @@ export const GraphView = () => {
               }}
               contextMenu={({ data, onClose }) => (
                 <ContextMenuComponent
-                  data={data as any}
+                  data={data}
                   graph={{ nodes, edges }}
                   currentContextMenu={currentContextMenu}
                   onClose={(freeCM: boolean) => {

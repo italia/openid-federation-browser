@@ -12,14 +12,14 @@ const entityConfigurationValidator = avj.compile(entityConfiguration);
 const subordinateStatementValidator = avj.compile(subordinateStatement);
 
 export const validateEntityConfiguration = async (
-  ec: any,
+  ec: object,
 ): Promise<boolean> => {
   const valid = await entityConfigurationValidator(ec);
   return valid;
 };
 
 export const validateSubordinateStatement = async (
-  sub: any,
+  sub: object,
 ): Promise<boolean> => {
   console.error(avj.errorsText(subordinateStatementValidator.errors));
   return subordinateStatementValidator(sub);

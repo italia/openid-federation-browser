@@ -1,3 +1,4 @@
+import React from "react";
 import { Link } from "react-router-dom";
 import { IconAtom } from "./Icon";
 import { FormattedMessage } from "react-intl";
@@ -50,7 +51,7 @@ export const GraphControlMenuAtom = ({
           </div>
         </div>
       </button>
-      <Link className="nav-link" to="/?restoreSession">
+      <Link className="nav-link" to="/restoreSession">
         <button
           className={`btn btn-success btn-sm py-1 px-2 mt-2 ${headerStyle.headerText}`}
           style={{ display: "block", width: "100%" }}

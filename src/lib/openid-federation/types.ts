@@ -98,8 +98,8 @@ export interface NodeInfo {
   type: EntityType;
   trustMarks?: {
     id: string;
-    header: Record<string, any>;
-    payload: Record<string, any>;
+    header: Record<string, string>;
+    payload: Record<string, string | Record<string, string>>;
     jwt: string;
   }[];
 }

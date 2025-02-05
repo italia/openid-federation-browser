@@ -1,7 +1,7 @@
 import * as jose from "jose";
 import { NodeInfo, EntityConfigurationPayload, EntityType } from "./types";
 
-export const jsonToPublicKey = (jwk: { [key: string]: any }) => {
+export const jsonToPublicKey = (jwk: { [key: string]: string | string[] }) => {
   if (jwk.kty === "RSA") {
     return {
       kid: jwk.kid,
@@ -51,16 +51,19 @@ export const setEntityType = (info: NodeInfo): void => {
   info.type = EntityType.Anchor;
 };
 
-export const checkViewValidity = (view: any): boolean => {
+export const checkViewValidity = (view: {
+  nodes: string[];
+  edges: { source: string; target: string }[];
+}): boolean => {
   if (!view) return false;
-  if (!view.hasOwnProperty("nodes")) return false;
-  if (!view.hasOwnProperty("edges")) return false;
+  if (!Object.hasOwnProperty.call(view, "nodes")) return false;
+  if (!Object.hasOwnProperty.call(view, "edges")) return false;
 
-  const notString = view.nodes.find((node: any) => typeof node !== "string");
+  const notString = view.nodes.find((node) => typeof node !== "string");
   if (notString) return false;
 
   const notStringEdge = view.edges.find(
-    (edge: any) =>
+    (edge) =>
       typeof edge.source !== "string" || typeof edge.target !== "string",
   );
 
