@@ -46,7 +46,7 @@ export const ContextMenuComponent = ({
   const dragX = useRef(0);
   const dragY = useRef(0);
 
-  const handleMove = (e: MouseEvent) => {
+  const handleMove = (e: PointerEvent) => {
     if (!isDragging || !ref.current) {
       return;
     }
@@ -74,7 +74,7 @@ export const ContextMenuComponent = ({
     });
   };
 
-  const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
+  const handleMouseDown = (e: React.PointerEvent<HTMLDivElement>) => {
     lastX.current = e.pageX;
     lastY.current = e.pageY;
     setDragging(true);
@@ -85,12 +85,12 @@ export const ContextMenuComponent = ({
   };
 
   useEffect(() => {
-    document.addEventListener("mousemove", handleMove);
-    document.addEventListener("mouseup", handleMouseUp);
+    document.addEventListener("pointermove", handleMove);
+    document.addEventListener("pointerup", handleMouseUp);
 
     return () => {
-      document.removeEventListener("mousemove", handleMove);
-      document.removeEventListener("mouseup", handleMouseUp);
+      document.removeEventListener("pointermove", handleMove);
+      document.removeEventListener("pointerup", handleMouseUp);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isDragging]);
