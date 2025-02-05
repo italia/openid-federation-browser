@@ -6,7 +6,7 @@ export interface AccordinAtomProps {
   accordinId: string;
   labelId?: string;
   label?: string;
-  hiddenElement: JSX.Element;
+  hiddenElement: React.ReactNode;
   titleClassName?: string;
 }
 
