@@ -10,7 +10,7 @@ export interface SubAdvanceFilterProps {
   subordinateUrl: string;
   originalList: string[];
   onListChange: (list: string[]) => void;
-  showModalError: (error: Error, details?: string[]) => void;
+  showModalError: (details?: string[]) => void;
 }
 
 export const SubAdvanceFiltersAtom = ({
@@ -55,11 +55,11 @@ export const SubAdvanceFiltersAtom = ({
 
       if (response?.status === 400) {
         const errorData = response?.data as { error_description: string };
-        showModalError(new Error(errorData.error_description));
+        showModalError([errorData.error_description]);
         return;
       }
 
-      showModalError(error as Error);
+      showModalError([response?.statusText || "Unknown error"]);
     }
   };
 

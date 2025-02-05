@@ -56,6 +56,11 @@ export const hideModal = (id: string) => {
   modal.hide();
 };
 
+export const isModalShowed = (id: string) => {
+  const modal = document.getElementById(id);
+  return modal?.classList.contains("show");
+}
+
 export const fmtValidity = (valid: boolean, reason: string | undefined) => {
   const value = valid ? "valid" : "invalid";
   return valid ? value : `${value} (${reason})`;
