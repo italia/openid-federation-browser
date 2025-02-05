@@ -20,8 +20,9 @@ const App = () => {
   useEffect(() => {
     if (trustChainList.length) {
       const testUrl =
-        `${import.meta.env.VITE_CORS_PROXY}` ||
-        "" + trustChainList[0].url + "/.well-known/openid-federation";
+        (import.meta.env.VITE_CORS_PROXY || "") +
+        trustChainList[0].url +
+        "/.well-known/openid-federation";
 
       axios.get(testUrl).catch((e) => {
         if (e.request.status === 0) setCorsEnabled(true);
