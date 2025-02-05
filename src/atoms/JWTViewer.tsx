@@ -43,6 +43,33 @@ export const JWTViewer = ({
     }
   };
 
+  const toggleTab = (tab: string) => {
+    const show = tab === "header" ? "header" : "payload";
+    const hide = tab === "header" ? "payload" : "header";
+
+    const showElement = document.getElementById(`${id}-nav-${show}`);
+    if (showElement) {
+      showElement.classList.add("active");
+      showElement.classList.add("show");
+    }
+
+    const showElementTab = document.getElementById(`${id}-nav-${show}-tab`);
+    if (showElementTab) {
+      showElementTab.classList.add("active");
+    }
+
+    const hideElement = document.getElementById(`${id}-nav-${hide}`);
+    if (hideElement) {
+      hideElement.classList.remove("active");
+      hideElement.classList.remove("show");
+    }
+
+    const hideElementTab = document.getElementById(`${id}-nav-${hide}-tab`);
+    if (hideElementTab) {
+      hideElementTab.classList.remove("active");
+    }
+  }
+
   return (
     <div className="container" style={{ width: "100%", padding: "14px 24px" }}>
       <div className="row" style={{ padding: "8px" }}>
@@ -114,34 +141,28 @@ export const JWTViewer = ({
         <div className="col">
           <ul className="nav nav-tabs auto">
             <li className="nav-item">
-              <a
+              <span
                 className="nav-link active"
                 id={`${id}-nav-header-tab`}
-                data-bs-toggle="tab"
-                href={`#${id}-nav-header`}
                 role="tab"
-                aria-controls={`${id}-nav-header`}
-                aria-selected="true"
+                onClick={() => toggleTab("header")}
               >
                 <span className={style.contextAccordinText}>
                   <FormattedMessage id="header" />
                 </span>
-              </a>
+              </span>
             </li>
             <li className="nav-item">
-              <a
+              <span
                 className="nav-link"
                 id={`${id}-nav-payload-tab`}
-                data-bs-toggle="tab"
-                href={`#${id}-nav-payload`}
                 role="tab"
-                aria-controls={`${id}-nav-payload`}
-                aria-selected="false"
+                onClick={() => toggleTab("payload")}
               >
                 <span className={style.contextAccordinText}>
                   <FormattedMessage id="payload" />
                 </span>
-              </a>
+              </span>
             </li>
           </ul>
           <div className="tab-content" id="nav-tabContent">
