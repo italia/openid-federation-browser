@@ -4,7 +4,7 @@ export const isValidUrl = (url: string): boolean => {
   try {
     new URL(url);
     return true;
-  } catch (err) {
+  } catch {
     return false;
   }
 };
@@ -30,7 +30,7 @@ export const handleCollapseVisibility = (id: string, isVisible: boolean) => {
 };
 
 export const handleKeyDownEvent = (key: string, onEvent: () => void) => {
-  const handleKeyDown = (event: any) => {
+  const handleKeyDown = (event: KeyboardEvent) => {
     if (event.key === key) onEvent();
   };
 
@@ -143,7 +143,7 @@ export const cropImage = (
 
   const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
 
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     originalImage.addEventListener("load", function () {
       const width = originalImage.width;
       const height = originalImage.height;

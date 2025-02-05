@@ -1,3 +1,4 @@
+import React from "react";
 import style from "../css/ContextMenu.module.css";
 import { IconAtom } from "./Icon";
 import { FormattedMessage } from "react-intl";
@@ -10,9 +11,9 @@ type SchemaValidity = "UNKNOWN" | "VALID" | "INVALID";
 export interface ECViewerProps {
   id: string;
   raw: string;
-  decodedPayload: { [key: string]: string };
-  decodedHeader: { [key: string]: string };
-  validationFn?: (payload: any) => Promise<boolean>;
+  decodedPayload: object;
+  decodedHeader: object;
+  validationFn?: (payload: object) => Promise<boolean>;
   schemaUrl?: string;
 }
 

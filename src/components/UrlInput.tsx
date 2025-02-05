@@ -1,3 +1,4 @@
+import React from "react";
 import { useEffect, useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { handleCollapseVisibility, cleanInput } from "../lib/utils";
@@ -13,7 +14,7 @@ export const UrlInput = () => {
   const [doCheck, setDoCheck] = useState(false);
   const navigate = useNavigate();
 
-  const changeValue = (e: any) => setInputValue(e.target.value);
+  const changeValue = (e: React.ChangeEvent<HTMLInputElement>) => setInputValue(e.target.value);
 
   const searchType =
     window.location.pathname === "/insertEntityUrl" ? "entity" : "anchor";

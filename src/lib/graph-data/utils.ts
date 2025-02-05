@@ -72,9 +72,11 @@ export const removeSubGraph = (
   return filteredGraph;
 };
 
-export const isEdge = (elm: any) =>
-  elm.hasOwnProperty("source") && elm.hasOwnProperty("target");
-export const isNode = (elm: any) => !isEdge(elm);
+export const isEdge = (elm: object) =>
+  Object.hasOwnProperty.call(elm, "source") &&
+  Object.hasOwnProperty.call(elm, "target");
+
+export const isNode = (elm: object) => !isEdge(elm);
 
 export const isDiscovered = (graph: Graph, dep: string) =>
   graph.nodes.some((node) => cleanEntityID(node.id) === cleanEntityID(dep));

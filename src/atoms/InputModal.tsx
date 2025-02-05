@@ -1,3 +1,4 @@
+import React from "react";
 import { FormattedMessage } from "react-intl";
 import { useState } from "react";
 import { handleCollapseVisibility } from "../lib/utils";
@@ -27,7 +28,8 @@ export const InputModalAtom = ({
 }: InputModalProps) => {
   const [inputValue, setInputValue] = useState("");
 
-  const changeValue = (e: any) => setInputValue(e.target.value);
+  const changeValue = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setInputValue(e.target.value);
   const checkValue = () => {
     if (inputVerifyFn && inputVerifyFn(inputValue)) {
       handleCollapseVisibility(`${modalID}-invalid-input-collapse`, true);

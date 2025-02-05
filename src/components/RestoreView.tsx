@@ -1,3 +1,4 @@
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import { PaginatedListAtom } from "../atoms/PaginatedList";
 import { IconAtom } from "../atoms/Icon";
@@ -7,15 +8,16 @@ import { useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { ViewImportAtom } from "../atoms/ViewImport";
 import { timestampToLocaleString } from "../lib/utils";
+import { Session } from "../lib/types";
 import bodyStyle from "../css/BodyComponent.module.css";
 import style from "../css/ContextMenu.module.css";
 
 export const RestoreView = () => {
   const navigate = useNavigate();
 
-  const [sessions, setSessions] = useState<any[]>(getSessionsList());
+  const [sessions, setSessions] = useState<Session[]>(getSessionsList());
 
-  const ItemsRenderer = ({ items }: { items: any[] }) => {
+  const ItemsRenderer = ({ items }: { items: Session[] }) => {
     return (
       <table style={{ listStyleType: "none", width: "100%" }}>
         <thead>

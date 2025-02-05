@@ -1,3 +1,4 @@
+import React from "react";
 import { AccordionAtom } from "./Accordion";
 import { JWTViewer } from "./JWTViewer";
 import { InfoView } from "../atoms/InfoView";
@@ -344,8 +345,8 @@ export const NodeMenuAtom = ({
               <JWTViewer
                 id="entity-configuration-view"
                 raw={data.info.ec.jwt}
-                decodedPayload={data.info.ec.payload as any}
-                decodedHeader={data.info.ec.header as any}
+                decodedPayload={data.info.ec.payload as object}
+                decodedHeader={data.info.ec.header as object}
                 validationFn={validateEntityConfiguration}
                 schemaUrl={`${import.meta.env.VITE_ENTITY_CONFIG_SCHEMA}`}
               />
@@ -367,8 +368,8 @@ export const NodeMenuAtom = ({
                           <JWTViewer
                             id={`trust-mark-${i}-view`}
                             raw={tm.jwt}
-                            decodedPayload={tm.payload as any}
-                            decodedHeader={tm.header as any}
+                            decodedPayload={tm.payload as object}
+                            decodedHeader={tm.header as object}
                           />
                         }
                       />

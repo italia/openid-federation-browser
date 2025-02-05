@@ -2,7 +2,7 @@ name: gh-pages
 
 on:
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
   push:
     paths-ignore:
       - README.md
@@ -34,7 +34,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node: [ 22 ]
+        node: [22]
     name: Node ${{ matrix.node }} sample
 
     environment:

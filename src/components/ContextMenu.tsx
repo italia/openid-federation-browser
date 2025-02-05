@@ -1,3 +1,4 @@
+import React from "react";
 import { IntlProvider } from "react-intl";
 import { getTranslations } from "../lib/translations";
 import { GraphEdge, GraphNode, Graph } from "../lib/graph-data/types";
@@ -9,9 +10,10 @@ import { useEffect } from "react";
 import { handleKeyDownEvent } from "../lib/utils";
 import styles from "../css/ContextMenu.module.css";
 import { useState, useRef } from "react";
+import { InternalGraphNode, InternalGraphEdge } from "reagraph";
 
 export interface ContextMenuProps {
-  data: GraphNode | GraphEdge;
+  data: InternalGraphNode | InternalGraphEdge;
   graph: Graph;
   currentContextMenu?: string;
   onClose: (freeCM: boolean) => void;

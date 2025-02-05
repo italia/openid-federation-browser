@@ -1,4 +1,5 @@
 import "./App.css";
+import React from "react";
 import { IntlProvider } from "react-intl";
 import { getTranslations } from "./lib/translations";
 import { Header } from "./components/Header";
@@ -69,6 +70,6 @@ const App = () => {
       </IntlProvider>
     </div>
   );
-}
+};
 
 export default App;

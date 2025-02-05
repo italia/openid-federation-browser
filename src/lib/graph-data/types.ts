@@ -1,19 +1,19 @@
 import { SubordianteStatement, NodeInfo } from "../openid-federation/types";
+import { InternalGraphNode, InternalGraphEdge } from "reagraph";
 
-export interface GraphNode {
+export interface GraphNode extends InternalGraphNode {
   id: string;
   label: string;
   info: NodeInfo;
-  position?: { x: number; y: number };
-}
+};
 
-export interface GraphEdge {
+export interface GraphEdge extends InternalGraphEdge {
   id: string;
   source: string;
   target: string;
   label: string;
   subStatement?: SubordianteStatement;
-}
+};
 
 export interface Graph {
   nodes: GraphNode[];
