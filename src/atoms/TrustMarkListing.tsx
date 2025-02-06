@@ -70,7 +70,6 @@ export const TrustMarkListing = ({
   return (
     <div style={{ padding: "12px" }}>
       <div className="container">
-
         <div className="row mt-1">
           <div className="col-11">
             <input
@@ -126,7 +125,6 @@ export const TrustMarkListing = ({
               />
             </div>
           </div>
-
         </div>
       </div>
     </div>
