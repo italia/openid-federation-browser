@@ -64,7 +64,7 @@ jobs:
           VITE_GITHUB_URL=https://github.com/italia/openid-federation-browser
           VITE_BASE_PATH=/openid-federation-browser/$BRANCH_NAME/
           VITE_SUB_STATEMENT_SCHEMA=https://raw.githubusercontent.com/italia/openid-federation-browser/refs/heads/main/src/lib/openid-federation/schemas/subordinateStatement.schema.json
-          VITE_ENTITY_CONFIG_SCHEMA=https://raw.githubusercontent.com/italia/openid-federation-browser/refs/heads/main/src/lib/openid-federation/schemas/entityConfiguration.schema.jso
+          VITE_ENTITY_CONFIG_SCHEMA=https://raw.githubusercontent.com/italia/openid-federation-browser/refs/heads/main/src/lib/openid-federation/schemas/entityConfiguration.schema.json
           EOF
 
       - name: npm build
