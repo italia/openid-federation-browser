@@ -14,6 +14,7 @@ import { validateEntityConfiguration } from "../lib/openid-federation/schema";
 import { FormattedMessage } from "react-intl";
 import { timestampToLocaleString } from "../lib/utils";
 import { SubAdvanceFiltersAtom } from "./SubAdvanceFilters";
+import { TrustMarkListing } from "./TrustMarkListing";
 
 import {
   isDiscovered as _isDiscovered,
@@ -42,6 +43,10 @@ export const NodeMenuAtom = ({
 }: ContextMenuProps) => {
   const federationListEndpoint =
     data.info.ec.payload.metadata?.federation_entity?.federation_list_endpoint;
+
+  const trustMarkListEndpoint =
+    data.info.ec.payload.metadata?.federation_entity
+      .federation_trust_mark_list_endpoint;
 
   const [filteredItems, setFilteredItems] = useState<string[]>([]);
   const [toDiscoverList, setToDiscoverList] = useState<string[]>([]);
@@ -99,11 +104,10 @@ export const NodeMenuAtom = ({
 
   const showModalError = (details?: string[]) => {
     if (isModalShowed("error-modal")) {
-
       const failed = [...(details || []), ...(errorDetails || [])];
 
       setErrorModalText(
-        new Error(`Failed to discover ${failed.length} entities`)
+        new Error(`Failed to discover ${failed.length} entities`),
       );
 
       setErrorDetails(failed);
@@ -111,7 +115,7 @@ export const NodeMenuAtom = ({
     }
 
     setErrorModalText(
-      new Error(`Failed to discover ${(details || []).length} entities`)
+      new Error(`Failed to discover ${(details || []).length} entities`),
     );
     setErrorDetails(details);
     showModal("error-modal");
@@ -389,6 +393,19 @@ export const NodeMenuAtom = ({
                     </div>
                   ))}
                 </>
+              }
+            />
+          )}
+          {trustMarkListEndpoint && (
+            <AccordionAtom
+              accordinId="trust-marks-list"
+              labelId="trust_marks_listing_endpoint"
+              hiddenElement={
+                <TrustMarkListing
+                  id="trust-mark-listing"
+                  trustMarkListUrl={trustMarkListEndpoint}
+                  showModalError={showModalError}
+                />
               }
             />
           )}
