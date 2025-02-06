@@ -88,5 +88,6 @@
   "advanced_filters": "Filtri Avanzati",
   "search": "Cerca",
   "restore": "Ripristina",
-  "drag_info": "Tieni premuto Shift e trascina per selezionare più nodi"
+  "drag_info": "Tieni premuto Shift e trascina per selezionare più nodi",
+  "trust_marks_listing_endpoint": "Endpoint di elenco dei Trust Marks"
 }
