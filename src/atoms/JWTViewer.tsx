@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import style from "../css/ContextMenu.module.css";
 import { IconAtom } from "./Icon";
 import { FormattedMessage } from "react-intl";
@@ -13,7 +13,7 @@ export interface ECViewerProps {
   raw: string;
   decodedPayload: object;
   decodedHeader: object;
-  validationFn?: (payload: object) => Promise<boolean>;
+  validationFn?: (payload: object) => Promise<[boolean, (string | undefined)]>;
   schemaUrl?: string;
 }
 
@@ -25,23 +25,11 @@ export const JWTViewer = ({
   validationFn,
   schemaUrl,
 }: ECViewerProps) => {
+  const [schemaValidity, setSchemaValidity] = useState<SchemaValidity>("UNKNOWN");
+  const [validationError, setValidationError] = useState<string | undefined>(undefined);
+
   const decodedPayloadStr = JSON.stringify(decodedPayload, null, 4);
   const decodedHeaderStr = JSON.stringify(decodedHeader, null, 4);
-
-  const [schemaValidity, setSchemaValidity] =
-    useState<SchemaValidity>("UNKNOWN");
-
-  const validateSchema = async () => {
-    if (!validationFn) return;
-
-    const result = await validationFn(decodedPayload);
-
-    if (result) {
-      setSchemaValidity("VALID");
-    } else {
-      setSchemaValidity("INVALID");
-    }
-  };
 
   const toggleTab = (tab: string) => {
     const show = tab === "header" ? "header" : "payload";
@@ -70,6 +58,26 @@ export const JWTViewer = ({
     }
   }
 
+  useEffect(() => {
+    const validateSchema = async () => {
+      if (!validationFn) return;
+  
+      const [valid, errors] = await validationFn(decodedPayload);
+  
+      if (valid) {
+        setSchemaValidity("VALID");
+      } else {
+        setSchemaValidity("INVALID");
+        setValidationError(errors);
+      }
+    };
+
+    if (schemaValidity === "UNKNOWN") {
+      validateSchema();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [schemaValidity]);
+
   return (
     <div className="container" style={{ width: "100%", padding: "14px 24px" }}>
       <div className="row" style={{ padding: "8px" }}>
@@ -79,24 +87,11 @@ export const JWTViewer = ({
               <tbody>
                 <tr>
                   <td>
-                    <button
-                      className="btn btn-primary btn-icon btn-xs py-1 px-1"
-                      title="Discovery"
-                      aria-label="Discovery"
-                      onClick={validateSchema}
-                      disabled={schemaValidity !== "UNKNOWN"}
-                    >
-                      <IconAtom
-                        iconID="#it-check"
-                        className="icon-xs icon-white"
+                    <IconAtom
+                        iconID={`${schemaValidity === "VALID" ? "#it-check" : "#it-close"}`} 
+                        className={`icon-sm ${schemaValidity === "VALID" ? "icon-success" : "icon-danger"}`}
                         isRounded={false}
                       />
-                      <span className={style.contextAccordinButton}>
-                        Validate
-                      </span>
-                    </button>
-                  </td>
-                  <td>
                     <span className={style.contextAccordinText}>
                       {schemaValidity === "UNKNOWN" ? (
                         <FormattedMessage id="validate_schema" />
@@ -117,6 +112,11 @@ export const JWTViewer = ({
                 </tr>
               </tbody>
             </table>
+            {validationError && (
+              <div className="alert alert-danger" role="alert">
+                <span className={style.contextAccordinText} >{validationError}</span>
+              </div>
+            )}
           </div>
         )}
       </div>
