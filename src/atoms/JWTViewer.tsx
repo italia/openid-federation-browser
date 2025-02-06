@@ -13,7 +13,7 @@ export interface ECViewerProps {
   raw: string;
   decodedPayload: object;
   decodedHeader: object;
-  validationFn?: (payload: object) => Promise<[boolean, (string | undefined)]>;
+  validationFn?: (payload: object) => Promise<[boolean, string | undefined]>;
   schemaUrl?: string;
 }
 
@@ -25,8 +25,11 @@ export const JWTViewer = ({
   validationFn,
   schemaUrl,
 }: ECViewerProps) => {
-  const [schemaValidity, setSchemaValidity] = useState<SchemaValidity>("UNKNOWN");
-  const [validationError, setValidationError] = useState<string | undefined>(undefined);
+  const [schemaValidity, setSchemaValidity] =
+    useState<SchemaValidity>("UNKNOWN");
+  const [validationError, setValidationError] = useState<string | undefined>(
+    undefined,
+  );
 
   const decodedPayloadStr = JSON.stringify(decodedPayload, null, 4);
   const decodedHeaderStr = JSON.stringify(decodedHeader, null, 4);
@@ -56,14 +59,14 @@ export const JWTViewer = ({
     if (hideElementTab) {
       hideElementTab.classList.remove("active");
     }
-  }
+  };
 
   useEffect(() => {
     const validateSchema = async () => {
       if (!validationFn) return;
-  
+
       const [valid, errors] = await validationFn(decodedPayload);
-  
+
       if (valid) {
         setSchemaValidity("VALID");
       } else {
@@ -88,10 +91,10 @@ export const JWTViewer = ({
                 <tr>
                   <td>
                     <IconAtom
-                        iconID={`${schemaValidity === "VALID" ? "#it-check" : "#it-close"}`} 
-                        className={`icon-sm ${schemaValidity === "VALID" ? "icon-success" : "icon-danger"}`}
-                        isRounded={false}
-                      />
+                      iconID={`${schemaValidity === "VALID" ? "#it-check" : "#it-close"}`}
+                      className={`icon-sm ${schemaValidity === "VALID" ? "icon-success" : "icon-danger"}`}
+                      isRounded={false}
+                    />
                     <span className={style.contextAccordinText}>
                       {schemaValidity === "UNKNOWN" ? (
                         <FormattedMessage id="validate_schema" />
@@ -114,7 +117,9 @@ export const JWTViewer = ({
             </table>
             {validationError && (
               <div className="alert alert-danger" role="alert">
-                <span className={style.contextAccordinText} >{validationError}</span>
+                <span className={style.contextAccordinText}>
+                  {validationError}
+                </span>
               </div>
             )}
           </div>
