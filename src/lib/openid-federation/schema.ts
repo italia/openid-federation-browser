@@ -13,14 +13,25 @@ const subordinateStatementValidator = avj.compile(subordinateStatement);
 
 export const validateEntityConfiguration = async (
   ec: object,
-): Promise<boolean> => {
+): Promise<[boolean, (string | undefined)]> => {
   const valid = await entityConfigurationValidator(ec);
-  return valid;
+
+  if (valid) {
+    return [true, undefined];
+  }
+
+  return [false, avj.errorsText(entityConfigurationValidator.errors)];
 };
 
 export const validateSubordinateStatement = async (
   sub: object,
-): Promise<boolean> => {
-  console.error(avj.errorsText(subordinateStatementValidator.errors));
-  return subordinateStatementValidator(sub);
+): Promise<[boolean, (string | undefined)] > => {
+
+  const valid = await subordinateStatementValidator(sub);
+
+  if (valid) {
+    return [true, undefined];
+  }
+
+  return [false, avj.errorsText(subordinateStatementValidator.errors)];
 };
