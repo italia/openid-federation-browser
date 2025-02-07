@@ -1,7 +1,8 @@
 # OpenID Federation Browser
 
 Welcome to the OpenID Federation Browser project!
-This tool is designed to facilitate the exploration and management of OpenID Federation entities,
+
+This tool is designed to facilitate the exploration and management of trust infrastructures based on [OpenID Federation 1.0](https://openid.net/specs/openid-federation-1_0.html),
 providing a user-friendly interface for navigating Trust Chains and Entity Configurations.
 
 <img src="images/preview.gif" width="768">
@@ -10,6 +11,7 @@ providing a user-friendly interface for navigating Trust Chains and Entity Confi
 
 - **Entity Discovery**: Easily discover and view OpenID Federation Entities and their configurations.
 - **Trust Chain Visualization**: Visualize the Trust Chains between entities, including Trust Anchors, Intermediates, and Leaves.
+- **Graph View Save, Export and Import**: Produce the representation of your network, save locally or export it. You can also import it in offline mode.
 - **Security Insights**: Gain insights into the security aspects of the federation, including trust marks and compliance status.
 
 ## Online Builds
