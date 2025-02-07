@@ -4,6 +4,7 @@ import { IconAtom } from "./Icon";
 export interface ButtonProps {
   action: () => void;
   text: string;
+  id?: string;
   title?: string;
   ariaLabel?: string;
   iconID?: string;
@@ -15,6 +16,7 @@ export interface ButtonProps {
 export const Button = ({
   action,
   text,
+  id,
   title,
   ariaLabel,
   iconID,
@@ -24,6 +26,7 @@ export const Button = ({
 }: ButtonProps) => {
   return (
     <button
+      id={id}
       className={`btn btn-icon btn-xs py-1 px-1 ${btnClassName || ""}`}
       title={title}
       aria-label={ariaLabel}
