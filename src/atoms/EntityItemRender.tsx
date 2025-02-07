@@ -77,9 +77,9 @@ export const EntityItemsRenderer = ({
                         <span className="visually-hidden">Loading...</span>
                       </div>
                     ) : (
-                      <Button 
-                        action={getButtonAction(dep)} 
-                        iconID={getButtonIcon(dep)} 
+                      <Button
+                        action={getButtonAction(dep)}
+                        iconID={getButtonIcon(dep)}
                         btnClassName={`btn-sm py-0 px-1 ${getButtonColor(dep)}`}
                         title="Remove"
                         ariaLabel="Remove"
@@ -88,9 +88,9 @@ export const EntityItemsRenderer = ({
                     )}
                   </div>
                   <div className="col-md-auto">
-                    <Button 
-                      action={() => onSelection(dep)} 
-                      iconID="#it-search" 
+                    <Button
+                      action={() => onSelection(dep)}
+                      iconID="#it-search"
                       btnClassName="btn-sm py-0 px-1 btn-primary"
                       title="Highlight"
                       ariaLabel="Highlight"
