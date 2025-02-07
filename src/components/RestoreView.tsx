@@ -1,7 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { PaginatedListAtom } from "../atoms/PaginatedList";
-import { IconAtom } from "../atoms/Icon";
 import { getSessionsList, restoreSession } from "../lib/utils";
 import { deleteSession } from "../lib/utils";
 import { useState } from "react";
@@ -9,6 +8,7 @@ import { FormattedMessage } from "react-intl";
 import { ViewImportAtom } from "../atoms/ViewImport";
 import { timestampToLocaleString } from "../lib/utils";
 import { Session } from "../lib/types";
+import { Button } from "../atoms/Button";
 import bodyStyle from "../css/BodyComponent.module.css";
 import style from "../css/ContextMenu.module.css";
 
@@ -99,46 +99,34 @@ export const RestoreView = () => {
                 </th>
                 <th style={{ width: "90px" }}>
                   <div className="row justify-content-center">
-                    <button
-                      className={`btn btn-icon btn-sm py-0 px-1 btn-success`}
-                      title="Load"
-                      aria-label="Load"
-                      style={{ width: "90px" }}
-                      onClick={() => {
+                    <Button
+                      action={() => {
                         restoreSession(d.sessionName);
                         navigate("/graphView", { replace: true });
                       }}
-                    >
-                      <IconAtom
-                        iconID="#it-plus"
-                        className="icon-xs icon-white"
-                        isRounded={false}
-                      />
-                      <span className={style.contextAccordinButton}>
-                        Restore
-                      </span>
-                    </button>
+                      text="Restore"
+                      title="Load"
+                      btnClassName="btn-success"
+                      ariaLabel="Load"
+                      iconID="#it-plus"
+                      textClassName={style.contextAccordinButton}
+                      style={{ width: "90px" }}
+                    />
                   </div>
                   <div className="row justify-content-center mt-1">
-                    <button
-                      className={`btn btn-icon btn-sm py-0 px-1 btn-danger`}
-                      title="Delete"
-                      aria-label="Delete"
-                      style={{ width: "90px" }}
-                      onClick={() => {
+                    <Button
+                      action={() => {
                         deleteSession(d.sessionName);
-                        setSessions([...getSessionsList()]);
+                        setSessions(getSessionsList());
                       }}
-                    >
-                      <IconAtom
-                        iconID="#it-minus"
-                        className="icon-xs icon-white"
-                        isRounded={false}
-                      />
-                      <span className={style.contextAccordinButton}>
-                        Delete
-                      </span>
-                    </button>
+                      text="Delete"
+                      title="Delete"
+                      ariaLabel="Delete"
+                      iconID="#it-minus"
+                      btnClassName="btn-danger"
+                      textClassName={style.contextAccordinButton}
+                      style={{ width: "90px" }}
+                    />
                   </div>
                 </th>
               </tr>
