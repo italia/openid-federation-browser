@@ -1,5 +1,5 @@
 import React from "react";
-import { IconAtom } from "./Icon";
+import { Button } from "./Button";
 import { truncateMiddle } from "../lib/utils";
 import style from "../css/ContextMenu.module.css";
 
@@ -77,35 +77,25 @@ export const EntityItemsRenderer = ({
                         <span className="visually-hidden">Loading...</span>
                       </div>
                     ) : (
-                      <button
-                        className={`btn btn-icon btn-sm py-0 px-1 ${getButtonColor(dep)}`}
+                      <Button 
+                        action={getButtonAction(dep)} 
+                        iconID={getButtonIcon(dep)} 
+                        btnClassName={`btn-sm py-0 px-1 ${getButtonColor(dep)}`}
                         title="Remove"
-                        aria-label="Remove"
-                        onClick={getButtonAction(dep)}
+                        ariaLabel="Remove"
                         disabled={isFailed(dep)}
-                      >
-                        <IconAtom
-                          iconID={getButtonIcon(dep)}
-                          className="icon-xs icon-white"
-                          isRounded={false}
-                        />
-                      </button>
+                      />
                     )}
                   </div>
                   <div className="col-md-auto">
-                    <button
-                      className="btn btn-icon btn-sm py-0 px-1 btn-primary"
+                    <Button 
+                      action={() => onSelection(dep)} 
+                      iconID="#it-search" 
+                      btnClassName="btn-sm py-0 px-1 btn-primary"
                       title="Highlight"
-                      aria-label="Highlight"
-                      onClick={() => onSelection(dep)}
+                      ariaLabel="Highlight"
                       disabled={!isDiscovered(dep)}
-                    >
-                      <IconAtom
-                        iconID="#it-search"
-                        className="icon-xs icon-white"
-                        isRounded={false}
-                      />
-                    </button>
+                    />
                   </div>
                   <div className="col-md-auto">
                     <span
@@ -122,53 +112,37 @@ export const EntityItemsRenderer = ({
         <div className="container justify-content-md-between">
           <div className="row">
             <div className="col-md-auto">
-              <button
-                className="btn btn-primary btn-icon btn-xs py-1 px-1"
+              <Button
+                action={() => addEntities(items)}
+                iconID="#it-plus"
+                btnClassName="btn-sm py-0 px-1 btn-primary"
                 title="Discovery"
-                aria-label="Discovery"
-                onClick={() => addEntities(items)}
-              >
-                <IconAtom
-                  iconID="#it-plus"
-                  className="icon-xs icon-white"
-                  isRounded={false}
-                />
-                <span className={style.contextAccordinButton}>
-                  Add all in this page
-                </span>
-              </button>
+                ariaLabel="Discovery"
+                text="Add all in this page"
+                textClassName={style.contextAccordinButton}
+              />
             </div>
             <div className="col-md-auto">
-              <button
-                className="btn btn-secondary btn-icon btn-xs py-1 px-1"
+              <Button
+                action={removeAllEntities}
+                iconID="#it-restore"
+                btnClassName="btn-sm py-0 px-1 btn-warning"
                 title="Discovery"
-                aria-label="Discovery"
-                onClick={() => addEntities()}
-              >
-                <IconAtom
-                  iconID="#it-plus-circle"
-                  className="icon-xs icon-white"
-                  isRounded={false}
-                />
-                <span className={style.contextAccordinButton}>
-                  Add all filtered
-                </span>
-              </button>
+                ariaLabel="Discovery"
+                text="Remove All"
+                textClassName={style.contextAccordinButton}
+              />
             </div>
             <div className="col-md-auto">
-              <button
-                className="btn btn-warning btn-icon btn-xs py-1 px-1"
+              <Button
+                action={() => addEntities()}
+                iconID="#it-plus"
+                btnClassName="btn-sm py-0 px-1 btn-primary"
                 title="Discovery"
-                aria-label="Discovery"
-                onClick={removeAllEntities}
-              >
-                <IconAtom
-                  iconID="#it-restore"
-                  className="icon-xs icon-white"
-                  isRounded={false}
-                />
-                <span className={style.contextAccordinButton}>Remove All</span>
-              </button>
+                ariaLabel="Discovery"
+                text="Add all"
+                textClassName={style.contextAccordinButton}
+              />
             </div>
           </div>
         </div>
