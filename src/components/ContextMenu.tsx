@@ -2,7 +2,7 @@ import React from "react";
 import { IntlProvider } from "react-intl";
 import { getTranslations } from "../lib/translations";
 import { GraphEdge, GraphNode, Graph } from "../lib/graph-data/types";
-import { isNode, removeNode } from "../lib/graph-data/utils";
+import { isNode } from "../lib/graph-data/utils";
 import { NodeMenuAtom } from "../atoms/NodeMenu";
 import { EdgeMenuAtom } from "../atoms/EdgeMenu";
 import { IconAtom } from "../atoms/Icon";
@@ -17,8 +17,9 @@ export interface ContextMenuProps {
   graph: Graph;
   currentContextMenu?: string;
   onClose: (freeCM: boolean) => void;
-  onUpdate: (graph: Graph) => void;
-  addToFailedList: (nodes: string[]) => void;
+  onNodesAdd: (nodes: string[]) => void;
+  onNodesRemove: (nodes: string[]) => void;
+  isInDiscoveryQueue: (dep: string) => boolean;
   isFailed: (node: string) => boolean;
   onSelection: (node: string) => void;
 }
@@ -28,8 +29,9 @@ export const ContextMenuComponent = ({
   graph,
   currentContextMenu,
   onClose,
-  onUpdate,
-  addToFailedList,
+  onNodesAdd,
+  onNodesRemove,
+  isInDiscoveryQueue,
   isFailed,
   onSelection,
 }: ContextMenuProps) => {
@@ -101,17 +103,6 @@ export const ContextMenuComponent = ({
     [],
   );
 
-  const removeEntity = () => {
-    if (nodeCheck) {
-      onClose(true);
-      onUpdate(removeNode(graph, data.id));
-    } else {
-      onClose(true);
-      const edges = graph.edges.filter((edge) => edge.id !== data.id);
-      onUpdate({ nodes: graph.nodes, edges });
-    }
-  };
-
   return (
     <div ref={ref} style={{ minWidth: "34rem" }}>
       <IntlProvider
@@ -140,7 +131,7 @@ export const ContextMenuComponent = ({
             <div
               className="col-md-auto"
               style={{ marginRight: "-65px" }}
-              onClick={removeEntity}
+              onClick={() => onNodesRemove([data.id])}
             >
               <IconAtom iconID="#it-delete" className="icon-sm icon-white" />
             </div>
@@ -149,9 +140,10 @@ export const ContextMenuComponent = ({
             <NodeMenuAtom
               data={data as GraphNode}
               graph={graph}
-              onUpdate={onUpdate}
-              addToFailedList={addToFailedList}
+              onNodesRemove={onNodesRemove}
+              onNodesAdd={onNodesAdd}
               isFailed={isFailed}
+              isInDiscoveryQueue={isInDiscoveryQueue}
               onSelection={onSelection}
             />
           ) : (

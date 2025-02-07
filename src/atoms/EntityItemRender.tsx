@@ -4,9 +4,8 @@ import { truncateMiddle } from "../lib/utils";
 import style from "../css/ContextMenu.module.css";
 
 export interface EntityItemsRendererProps {
-  isDiscovered: (dep: string) => boolean;
-  discoveringList: string[];
-  removeEntity: (dep: string | string[]) => void;
+  isInDiscoveryQueue: (dep: string) => boolean;
+  onNodesRemove: (dep: string[]) => void;
   addEntities: (dep?: string | string[]) => void;
   removeAllEntities: () => void;
   isFailed: (node: string) => boolean;
@@ -16,9 +15,8 @@ export interface EntityItemsRendererProps {
 }
 
 export const EntityItemsRenderer = ({
-  isDiscovered,
-  discoveringList,
-  removeEntity,
+  isInDiscoveryQueue,
+  onNodesRemove,
   addEntities,
   removeAllEntities,
   isFailed,
@@ -29,7 +27,7 @@ export const EntityItemsRenderer = ({
   const getButtonColor = (dep: string) => {
     if (isFailed(dep)) return "btn-secondary";
 
-    if (isDiscovered(dep)) {
+    if (isInDiscoveryQueue(dep)) {
       if (isDisconnected(dep)) return "btn-warning";
       return "btn-danger";
     }
@@ -40,7 +38,7 @@ export const EntityItemsRenderer = ({
   const getButtonIcon = (dep: string) => {
     if (isFailed(dep)) return "#it-warning";
 
-    if (isDiscovered(dep)) {
+    if (isInDiscoveryQueue(dep)) {
       if (isDisconnected(dep)) return "#it-plug";
       return "#it-minus";
     }
@@ -51,9 +49,9 @@ export const EntityItemsRenderer = ({
   const getButtonAction = (dep: string): (() => void) => {
     if (isFailed(dep)) return () => {};
 
-    if (isDiscovered(dep)) {
+    if (isInDiscoveryQueue(dep)) {
       if (isDisconnected(dep)) return () => addEdge(dep);
-      return () => removeEntity(dep);
+      return () => onNodesRemove([dep]);
     }
 
     return () => addEntities(dep);
@@ -72,7 +70,7 @@ export const EntityItemsRenderer = ({
               >
                 <div className="row justify-content-md-start">
                   <div className="col-md-auto">
-                    {discoveringList.includes(dep) ? (
+                    {isInDiscoveryQueue(dep) ? (
                       <div className="progress-spinner progress-spinner-double size-sm progress-spinner-active">
                         <span className="visually-hidden">Loading...</span>
                       </div>
@@ -94,7 +92,7 @@ export const EntityItemsRenderer = ({
                       btnClassName="btn-sm py-0 px-1 btn-primary"
                       title="Highlight"
                       ariaLabel="Highlight"
-                      disabled={!isDiscovered(dep)}
+                      disabled={!isInDiscoveryQueue(dep)}
                     />
                   </div>
                   <div className="col-md-auto">

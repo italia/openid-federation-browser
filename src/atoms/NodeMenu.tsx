@@ -4,31 +4,27 @@ import { JWTViewer } from "./JWTViewer";
 import { InfoView } from "../atoms/InfoView";
 import { GraphNode, Graph } from "../lib/graph-data/types";
 import { genEdge } from "../lib/graph-data/utils";
-import { discoverNodes } from "../lib/openid-federation/trustChain";
 import { PaginatedListAtom } from "../atoms/PaginatedList";
 import { EntityItemsRenderer } from "./EntityItemRender";
 import { useEffect, useState } from "react";
 import { WarningModalAtom } from "./WarningModal";
-import { showModal, fmtValidity, isModalShowed } from "../lib/utils";
+import { showModal, fmtValidity } from "../lib/utils";
 import { validateEntityConfiguration } from "../lib/openid-federation/schema";
 import { FormattedMessage } from "react-intl";
 import { timestampToLocaleString } from "../lib/utils";
 import { SubAdvanceFiltersAtom } from "./SubAdvanceFilters";
 import { TrustMarkListing } from "./TrustMarkListing";
 
-import {
-  isDiscovered as _isDiscovered,
-  removeEntities as _removeEntities,
-  areDisconnected,
-} from "../lib/graph-data/utils";
+import { areDisconnected } from "../lib/graph-data/utils";
 
 import style from "../css/ContextMenu.module.css";
 
 export interface ContextMenuProps {
   data: GraphNode;
   graph: Graph;
-  onUpdate: (tree: Graph) => void;
-  addToFailedList: (nodes: string[]) => void;
+  onNodesAdd: (nodes: string[]) => void;
+  onNodesRemove: (nodes: string[]) => void;
+  isInDiscoveryQueue: (dep: string) => boolean;
   isFailed: (node: string) => boolean;
   onSelection: (node: string) => void;
 }
@@ -36,8 +32,9 @@ export interface ContextMenuProps {
 export const NodeMenuAtom = ({
   data,
   graph,
-  onUpdate,
-  addToFailedList,
+  onNodesAdd,
+  onNodesRemove,
+  isInDiscoveryQueue,
   isFailed,
   onSelection,
 }: ContextMenuProps) => {
@@ -50,29 +47,26 @@ export const NodeMenuAtom = ({
 
   const [filteredItems, setFilteredItems] = useState<string[]>([]);
   const [toDiscoverList, setToDiscoverList] = useState<string[]>([]);
-  const [errorModalText, setErrorModalText] = useState(new Error());
   const [filterDiscovered, setFilterDiscovered] = useState(false);
   const [immDependants, setImmDependants] = useState(
     data.info.immDependants || [],
   );
-  const [errorDetails, setErrorDetails] = useState<string[] | undefined>(
-    undefined,
-  );
-  const [discoveryQueue, setDiscoveryQueue] = useState<string[]>([]);
   const [advancedParams, setAdvancedParams] = useState<boolean>(false);
 
   const isDisconnected = (node: string) =>
     areDisconnected(graph, data.id, node);
-  const isDiscovered = (node: string) => _isDiscovered(graph, node);
-  const removeEntities = (entityID: string | string[]) =>
-    onUpdate(_removeEntities(graph, entityID));
+  const removeEntities = (entityIDs: string[]) => onNodesRemove(entityIDs);
+
+  const showModalError = (message: string[] | undefined) => {
+    console.log(message);
+  };
 
   const addEntities = (entityID?: string | string[]) => {
     if (!entityID) setToDiscoverList(filteredItems);
     else {
       const list = Array.isArray(entityID) ? entityID : [entityID];
       const fiteredToDiscovery = list.filter(
-        (node) => !isFailed(node) && !isDiscovered(node),
+        (node) => !isFailed(node) && !isInDiscoveryQueue(node),
       );
       setToDiscoverList(fiteredToDiscovery);
     }
@@ -83,14 +77,14 @@ export const NodeMenuAtom = ({
     () => {
       if (subordinate) {
         removeEntities(
-          data.info.immDependants.filter((dep) => isDiscovered(dep)),
+          data.info.immDependants.filter((dep) => isInDiscoveryQueue(dep)),
         );
       } else {
         const authorityHints = data.info.ec.payload.authority_hints;
 
         if (!authorityHints) return;
 
-        removeEntities(authorityHints.filter((dep) => isDiscovered(dep)));
+        removeEntities(authorityHints.filter((dep) => isInDiscoveryQueue(dep)));
       }
     };
 
@@ -101,41 +95,6 @@ export const NodeMenuAtom = ({
 
   const immediateFilter = (anchor: string, filterValue: string) =>
     anchor.toLowerCase().includes(filterValue.toLowerCase());
-
-  const showModalError = (details?: string[]) => {
-    if (isModalShowed("error-modal")) {
-      const failed = [...(details || []), ...(errorDetails || [])];
-
-      setErrorModalText(
-        new Error(`Failed to discover ${failed.length} entities`),
-      );
-
-      setErrorDetails(failed);
-      return;
-    }
-
-    setErrorModalText(
-      new Error(`Failed to discover ${(details || []).length} entities`),
-    );
-    setErrorDetails(details);
-    showModal("error-modal");
-  };
-
-  const handleDiscoveryResult = async (result: {
-    graph: Graph;
-    failed: { entity: string; error: Error }[];
-  }) => {
-    if (result.failed.length !== 0) {
-      addToFailedList(result.failed.map((f) => f.entity));
-
-      showModalError(
-        result.failed.map((f) => `${f.entity} - ${f.error.message}`),
-      );
-    }
-
-    onUpdate(result.graph);
-    setToDiscoverList([]);
-  };
 
   const addEdge = (nodeId: string) => {
     const nodeData = graph.nodes.find(
@@ -158,13 +117,15 @@ export const NodeMenuAtom = ({
       ],
     };
 
-    onUpdate(newGraph);
+    console.log(newGraph);
+
+    //onUpdate(newGraph);
   };
 
   useEffect(() => {
     if (toDiscoverList.length === 0) return;
     if (toDiscoverList.length === 1) {
-      setDiscoveryQueue([...discoveryQueue, ...toDiscoverList]);
+      onNodesAdd(toDiscoverList);
       return;
     }
     showModal("warning-modal");
@@ -172,44 +133,9 @@ export const NodeMenuAtom = ({
   }, [toDiscoverList]);
 
   useEffect(() => {
-    if (discoveryQueue.length === 0) return;
-    const [discovery, ...rest] = discoveryQueue;
-    discoverNodes([discovery], graph)
-      .then((result) => {
-        if (result.failed.find((f) => f.entity === discovery)) {
-          return { graph: result.graph, failed: result.failed };
-        }
-
-        const isAuthorityHint = data.info.ec.payload.authority_hints?.some(
-          (ah) => ah.startsWith(discovery) || discovery.startsWith(ah),
-        );
-
-        const newGraph = {
-          nodes: result.graph.nodes,
-          edges: [
-            ...result.graph.edges,
-            isAuthorityHint
-              ? genEdge(
-                  result.graph.nodes.find((n) => n.id === discovery)!.info,
-                  data.info,
-                )
-              : genEdge(
-                  data.info,
-                  result.graph.nodes.find((n) => n.id === discovery)!.info,
-                ),
-          ],
-        };
-        return { graph: newGraph, failed: result.failed };
-      })
-      .then(handleDiscoveryResult)
-      .then(() => setDiscoveryQueue(rest));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [discoveryQueue]);
-
-  useEffect(() => {
     setImmDependants(
       filterDiscovered
-        ? data.info.immDependants.filter((dep) => !isDiscovered(dep))
+        ? data.info.immDependants.filter((dep) => !isInDiscoveryQueue(dep))
         : data.info.immDependants,
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -234,17 +160,8 @@ export const NodeMenuAtom = ({
         descriptionID="warning_modal_message"
         dismissActionID="modal_cancel"
         acceptActionID="modal_confirm"
-        onAccept={() =>
-          setDiscoveryQueue([...discoveryQueue, ...toDiscoverList])
-        }
+        onAccept={() => onNodesAdd(toDiscoverList)}
         onDismiss={() => setToDiscoverList([])}
-      />
-      <WarningModalAtom
-        modalID="error-modal"
-        headerID="error_modal_title"
-        details={errorDetails}
-        description={errorModalText.message}
-        dismissActionID="modal_cancel"
       />
       <div className="row">
         <div className="accordion">
@@ -268,10 +185,9 @@ export const NodeMenuAtom = ({
                     items={data.info.ec.payload.authority_hints}
                     itemsPerPage={5}
                     ItemsRenderer={EntityItemsRenderer({
-                      isDiscovered,
-                      discoveringList: discoveryQueue,
+                      isInDiscoveryQueue,
                       addEntities,
-                      removeEntity: removeEntities,
+                      onNodesRemove,
                       removeAllEntities: removeAllAuthorityHints,
                       isFailed,
                       onSelection,
@@ -338,10 +254,9 @@ export const NodeMenuAtom = ({
                     items={immDependants}
                     itemsPerPage={5}
                     ItemsRenderer={EntityItemsRenderer({
-                      isDiscovered,
-                      discoveringList: discoveryQueue,
+                      isInDiscoveryQueue,
                       addEntities,
-                      removeEntity: removeEntities,
+                      onNodesRemove,
                       removeAllEntities: removeAllSubordinates,
                       isFailed,
                       onSelection,
