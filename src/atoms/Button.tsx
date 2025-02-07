@@ -3,7 +3,7 @@ import { IconAtom } from "./Icon";
 
 export interface ButtonProps {
   action: () => void;
-  text?: string;
+  text?: string | React.ReactElement;
   id?: string;
   title?: string;
   ariaLabel?: string;
@@ -29,7 +29,7 @@ export const Button = ({
   return (
     <button
       id={id}
-      className={`btn btn-icon btn-xs py-1 px-1 ${btnClassName || ""}`}
+      className={`${btnClassName || "btn btn-icon btn-xs py-1 px-1"}`}
       title={title}
       aria-label={ariaLabel}
       onClick={action}
@@ -43,11 +43,7 @@ export const Button = ({
           isRounded={false}
         />
       )}
-      {
-        text && (
-            <span className={textClassName}>{text}</span>
-        )
-      }
+      {text && <span className={textClassName}>{text}</span>}
     </button>
   );
 };
