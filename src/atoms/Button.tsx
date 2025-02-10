@@ -29,7 +29,7 @@ export const Button = ({
   return (
     <button
       id={id}
-      className={`${btnClassName || "btn btn-icon btn-xs py-1 px-1"}`}
+      className={`btn ${btnClassName || "btn-icon btn-xs py-1 px-1"}`}
       title={title}
       aria-label={ariaLabel}
       onClick={action}
