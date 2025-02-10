@@ -89,5 +89,6 @@
   "search": "Cerca",
   "restore": "Ripristina",
   "drag_info": "Tieni premuto Shift e trascina per selezionare più nodi",
-  "trust_marks_listing_endpoint": "Endpoint di elenco dei Trust Marks"
+  "trust_marks_listing_endpoint": "Endpoint di elenco dei Trust Marks",
+  "entity_type_label": "Tipo Entità"
 }

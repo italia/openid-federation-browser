@@ -13,6 +13,7 @@ import { FormattedMessage } from "react-intl";
 import { timestampToLocaleString } from "../lib/utils";
 import { SubAdvanceFiltersAtom } from "./SubAdvanceFilters";
 import { TrustMarkListing } from "./TrustMarkListing";
+import { getEntityTypes } from "../lib/openid-federation/utils";
 import style from "../css/ContextMenu.module.css";
 
 export interface ContextMenuProps {
@@ -122,6 +123,7 @@ export const NodeMenuAtom = ({
       fmtValidity(data.info.ec.valid, data.info.ec.invalidReason),
     ],
     ["expiring_date_label", timestampToLocaleString(data.info.ec.payload.exp)],
+    ["entity_type_label", getEntityTypes(data.info.ec.payload).join(", ")],
   ];
 
   return (
