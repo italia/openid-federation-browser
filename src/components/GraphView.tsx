@@ -22,6 +22,7 @@ import { FormattedMessage } from "react-intl";
 import { InternalGraphNode, InternalGraphEdge } from "reagraph/dist/types";
 import { discoverNodes } from "../lib/openid-federation/trustChain";
 import { isModalShowed } from "../lib/utils";
+import { areDisconnected } from "../lib/graph-data/utils";
 import styles from "../css/BodyComponent.module.css";
 import headerStyle from "../css/Header.module.css";
 
@@ -73,6 +74,9 @@ export const GraphView = () => {
   };
 
   const isFailed = (node: string) => failedNodes.includes(node);
+  const isDiscovered = (node: string) => nodes.some((n) => n.id === node);
+  const isDisconnected = (nodeA: string, nodeB: string) =>
+    areDisconnected({nodes, edges}, nodeA, nodeB);
 
   const showNotification = () => {
     const savedNotification = document.getElementById("notification");
@@ -134,6 +138,39 @@ export const GraphView = () => {
     setErrorDetails(details);
     showModal("error-modal");
   };
+
+  const onEdgeAdd = (nodeA: string, nodeB: string) => {
+    const nodeAData = nodes.find(
+      (node) => cleanEntityID(node.id) === cleanEntityID(nodeA)      
+    );
+
+    const nodeBData = nodes.find(
+      (node) => cleanEntityID(node.id) === cleanEntityID(nodeB)
+    );
+
+    if (!nodeAData || !nodeBData) return;
+
+    const isAuthorityHint = nodeAData.info.ec.payload.authority_hints?.some(
+      (ah) => cleanEntityID(ah) === cleanEntityID(nodeB),
+    );
+
+    const newGraph = {
+      nodes: nodes,
+      edges: [
+        ...edges,
+        !isAuthorityHint
+          ? genEdge(nodeAData.info, nodeBData.info)
+          : genEdge(nodeBData.info, nodeAData.info),
+      ],
+    };
+
+    updateGraph(newGraph);
+  };
+
+  const onEdgeRemove = (id: string) => {
+    const newEdges = edges.filter((edge) => edge.id !== id);
+    updateGraph({ nodes, edges: newEdges });
+  }
 
   useEffect(
     () => setTc(evaluateTrustChain({ nodes, edges }, selections)),
@@ -305,7 +342,6 @@ export const GraphView = () => {
               contextMenu={({ data, onClose }) => (
                 <ContextMenuComponent
                   data={data}
-                  graph={{ nodes, edges }}
                   currentContextMenu={currentContextMenu?.id}
                   onClose={(freeCM: boolean) => {
                     onClose();
@@ -314,6 +350,10 @@ export const GraphView = () => {
                   onNodesAdd={(nodes) => setDiscoveryQueue(nodes)}
                   onNodesRemove={onNodesRemove}
                   isFailed={isFailed}
+                  onEdgeAdd={onEdgeAdd}
+                  onEdgeRemove={onEdgeRemove}
+                  isDisconnected={isDisconnected}
+                  isDiscovered={isDiscovered}
                   isInDiscoveryQueue={(node: string) =>
                     discoverQueue.includes(node)
                   }

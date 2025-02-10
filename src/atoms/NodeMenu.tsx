@@ -2,8 +2,7 @@ import React from "react";
 import { AccordionAtom } from "./Accordion";
 import { JWTViewer } from "./JWTViewer";
 import { InfoView } from "../atoms/InfoView";
-import { GraphNode, Graph } from "../lib/graph-data/types";
-import { genEdge } from "../lib/graph-data/utils";
+import { GraphNode } from "../lib/graph-data/types";
 import { PaginatedListAtom } from "../atoms/PaginatedList";
 import { EntityItemsRenderer } from "./EntityItemRender";
 import { useEffect, useState } from "react";
@@ -14,28 +13,29 @@ import { FormattedMessage } from "react-intl";
 import { timestampToLocaleString } from "../lib/utils";
 import { SubAdvanceFiltersAtom } from "./SubAdvanceFilters";
 import { TrustMarkListing } from "./TrustMarkListing";
-
-import { areDisconnected } from "../lib/graph-data/utils";
-
 import style from "../css/ContextMenu.module.css";
 
 export interface ContextMenuProps {
   data: GraphNode;
-  graph: Graph;
   onNodesAdd: (nodes: string[]) => void;
   onNodesRemove: (nodes: string[]) => void;
+  onEdgeAdd: (node: string) => void;
   isInDiscoveryQueue: (dep: string) => boolean;
+  isDiscovered: (node: string) => boolean;
   isFailed: (node: string) => boolean;
+  isDisconnected: (node: string) => boolean;
   onSelection: (node: string) => void;
 }
 
 export const NodeMenuAtom = ({
   data,
-  graph,
   onNodesAdd,
   onNodesRemove,
+  onEdgeAdd,
   isInDiscoveryQueue,
+  isDiscovered,
   isFailed,
+  isDisconnected,
   onSelection,
 }: ContextMenuProps) => {
   const federationListEndpoint =
@@ -53,8 +53,6 @@ export const NodeMenuAtom = ({
   );
   const [advancedParams, setAdvancedParams] = useState<boolean>(false);
 
-  const isDisconnected = (node: string) =>
-    areDisconnected(graph, data.id, node);
   const removeEntities = (entityIDs: string[]) => onNodesRemove(entityIDs);
 
   const showModalError = (message: string[] | undefined) => {
@@ -95,32 +93,6 @@ export const NodeMenuAtom = ({
 
   const immediateFilter = (anchor: string, filterValue: string) =>
     anchor.toLowerCase().includes(filterValue.toLowerCase());
-
-  const addEdge = (nodeId: string) => {
-    const nodeData = graph.nodes.find(
-      (node) => node.id.startsWith(nodeId) || nodeId.startsWith(node.id),
-    );
-
-    if (!nodeData) return;
-
-    const isAuthorityHint = nodeData.info.ec.payload.authority_hints?.some(
-      (ah) => ah.startsWith(data.id) || data.id.startsWith(ah),
-    );
-
-    const newGraph = {
-      nodes: graph.nodes,
-      edges: [
-        ...graph.edges,
-        !isAuthorityHint
-          ? genEdge(nodeData.info, data.info)
-          : genEdge(data.info, nodeData.info),
-      ],
-    };
-
-    console.log(newGraph);
-
-    //onUpdate(newGraph);
-  };
 
   useEffect(() => {
     if (toDiscoverList.length === 0) return;
@@ -192,7 +164,8 @@ export const NodeMenuAtom = ({
                       isFailed,
                       onSelection,
                       isDisconnected,
-                      addEdge,
+                      isDiscovered,
+                      onEdgeAdd: (node: string) => onEdgeAdd(node),
                     })}
                     filterFn={immediateFilter}
                     onItemsFiltered={onFilteredList}
@@ -261,7 +234,8 @@ export const NodeMenuAtom = ({
                       isFailed,
                       onSelection,
                       isDisconnected,
-                      addEdge,
+                      isDiscovered,
+                      onEdgeAdd: (node: string) => onEdgeAdd(node),
                     })}
                     filterFn={immediateFilter}
                     onItemsFiltered={onFilteredList}

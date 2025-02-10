@@ -1,7 +1,7 @@
 import React from "react";
 import { IntlProvider } from "react-intl";
 import { getTranslations } from "../lib/translations";
-import { GraphEdge, GraphNode, Graph } from "../lib/graph-data/types";
+import { GraphEdge, GraphNode } from "../lib/graph-data/types";
 import { isNode } from "../lib/graph-data/utils";
 import { NodeMenuAtom } from "../atoms/NodeMenu";
 import { EdgeMenuAtom } from "../atoms/EdgeMenu";
@@ -14,23 +14,29 @@ import { InternalGraphNode, InternalGraphEdge } from "reagraph";
 
 export interface ContextMenuProps {
   data: InternalGraphNode | InternalGraphEdge;
-  graph: Graph;
   currentContextMenu?: string;
   onClose: (freeCM: boolean) => void;
   onNodesAdd: (nodes: string[]) => void;
   onNodesRemove: (nodes: string[]) => void;
+  onEdgeAdd: (nodeA: string, nodeB: string) => void;
+  onEdgeRemove: (id: string) => void;
   isInDiscoveryQueue: (dep: string) => boolean;
+  isDisconnected: (nodeA: string, nodeB: string) => boolean;
   isFailed: (node: string) => boolean;
+  isDiscovered: (node: string) => boolean;
   onSelection: (node: string) => void;
 }
 
 export const ContextMenuComponent = ({
   data,
-  graph,
   currentContextMenu,
   onClose,
   onNodesAdd,
   onNodesRemove,
+  onEdgeAdd,
+  onEdgeRemove,
+  isDisconnected,
+  isDiscovered,
   isInDiscoveryQueue,
   isFailed,
   onSelection,
@@ -82,9 +88,7 @@ export const ContextMenuComponent = ({
     setDragging(true);
   };
 
-  const handleMouseUp = () => {
-    setDragging(false);
-  };
+  const handleMouseUp = () => setDragging(false);
 
   useEffect(() => {
     document.addEventListener("pointermove", handleMove);
@@ -131,7 +135,11 @@ export const ContextMenuComponent = ({
             <div
               className="col-md-auto"
               style={{ marginRight: "-65px" }}
-              onClick={() => onNodesRemove([data.id])}
+              onClick={() => {
+                if(nodeCheck) onNodesRemove([data.id]);
+                else onEdgeRemove(data.id);
+                onClose(true);
+              }}
             >
               <IconAtom iconID="#it-delete" className="icon-sm icon-white" />
             </div>
@@ -139,12 +147,14 @@ export const ContextMenuComponent = ({
           {nodeCheck ? (
             <NodeMenuAtom
               data={data as GraphNode}
-              graph={graph}
               onNodesRemove={onNodesRemove}
               onNodesAdd={onNodesAdd}
+              onEdgeAdd={(node: string) => onEdgeAdd(data.id, node)}
               isFailed={isFailed}
               isInDiscoveryQueue={isInDiscoveryQueue}
+              isDiscovered={isDiscovered}
               onSelection={onSelection}
+              isDisconnected={(node: string) => isDisconnected(data.id, node)}
             />
           ) : (
             <EdgeMenuAtom data={data as GraphEdge} />

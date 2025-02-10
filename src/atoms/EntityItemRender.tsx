@@ -9,9 +9,10 @@ export interface EntityItemsRendererProps {
   addEntities: (dep?: string | string[]) => void;
   removeAllEntities: () => void;
   isFailed: (node: string) => boolean;
+  isDiscovered: (node: string) => boolean;
   onSelection: (node: string) => void;
   isDisconnected: (node: string) => boolean;
-  addEdge: (node: string) => void;
+  onEdgeAdd: (node: string) => void;
 }
 
 export const EntityItemsRenderer = ({
@@ -20,14 +21,15 @@ export const EntityItemsRenderer = ({
   addEntities,
   removeAllEntities,
   isFailed,
+  isDiscovered,
   onSelection,
   isDisconnected,
-  addEdge,
+  onEdgeAdd,
 }: EntityItemsRendererProps): React.ComponentType<{ items: string[] }> => {
   const getButtonColor = (dep: string) => {
     if (isFailed(dep)) return "btn-secondary";
 
-    if (isInDiscoveryQueue(dep)) {
+    if (isDiscovered(dep)) {
       if (isDisconnected(dep)) return "btn-warning";
       return "btn-danger";
     }
@@ -38,7 +40,9 @@ export const EntityItemsRenderer = ({
   const getButtonIcon = (dep: string) => {
     if (isFailed(dep)) return "#it-warning";
 
-    if (isInDiscoveryQueue(dep)) {
+    console.log("isDiscovered", isDiscovered(dep));
+
+    if (isDiscovered(dep)) {
       if (isDisconnected(dep)) return "#it-plug";
       return "#it-minus";
     }
@@ -49,8 +53,8 @@ export const EntityItemsRenderer = ({
   const getButtonAction = (dep: string): (() => void) => {
     if (isFailed(dep)) return () => {};
 
-    if (isInDiscoveryQueue(dep)) {
-      if (isDisconnected(dep)) return () => addEdge(dep);
+    if (isDiscovered(dep)) {
+      if (isDisconnected(dep)) return () => onEdgeAdd(dep);
       return () => onNodesRemove([dep]);
     }
 
