@@ -27,7 +27,7 @@ export const WarningModalAtom = ({
   onDismiss,
 }: WarningModalProps) => {
   return (
-    <div className="modal" tabIndex={-1} role="dialog" id={modalID}>
+    <div className="modal" tabIndex={-1} role="dialog" id={modalID} style={{zIndex: 16169932}}>
       <div className="modal-dialog" role="document">
         <div className="modal-content">
           <div className="modal-header">
