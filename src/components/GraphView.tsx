@@ -17,9 +17,16 @@ import { evaluateTrustChain } from "../lib/openid-federation/trustChain";
 import { useRef } from "react";
 import { isValidUrl } from "../lib/utils";
 import { cleanEntityID } from "../lib/utils";
+import { genEdge } from "../lib/graph-data/utils";
+import { FormattedMessage } from "react-intl";
+import { InternalGraphNode, InternalGraphEdge } from "reagraph/dist/types";
+import { discoverNodes } from "../lib/openid-federation/trustChain";
+import { isModalShowed } from "../lib/utils";
+import { areDisconnected } from "../lib/graph-data/utils";
 import styles from "../css/BodyComponent.module.css";
 import headerStyle from "../css/Header.module.css";
-import { FormattedMessage } from "react-intl";
+
+import { removeEntities as _removeEntities } from "../lib/graph-data/utils";
 
 enum ShowElement {
   Loading = "loading-atom",
@@ -40,8 +47,13 @@ export const GraphView = () => {
   const [error, setError] = useState<Error>(new Error(""));
   const [failedNodes, setFailedNodes] = useState<string[]>([]);
   const [currentContextMenu, setCurrentContextMenu] = useState<
-    string | undefined
+    InternalGraphNode | InternalGraphEdge | undefined
   >(undefined);
+  const [errorModalText, setErrorModalText] = useState(new Error());
+  const [errorDetails, setErrorDetails] = useState<string[] | undefined>(
+    undefined,
+  );
+  const [discoverQueue, setDiscoveryQueue] = useState<string[]>([]);
   const [showElement, setShowElement] = useState<ShowElement>(
     ShowElement.Loading,
   );
@@ -61,13 +73,10 @@ export const GraphView = () => {
     setShowElement(ShowElement.Error);
   };
 
-  const addToFailedList = (nodes: string[]) => {
-    setFailedNodes([...failedNodes, ...nodes]);
-  };
-
   const isFailed = (node: string) => failedNodes.includes(node);
-
-  const onUpdate = (newGraph: Graph) => updateGraph(newGraph);
+  const isDiscovered = (node: string) => nodes.some((n) => n.id === node);
+  const isDisconnected = (nodeA: string, nodeB: string) =>
+    areDisconnected({nodes, edges}, nodeA, nodeB);
 
   const showNotification = () => {
     const savedNotification = document.getElementById("notification");
@@ -106,6 +115,63 @@ export const GraphView = () => {
     showNotification();
   };
 
+  const onNodesRemove = (entities: string[]) => {
+    const newGraph = _removeEntities({ nodes, edges }, entities);
+    updateGraph(newGraph);
+  };
+
+  const onModalError = (details?: string[]) => {
+    if (isModalShowed("error-modal")) {
+      const failed = [...(details || []), ...(errorDetails || [])];
+
+      setErrorModalText(
+        new Error(`Failed to discover ${failed.length} entities`),
+      );
+
+      setErrorDetails(failed);
+      return;
+    }
+
+    setErrorModalText(
+      new Error(`Failed to discover ${(details || []).length} entities`),
+    );
+    setErrorDetails(details);
+    showModal("error-modal");
+  };
+
+  const onEdgeAdd = (nodeA: string, nodeB: string) => {
+    const nodeAData = nodes.find(
+      (node) => cleanEntityID(node.id) === cleanEntityID(nodeA)      
+    );
+
+    const nodeBData = nodes.find(
+      (node) => cleanEntityID(node.id) === cleanEntityID(nodeB)
+    );
+
+    if (!nodeAData || !nodeBData) return;
+
+    const isAuthorityHint = nodeAData.info.ec.payload.authority_hints?.some(
+      (ah) => cleanEntityID(ah) === cleanEntityID(nodeB),
+    );
+
+    const newGraph = {
+      nodes: nodes,
+      edges: [
+        ...edges,
+        !isAuthorityHint
+          ? genEdge(nodeAData.info, nodeBData.info)
+          : genEdge(nodeBData.info, nodeAData.info),
+      ],
+    };
+
+    updateGraph(newGraph);
+  };
+
+  const onEdgeRemove = (id: string) => {
+    const newEdges = edges.filter((edge) => edge.id !== id);
+    updateGraph({ nodes, edges: newEdges });
+  }
+
   useEffect(
     () => setTc(evaluateTrustChain({ nodes, edges }, selections)),
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -143,8 +209,55 @@ export const GraphView = () => {
     setUpdate(false);
   }, [update]);
 
+  useEffect(() => {
+    if (discoverQueue.length === 0) return;
+
+    const [discovery, ...rest] = discoverQueue;
+
+    discoverNodes([discovery], { nodes, edges }).then((result) => {
+      if (result.failed.find((f) => f.entity === discovery)) {
+        setFailedNodes([...failedNodes, discovery]);
+        onModalError(result.failed.map((f) => f.error.message));
+        setDiscoveryQueue(rest);
+      }
+
+      const data = currentContextMenu as GraphNode;
+
+      const isAuthorityHint = data.info.ec.payload.authority_hints?.some(
+        (ah) => ah.startsWith(discovery) || discovery.startsWith(ah),
+      );
+
+      const newGraph = {
+        nodes: result.graph.nodes,
+        edges: [
+          ...result.graph.edges,
+          isAuthorityHint
+            ? genEdge(
+                result.graph.nodes.find((n) => n.id === discovery)!.info,
+                data.info,
+              )
+            : genEdge(
+                data.info,
+                result.graph.nodes.find((n) => n.id === discovery)!.info,
+              ),
+        ],
+      };
+
+      updateGraph(newGraph);
+      setDiscoveryQueue(rest);
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [discoverQueue]);
+
   return (
     <>
+      <WarningModalAtom
+        modalID="error-modal"
+        headerID="error_modal_title"
+        details={errorDetails}
+        description={errorModalText.message}
+        dismissActionID="modal_cancel"
+      />
       <WarningModalAtom
         modalID="export-modal"
         headerID="static_dynamic_title"
@@ -220,24 +333,31 @@ export const GraphView = () => {
               draggable
               onNodeContextMenu={(node) => {
                 if (currentContextMenu) return;
-                setCurrentContextMenu(node.id);
+                setCurrentContextMenu(node);
               }}
               onEdgeContextMenu={(edge) => {
                 if (currentContextMenu || !edge) return;
-                setCurrentContextMenu(edge.id);
+                setCurrentContextMenu(edge);
               }}
               contextMenu={({ data, onClose }) => (
                 <ContextMenuComponent
                   data={data}
-                  graph={{ nodes, edges }}
-                  currentContextMenu={currentContextMenu}
+                  currentContextMenu={currentContextMenu?.id}
                   onClose={(freeCM: boolean) => {
                     onClose();
                     if (freeCM) setCurrentContextMenu(undefined);
                   }}
-                  onUpdate={onUpdate}
-                  addToFailedList={addToFailedList}
+                  onNodesAdd={(nodes) => setDiscoveryQueue(nodes)}
+                  onNodesRemove={onNodesRemove}
                   isFailed={isFailed}
+                  onEdgeAdd={onEdgeAdd}
+                  onEdgeRemove={onEdgeRemove}
+                  onModalError={onModalError}
+                  isDisconnected={isDisconnected}
+                  isDiscovered={isDiscovered}
+                  isInDiscoveryQueue={(node: string) =>
+                    discoverQueue.includes(node)
+                  }
                   onSelection={(node: string) => {
                     setHighlighting(true);
                     setActives([cleanEntityID(node)]);

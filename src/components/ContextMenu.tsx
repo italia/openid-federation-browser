@@ -1,8 +1,8 @@
 import React from "react";
 import { IntlProvider } from "react-intl";
 import { getTranslations } from "../lib/translations";
-import { GraphEdge, GraphNode, Graph } from "../lib/graph-data/types";
-import { isNode, removeNode } from "../lib/graph-data/utils";
+import { GraphEdge, GraphNode } from "../lib/graph-data/types";
+import { isNode } from "../lib/graph-data/utils";
 import { NodeMenuAtom } from "../atoms/NodeMenu";
 import { EdgeMenuAtom } from "../atoms/EdgeMenu";
 import { IconAtom } from "../atoms/Icon";
@@ -14,22 +14,32 @@ import { InternalGraphNode, InternalGraphEdge } from "reagraph";
 
 export interface ContextMenuProps {
   data: InternalGraphNode | InternalGraphEdge;
-  graph: Graph;
   currentContextMenu?: string;
   onClose: (freeCM: boolean) => void;
-  onUpdate: (graph: Graph) => void;
-  addToFailedList: (nodes: string[]) => void;
+  onNodesAdd: (nodes: string[]) => void;
+  onNodesRemove: (nodes: string[]) => void;
+  onEdgeAdd: (nodeA: string, nodeB: string) => void;
+  onEdgeRemove: (id: string) => void;
+  onModalError: (message?: string[]) => void;
+  isInDiscoveryQueue: (dep: string) => boolean;
+  isDisconnected: (nodeA: string, nodeB: string) => boolean;
   isFailed: (node: string) => boolean;
+  isDiscovered: (node: string) => boolean;
   onSelection: (node: string) => void;
 }
 
 export const ContextMenuComponent = ({
   data,
-  graph,
   currentContextMenu,
   onClose,
-  onUpdate,
-  addToFailedList,
+  onNodesAdd,
+  onNodesRemove,
+  onEdgeAdd,
+  onEdgeRemove,
+  onModalError,
+  isDisconnected,
+  isDiscovered,
+  isInDiscoveryQueue,
   isFailed,
   onSelection,
 }: ContextMenuProps) => {
@@ -80,9 +90,7 @@ export const ContextMenuComponent = ({
     setDragging(true);
   };
 
-  const handleMouseUp = () => {
-    setDragging(false);
-  };
+  const handleMouseUp = () => setDragging(false);
 
   useEffect(() => {
     document.addEventListener("pointermove", handleMove);
@@ -100,17 +108,6 @@ export const ContextMenuComponent = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [],
   );
-
-  const removeEntity = () => {
-    if (nodeCheck) {
-      onClose(true);
-      onUpdate(removeNode(graph, data.id));
-    } else {
-      onClose(true);
-      const edges = graph.edges.filter((edge) => edge.id !== data.id);
-      onUpdate({ nodes: graph.nodes, edges });
-    }
-  };
 
   return (
     <div ref={ref} style={{ minWidth: "34rem" }}>
@@ -140,7 +137,11 @@ export const ContextMenuComponent = ({
             <div
               className="col-md-auto"
               style={{ marginRight: "-65px" }}
-              onClick={removeEntity}
+              onClick={() => {
+                if(nodeCheck) onNodesRemove([data.id]);
+                else onEdgeRemove(data.id);
+                onClose(true);
+              }}
             >
               <IconAtom iconID="#it-delete" className="icon-sm icon-white" />
             </div>
@@ -148,11 +149,15 @@ export const ContextMenuComponent = ({
           {nodeCheck ? (
             <NodeMenuAtom
               data={data as GraphNode}
-              graph={graph}
-              onUpdate={onUpdate}
-              addToFailedList={addToFailedList}
+              onNodesRemove={onNodesRemove}
+              onNodesAdd={onNodesAdd}
+              onEdgeAdd={(node: string) => onEdgeAdd(data.id, node)}
               isFailed={isFailed}
+              isInDiscoveryQueue={isInDiscoveryQueue}
+              isDiscovered={isDiscovered}
               onSelection={onSelection}
+              onModalError={onModalError}
+              isDisconnected={(node: string) => isDisconnected(data.id, node)}
             />
           ) : (
             <EdgeMenuAtom data={data as GraphEdge} />
