@@ -120,7 +120,7 @@ export const GraphView = () => {
     updateGraph(newGraph);
   };
 
-  const showModalError = (details?: string[]) => {
+  const onModalError = (details?: string[]) => {
     if (isModalShowed("error-modal")) {
       const failed = [...(details || []), ...(errorDetails || [])];
 
@@ -217,7 +217,7 @@ export const GraphView = () => {
     discoverNodes([discovery], { nodes, edges }).then((result) => {
       if (result.failed.find((f) => f.entity === discovery)) {
         setFailedNodes([...failedNodes, discovery]);
-        showModalError(result.failed.map((f) => f.error.message));
+        onModalError(result.failed.map((f) => f.error.message));
         setDiscoveryQueue(rest);
       }
 
@@ -352,6 +352,7 @@ export const GraphView = () => {
                   isFailed={isFailed}
                   onEdgeAdd={onEdgeAdd}
                   onEdgeRemove={onEdgeRemove}
+                  onModalError={onModalError}
                   isDisconnected={isDisconnected}
                   isDiscovered={isDiscovered}
                   isInDiscoveryQueue={(node: string) =>

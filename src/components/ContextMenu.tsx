@@ -20,6 +20,7 @@ export interface ContextMenuProps {
   onNodesRemove: (nodes: string[]) => void;
   onEdgeAdd: (nodeA: string, nodeB: string) => void;
   onEdgeRemove: (id: string) => void;
+  onModalError: (message?: string[]) => void;
   isInDiscoveryQueue: (dep: string) => boolean;
   isDisconnected: (nodeA: string, nodeB: string) => boolean;
   isFailed: (node: string) => boolean;
@@ -35,6 +36,7 @@ export const ContextMenuComponent = ({
   onNodesRemove,
   onEdgeAdd,
   onEdgeRemove,
+  onModalError,
   isDisconnected,
   isDiscovered,
   isInDiscoveryQueue,
@@ -154,6 +156,7 @@ export const ContextMenuComponent = ({
               isInDiscoveryQueue={isInDiscoveryQueue}
               isDiscovered={isDiscovered}
               onSelection={onSelection}
+              onModalError={onModalError}
               isDisconnected={(node: string) => isDisconnected(data.id, node)}
             />
           ) : (

@@ -26,6 +26,7 @@ export interface ContextMenuProps {
   isFailed: (node: string) => boolean;
   isDisconnected: (node: string) => boolean;
   onSelection: (node: string) => void;
+  onModalError: (message?: string[]) => void;
 }
 
 export const NodeMenuAtom = ({
@@ -38,6 +39,7 @@ export const NodeMenuAtom = ({
   isFailed,
   isDisconnected,
   onSelection,
+  onModalError,
 }: ContextMenuProps) => {
   const federationListEndpoint =
     data.info.ec.payload.metadata?.federation_entity?.federation_list_endpoint;
@@ -55,10 +57,6 @@ export const NodeMenuAtom = ({
   const [advancedParams, setAdvancedParams] = useState<boolean>(false);
 
   const removeEntities = (entityIDs: string[]) => onNodesRemove(entityIDs);
-
-  const showModalError = (message: string[] | undefined) => {
-    console.log(message);
-  };
 
   const addEntities = (entityID?: string | string[]) => {
     if (!entityID) setToDiscoverList(filteredItems);
@@ -221,7 +219,7 @@ export const NodeMenuAtom = ({
                         subordinateUrl={federationListEndpoint || ""}
                         originalList={data.info.immDependants}
                         onListChange={setImmDependants}
-                        showModalError={showModalError}
+                        showModalError={onModalError}
                       />
                     )}
                   </div>
@@ -295,7 +293,7 @@ export const NodeMenuAtom = ({
                 <TrustMarkListing
                   id="trust-mark-listing"
                   trustMarkListUrl={trustMarkListEndpoint}
-                  showModalError={showModalError}
+                  onModalError={onModalError}
                 />
               }
             />

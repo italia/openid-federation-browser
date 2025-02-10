@@ -9,13 +9,13 @@ import style from "../css/ContextMenu.module.css";
 export interface TrustMarkListingProps {
   id: string;
   trustMarkListUrl: string;
-  showModalError: (details?: string[]) => void;
+  onModalError: (details?: string[]) => void;
 }
 
 export const TrustMarkListing = ({
   id,
   trustMarkListUrl,
-  showModalError,
+  onModalError,
 }: TrustMarkListingProps) => {
   const [sub, setSub] = useState("");
   const [trustMarkID, setTrustMarkID] = useState("");
@@ -59,11 +59,11 @@ export const TrustMarkListing = ({
 
       if (response?.status === 400) {
         const errorData = response?.data as { error_description: string };
-        showModalError([errorData.error_description]);
+        onModalError([errorData.error_description]);
         return;
       }
 
-      showModalError([response?.statusText || "Unknown error"]);
+      onModalError([response?.statusText || "Unknown error"]);
     }
   };
 
