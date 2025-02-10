@@ -106,7 +106,7 @@ export const RestoreView = () => {
                       }}
                       text="Restore"
                       title="Load"
-                      btnClassName="btn-success"
+                      btnClassName="btn-icon btn-sm py-0 px-1 btn-success"
                       ariaLabel="Load"
                       iconID="#it-plus"
                       textClassName={style.contextAccordinButton}
@@ -123,7 +123,7 @@ export const RestoreView = () => {
                       title="Delete"
                       ariaLabel="Delete"
                       iconID="#it-minus"
-                      btnClassName="btn-danger"
+                      btnClassName="btn-icon btn-sm py-0 px-1 btn-danger"
                       textClassName={style.contextAccordinButton}
                       style={{ width: "90px" }}
                     />
