@@ -136,11 +136,11 @@ export const EntityItemsRenderer = ({
             <div className="col-md-auto">
               <Button
                 action={() => addEntities()}
-                iconID="#it-plus"
-                btnClassName="btn-sm py-0 px-1 btn-primary"
+                iconID="#it-plus-circle"
+                btnClassName="btn-sm py-0 px-1 btn-secondary"
                 title="Discovery"
                 ariaLabel="Discovery"
-                text="Add all"
+                text="Add all filtered"
                 textClassName={style.contextAccordinButton}
               />
             </div>
