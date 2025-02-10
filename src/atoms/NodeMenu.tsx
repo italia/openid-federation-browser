@@ -75,14 +75,14 @@ export const NodeMenuAtom = ({
     () => {
       if (subordinate) {
         removeEntities(
-          data.info.immDependants.filter((dep) => isInDiscoveryQueue(dep)),
+          data.info.immDependants.filter((dep) => isDiscovered(dep)),
         );
       } else {
         const authorityHints = data.info.ec.payload.authority_hints;
 
         if (!authorityHints) return;
 
-        removeEntities(authorityHints.filter((dep) => isInDiscoveryQueue(dep)));
+        removeEntities(authorityHints.filter((dep) => isDiscovered(dep)));
       }
     };
 

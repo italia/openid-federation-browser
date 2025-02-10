@@ -40,8 +40,6 @@ export const EntityItemsRenderer = ({
   const getButtonIcon = (dep: string) => {
     if (isFailed(dep)) return "#it-warning";
 
-    console.log("isDiscovered", isDiscovered(dep));
-
     if (isDiscovered(dep)) {
       if (isDisconnected(dep)) return "#it-plug";
       return "#it-minus";
