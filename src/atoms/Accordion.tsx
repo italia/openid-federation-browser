@@ -1,4 +1,5 @@
 import React from "react";
+import { Button } from "./Button";
 import { FormattedMessage } from "react-intl";
 import style from "../css/ContextMenu.module.css";
 
@@ -39,19 +40,15 @@ export const AccordionAtom = ({
 
   return (
     <div className="accordion-item">
-      <div className="accordion-header " id={accordinId}>
-        <button
+      <div className="accordion-header" id={accordinId}>
+        <Button
+          action={toggleCollapse}
+          text={labelId ? <FormattedMessage id={labelId} /> : <>{label}</>}
+          btnClassName="accordion-button collapsed"
+          textClassName={titleClassName || style.contextAccordinTitle}
           id={`${accordinId}-button`}
-          className="accordion-button collapsed"
-          type="button"
-          aria-expanded="true"
-          aria-controls="detail-collapse"
-          onClick={toggleCollapse}
-        >
-          <span className={titleClassName || style.contextAccordinTitle}>
-            {labelId ? <FormattedMessage id={labelId} /> : <>{label}</>}
-          </span>
-        </button>
+          ariaLabel="Toggle Accordin"
+        />
       </div>
       <div
         id={`${accordinId}-collapse`}
