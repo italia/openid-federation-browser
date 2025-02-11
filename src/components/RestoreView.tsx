@@ -140,7 +140,7 @@ export const RestoreView = () => {
     <div className={bodyStyle.bodyElement}>
       <ul className="nav nav-tabs auto">
         <li className="nav-item">
-          <span
+          <button
             className="nav-link active"
             id={`nav-file-tab`}
             role="tab"
@@ -149,10 +149,10 @@ export const RestoreView = () => {
             <span className={style.contextAccordinText}>
               <FormattedMessage id="from_file" />
             </span>
-          </span>
+          </button>
         </li>
         <li className="nav-item">
-          <a
+          <button
             className="nav-link"
             id={`nav-previous-tab`}
             role="tab"
@@ -161,7 +161,7 @@ export const RestoreView = () => {
             <span className={style.contextAccordinText}>
               <FormattedMessage id="from_previous_session" />
             </span>
-          </a>
+          </button>
         </li>
       </ul>
       <div

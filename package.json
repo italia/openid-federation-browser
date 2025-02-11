@@ -1,6 +1,6 @@
 {
   "name": "openid-federation-browser",
-  "version": "0.9.1",
+  "version": "0.9.2",
   "homepage": "./",
   "private": true,
   "type": "module",
