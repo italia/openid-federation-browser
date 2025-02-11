@@ -106,7 +106,7 @@ export const NodeMenuAtom = ({
   useEffect(() => {
     setImmDependants(
       filterDiscovered
-        ? data.info.immDependants.filter((dep) => !isInDiscoveryQueue(dep))
+        ? data.info.immDependants.filter((dep) => !isDiscovered(dep))
         : data.info.immDependants,
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
