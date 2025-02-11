@@ -32,6 +32,9 @@
     "vite-tsconfig-paths": "^5.1.4",
     "web-vitals": "^4.2.4"
   },
+  "overrides": {
+    "esbuild": "^0.25.0"
+  },
   "scripts": {
     "start": "vite",
     "build": "tsc && vite build",
