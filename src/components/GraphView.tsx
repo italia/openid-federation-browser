@@ -347,7 +347,7 @@ export const GraphView = () => {
                     onClose();
                     if (freeCM) setCurrentContextMenu(undefined);
                   }}
-                  onNodesAdd={(nodes) => setDiscoveryQueue(nodes)}
+                  onNodesAdd={(nodes) => setDiscoveryQueue([...discoverQueue, ...nodes])}
                   onNodesRemove={onNodesRemove}
                   isFailed={isFailed}
                   onEdgeAdd={onEdgeAdd}
