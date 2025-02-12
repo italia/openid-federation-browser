@@ -94,7 +94,7 @@ export const EntityItemsRenderer = ({
                       btnClassName="btn-sm py-0 px-1 btn-primary"
                       title="Highlight"
                       ariaLabel="Highlight"
-                      disabled={!isInDiscoveryQueue(dep)}
+                      disabled={!isDiscovered(dep)}
                     />
                   </div>
                   <div className="col-md-auto">
