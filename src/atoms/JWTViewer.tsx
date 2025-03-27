@@ -2,8 +2,7 @@ import React, { useEffect } from "react";
 import style from "../css/ContextMenu.module.css";
 import { IconAtom } from "./Icon";
 import { FormattedMessage } from "react-intl";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { oneLight } from "react-syntax-highlighter/dist/esm/styles/prism";
+import { CodeViewer } from "./CodeViewer";
 import { useState } from "react";
 
 type SchemaValidity = "UNKNOWN" | "VALID" | "INVALID";
@@ -176,22 +175,16 @@ export const JWTViewer = ({
               id={`${id}-nav-header`}
               role="tabpanel"
               aria-labelledby="nav-header-tab"
-              style={{ width: "100%" }}
             >
-              <SyntaxHighlighter language="json" style={oneLight}>
-                {decodedHeaderStr}
-              </SyntaxHighlighter>
+              <CodeViewer language="json" code={decodedHeaderStr} />
             </div>
             <div
               className="tab-pane fade"
               id={`${id}-nav-payload`}
               role="tabpanel"
               aria-labelledby="nav-payload-tab"
-              style={{ width: "100%" }}
             >
-              <SyntaxHighlighter language="json" style={oneLight}>
-                {decodedPayloadStr}
-              </SyntaxHighlighter>
+              <CodeViewer language="json" code={decodedPayloadStr} />
             </div>
           </div>
         </div>
