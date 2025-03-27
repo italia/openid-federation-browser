@@ -76,7 +76,7 @@ export const GraphView = () => {
   const isFailed = (node: string) => failedNodes.includes(node);
   const isDiscovered = (node: string) => nodes.some((n) => n.id === node);
   const isDisconnected = (nodeA: string, nodeB: string) =>
-    areDisconnected({nodes, edges}, nodeA, nodeB);
+    areDisconnected({ nodes, edges }, nodeA, nodeB);
 
   const showNotification = () => {
     const savedNotification = document.getElementById("notification");
@@ -141,11 +141,11 @@ export const GraphView = () => {
 
   const onEdgeAdd = (nodeA: string, nodeB: string) => {
     const nodeAData = nodes.find(
-      (node) => cleanEntityID(node.id) === cleanEntityID(nodeA)      
+      (node) => cleanEntityID(node.id) === cleanEntityID(nodeA),
     );
 
     const nodeBData = nodes.find(
-      (node) => cleanEntityID(node.id) === cleanEntityID(nodeB)
+      (node) => cleanEntityID(node.id) === cleanEntityID(nodeB),
     );
 
     if (!nodeAData || !nodeBData) return;
@@ -170,7 +170,7 @@ export const GraphView = () => {
   const onEdgeRemove = (id: string) => {
     const newEdges = edges.filter((edge) => edge.id !== id);
     updateGraph({ nodes, edges: newEdges });
-  }
+  };
 
   useEffect(
     () => setTc(evaluateTrustChain({ nodes, edges }, selections)),
@@ -347,7 +347,9 @@ export const GraphView = () => {
                     onClose();
                     if (freeCM) setCurrentContextMenu(undefined);
                   }}
-                  onNodesAdd={(nodes) => setDiscoveryQueue([...discoverQueue, ...nodes])}
+                  onNodesAdd={(nodes) =>
+                    setDiscoveryQueue([...discoverQueue, ...nodes])
+                  }
                   onNodesRemove={onNodesRemove}
                   isFailed={isFailed}
                   onEdgeAdd={onEdgeAdd}
