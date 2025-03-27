@@ -138,7 +138,7 @@ export const ContextMenuComponent = ({
               className="col-md-auto"
               style={{ marginRight: "-65px" }}
               onClick={() => {
-                if(nodeCheck) onNodesRemove([data.id]);
+                if (nodeCheck) onNodesRemove([data.id]);
                 else onEdgeRemove(data.id);
                 onClose(true);
               }}
