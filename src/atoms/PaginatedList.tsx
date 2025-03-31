@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
 import style from "../css/ContextMenu.module.css";
 import { FormattedMessage } from "react-intl";
+import { IconAtom } from "./Icon";
 
 export interface PaginatedListAtomProps {
   itemsPerPage: number;
@@ -78,17 +79,24 @@ export const PaginatedListAtom = ({
       <div className="row justify-content-md-center pt-4">
         <div className="col-md-auto">
           <ReactPaginate
-            className={`pagination ${style.contextAccordinText}`}
             containerClassName="pagination"
-            pageClassName="small"
-            pageLinkClassName={`page-link ${style.contextAccordinText}`}
+            pageClassName="page-item"
+            pageLinkClassName="page-link"
             breakLabel="..."
-            nextLabel="next >"
             onPageChange={handlePageClick}
             pageRangeDisplayed={3}
             pageCount={pageCount}
-            previousLabel="< previous"
             renderOnZeroPageCount={null}
+            previousLabel={
+              <span>
+                <IconAtom iconID="#it-chevron-left" className="icon icon-primary" style={{width: "48px", height: "48px"}} />
+              </span>
+            }
+            nextLabel={
+              <span>
+                <IconAtom iconID="#it-chevron-right" className="icon icon-primary" style={{width: "48px", height: "48px"}} />
+              </span>
+            }
           />
         </div>
       </div>
