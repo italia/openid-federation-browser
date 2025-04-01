@@ -90,7 +90,7 @@ export const EntityItemsRenderer = ({
                   <div className="col-md-auto">
                     <Button
                       action={() => onSelection(dep)}
-                      iconID="#it-search"
+                      iconID="#it-pin"
                       btnClassName="btn-sm py-0 px-1 btn-primary"
                       title="Highlight"
                       ariaLabel="Highlight"
