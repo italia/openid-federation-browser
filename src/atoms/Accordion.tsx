@@ -9,6 +9,7 @@ export interface AccordinAtomProps {
   label?: string;
   hiddenElement: React.ReactNode;
   titleClassName?: string;
+  show?: boolean;
 }
 
 export const AccordionAtom = ({
@@ -17,6 +18,7 @@ export const AccordionAtom = ({
   label,
   hiddenElement,
   titleClassName,
+  show = false,
 }: AccordinAtomProps) => {
   const toggleCollapse = () => {
     const collapseButton = document.getElementById(
@@ -44,7 +46,7 @@ export const AccordionAtom = ({
         <Button
           action={toggleCollapse}
           text={labelId ? <FormattedMessage id={labelId} /> : <>{label}</>}
-          btnClassName="accordion-button collapsed"
+          btnClassName={`accordion-button ${show ? "show" : "collapsed"}`}
           textClassName={titleClassName || style.contextAccordinTitle}
           id={`${accordinId}-button`}
           ariaLabel="Toggle Accordin"
@@ -52,7 +54,7 @@ export const AccordionAtom = ({
       </div>
       <div
         id={`${accordinId}-collapse`}
-        className="accordion-collapse collapse"
+        className={`accordion-collapse ${show ? "show" : "collapse"}`}
         role="region"
         aria-labelledby={accordinId}
       >

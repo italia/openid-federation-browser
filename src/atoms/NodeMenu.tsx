@@ -140,6 +140,7 @@ export const NodeMenuAtom = ({
           <AccordionAtom
             accordinId="info-details"
             labelId="node_info"
+            show={true}
             hiddenElement={
               <InfoView
                 id={`${data.info.ec.entity}-view`}
