@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { discoverNode, traverseUp } from "../lib/openid-federation/trustChain";
 import { GraphCanvas, GraphCanvasRef } from "reagraph";
 import { GraphNode, GraphEdge, Graph } from "../lib/graph-data/types";
-import { ContextMenuComponent } from "./ContextMenu";
+import { ContextSideBar } from "./ContextSidebar";
 import { LoadingAtom } from "../atoms/Loading";
 import { ErrorViewAtom } from "../atoms/ErrorView";
 import { downloadJsonFile } from "../lib/utils";
@@ -57,6 +57,7 @@ export const GraphView = () => {
   const [showElement, setShowElement] = useState<ShowElement>(
     ShowElement.Loading,
   );
+  const [sidebarVisible, setSidebarVisible] = useState(false);
 
   const updateGraph = ({ nodes, edges }: Graph) => {
     setNodes(nodes);
@@ -251,6 +252,32 @@ export const GraphView = () => {
 
   return (
     <>
+      <ContextSideBar
+        visible={sidebarVisible}
+        onClose={() => setSidebarVisible(false)}
+        currentVisualizedData={currentContextMenu}
+        onNodesAdd={(nodes) => setDiscoveryQueue([...discoverQueue, ...nodes])}
+        onNodesRemove={onNodesRemove}
+        isFailed={isFailed}
+        onEdgeAdd={onEdgeAdd}
+        onEdgeRemove={onEdgeRemove}
+        onModalError={onModalError}
+        isDisconnected={isDisconnected}
+        isDiscovered={isDiscovered}
+        isInDiscoveryQueue={(node: string) => discoverQueue.includes(node)}
+        onSelection={(node: string) => {
+          setHighlighting(true);
+          setActives([cleanEntityID(node)]);
+          setSelections([cleanEntityID(node)]);
+          setCurrentContextMenu(undefined);
+
+          setTimeout(() => {
+            setHighlighting(false);
+            setSelections([]);
+            setActives([]);
+          }, 2000);
+        }}
+      />
       <WarningModalAtom
         modalID="error-modal"
         headerID="error_modal_title"
@@ -332,50 +359,13 @@ export const GraphView = () => {
               onLassoEnd={(selections) => setSelections(selections)}
               draggable
               onNodeContextMenu={(node) => {
-                if (currentContextMenu) return;
                 setCurrentContextMenu(node);
+                setSidebarVisible(true);
               }}
               onEdgeContextMenu={(edge) => {
-                if (currentContextMenu || !edge) return;
                 setCurrentContextMenu(edge);
+                setSidebarVisible(true);
               }}
-              contextMenu={({ data, onClose }) => (
-                <ContextMenuComponent
-                  data={data}
-                  currentContextMenu={currentContextMenu?.id}
-                  onClose={(freeCM: boolean) => {
-                    onClose();
-                    if (freeCM) setCurrentContextMenu(undefined);
-                  }}
-                  onNodesAdd={(nodes) =>
-                    setDiscoveryQueue([...discoverQueue, ...nodes])
-                  }
-                  onNodesRemove={onNodesRemove}
-                  isFailed={isFailed}
-                  onEdgeAdd={onEdgeAdd}
-                  onEdgeRemove={onEdgeRemove}
-                  onModalError={onModalError}
-                  isDisconnected={isDisconnected}
-                  isDiscovered={isDiscovered}
-                  isInDiscoveryQueue={(node: string) =>
-                    discoverQueue.includes(node)
-                  }
-                  onSelection={(node: string) => {
-                    setHighlighting(true);
-                    setActives([cleanEntityID(node)]);
-                    setSelections([cleanEntityID(node)]);
-
-                    onClose();
-                    setCurrentContextMenu(undefined);
-
-                    setTimeout(() => {
-                      setHighlighting(false);
-                      setSelections([]);
-                      setActives([]);
-                    }, 2000);
-                  }}
-                />
-              )}
             />
           </>
         )}
