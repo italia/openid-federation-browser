@@ -36,8 +36,7 @@ export const ViewImportAtom = () => {
     <div className="container">
       <div className="row">
         <div className="col-10">
-          {
-            fileName && 
+          {fileName && (
             <ul className="upload-file-list">
               <li className="upload-file success">
                 <IconAtom
@@ -46,8 +45,10 @@ export const ViewImportAtom = () => {
                   isRounded={false}
                 />
                 <p>
-                  <span className="visually-hidden"><FormattedMessage id="loaded_file"/></span>
-                  {fileName} 
+                  <span className="visually-hidden">
+                    <FormattedMessage id="loaded_file" />
+                  </span>
+                  {fileName}
                   <span className="upload-file-weight">{fileSize} KB</span>
                 </p>
                 <button disabled>
@@ -59,7 +60,7 @@ export const ViewImportAtom = () => {
                 </button>
               </li>
             </ul>
-          }
+          )}
           <input
             type="file"
             className="upload"
@@ -90,7 +91,10 @@ export const ViewImportAtom = () => {
         </div>
       </div>
       <div className="row">
-        <div className="col-12" style={{ display: "flex", justifyContent: "flex-end"}}>
+        <div
+          className="col-12"
+          style={{ display: "flex", justifyContent: "flex-end" }}
+        >
           <button
             className="btn btn-primary btn-sm py-2 px-4"
             style={{ fontSize: "14px" }}
