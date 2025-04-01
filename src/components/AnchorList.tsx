@@ -5,6 +5,7 @@ import { IconAtom } from "../atoms/Icon";
 import style from "../css/ContextMenu.module.css";
 import bodyStyle from "../css/BodyComponent.module.css";
 import { useNavigate } from "react-router-dom";
+import { truncateMiddle } from "../lib/utils";
 
 export const AnchorList = () => {
   const navigate = useNavigate();
@@ -22,7 +23,7 @@ export const AnchorList = () => {
               <div className="row justify-content-md-start">
                 <div className="col-md-auto">
                   <button
-                    className={`btn btn-icon btn-sm py-0 px-1 btn-success`}
+                    className={`btn btn-icon btn-sm py-0 px-1 btn-primary`}
                     title="Load"
                     aria-label="Load"
                     onClick={() => {
@@ -45,7 +46,7 @@ export const AnchorList = () => {
                   </button>
                 </div>
                 <div className={`col-md-auto ${style.contextAccordinText}`}>
-                  {d.name} - {d.url}
+                  {d.name} - {truncateMiddle(d.url, 38)}
                 </div>
               </div>
             </li>

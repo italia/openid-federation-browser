@@ -1,18 +1,26 @@
 import React from "react";
 import { useState, ChangeEvent } from "react";
 import { FormattedMessage } from "react-intl";
-import { getTranslations } from "../lib/translations";
 import { useNavigate } from "react-router-dom";
-import style from "../css/ContextMenu.module.css";
+import { IconAtom } from "./Icon";
 
 export const ViewImportAtom = () => {
   const navigate = useNavigate();
   const [file, setFile] = useState<string | undefined>(undefined);
+  const [fileName, setFileName] = useState<string | undefined>(undefined);
+  const [fileSize, setFileSize] = useState<string | undefined>(undefined);
 
   const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const text = await e.target.files[0].text();
       setFile(text);
+
+      const fileName = e.target.files[0].name;
+      setFileName(fileName);
+
+      const fileSize = e.target.files[0].size;
+      const fileSizeInKB = (fileSize / 1024).toFixed(2);
+      setFileSize(fileSizeInKB);
     }
   };
 
@@ -28,28 +36,46 @@ export const ViewImportAtom = () => {
     <div className="container">
       <div className="row">
         <div className="col-10">
+          {
+            fileName && 
+            <ul className="upload-file-list">
+              <li className="upload-file success">
+                <IconAtom
+                  iconID="#it-file"
+                  className="icon-sm"
+                  isRounded={false}
+                />
+                <p>
+                  <span className="visually-hidden"><FormattedMessage id="loaded_file"/></span>
+                  {fileName} 
+                  <span className="upload-file-weight">{fileSize} KB</span>
+                </p>
+                <button disabled>
+                  <IconAtom
+                    iconID="#it-check"
+                    className="icon-sm"
+                    isRounded={false}
+                  />
+                </button>
+              </li>
+            </ul>
+          }
           <input
             type="file"
-            className="form-control"
+            className="upload"
             id="input-value"
-            placeholder={
-              getTranslations(navigator.language)["view_upload_label"]
-            }
-            style={{ fontSize: "14px" }}
             onChange={handleFileChange}
           />
-        </div>
-        <div className="col-2">
-          <button
-            className="btn btn-success btn-sm py-1 px-2"
-            style={{ fontSize: "14px" }}
-            onClick={() => uploadFile()}
-            disabled={!file}
-          >
-            <span className={style.contextAccordinButton}>
-              <FormattedMessage id="trust_anchor_url_button" />
+          <label htmlFor="input-value">
+            <IconAtom
+              iconID="#it-upload"
+              className="icon-sm"
+              isRounded={false}
+            />
+            <span>
+              <FormattedMessage id="upload_file" />
             </span>
-          </button>
+          </label>
         </div>
       </div>
       <div className="collapse row" id="invalid-input-collapse">
@@ -61,6 +87,25 @@ export const ViewImportAtom = () => {
           >
             <FormattedMessage id="invalid_url_error_message" />
           </div>
+        </div>
+      </div>
+      <div className="row">
+        <div className="col-12" style={{ display: "flex", justifyContent: "flex-end"}}>
+          <button
+            className="btn btn-primary btn-sm py-2 px-4"
+            style={{ fontSize: "14px" }}
+            onClick={() => uploadFile()}
+            disabled={!file}
+          >
+            <IconAtom
+              iconID="#it-arrow-up-circle"
+              className="icon-sm icon-white"
+              isRounded={false}
+            />
+            <span className="titillium-web-bold">
+              <FormattedMessage id="trust_anchor_url_button" />
+            </span>
+          </button>
         </div>
       </div>
     </div>

@@ -6,9 +6,9 @@ export const LoadingAtom = () => {
   return (
     <div className={`container ${styles.bodyElement}`}>
       <div className="row">
-        <h4>
+        <span className="titillium-web-bold" style={{ fontSize: "28px" }}>
           <FormattedMessage id="loading" />
-        </h4>
+        </span>
       </div>
       <div
         className="row"

@@ -90,5 +90,7 @@
   "restore": "Restore",
   "drag_info": "Hold Shift and Drag to Select Multiple Nodes",
   "trust_marks_listing_endpoint": "Trust Marks Listing Endpoint",
-  "entity_type_label": "Entity Type"
+  "entity_type_label": "Entity Type",
+  "loaded_file": "Loaded File:",
+  "upload_file": "Upload File"
 }

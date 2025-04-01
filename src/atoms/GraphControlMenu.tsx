@@ -2,7 +2,6 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { IconAtom } from "./Icon";
 import { FormattedMessage } from "react-intl";
-import style from "../css/ContextMenu.module.css";
 import headerStyle from "../css/Header.module.css";
 
 export interface GraphControlMenuAtomProps {
@@ -32,20 +31,20 @@ export const GraphControlMenuAtom = ({
       }}
     >
       <button
-        className={`btn btn-success btn-sm py-1 px-2 mt-2 ${headerStyle.headerText}`}
+        className={`btn btn-primary btn-sm py-1 px-2 mt-2 ${headerStyle.headerText}`}
         style={{ display: "block", width: "100%" }}
         onClick={onEntityAdd}
       >
         <div className="row align-items-start">
-          <div className="col-2">
+          <div className="col-3">
             <IconAtom
               iconID="#it-plus"
-              className="icon-xs icon-white"
+              className="icon-sm icon-white"
               isRounded={false}
             />
           </div>
           <div className="col-md-auto">
-            <span className={style.contextAccordinButton}>
+            <span className="titillium-web-bold" style={{ fontSize: "14px" }}>
               <FormattedMessage id="add_entity" />
             </span>
           </div>
@@ -53,19 +52,19 @@ export const GraphControlMenuAtom = ({
       </button>
       <Link className="nav-link" to="/restoreSession">
         <button
-          className={`btn btn-success btn-sm py-1 px-2 mt-2 ${headerStyle.headerText}`}
+          className={`btn btn-primary btn-sm py-1 px-2 mt-2 ${headerStyle.headerText}`}
           style={{ display: "block", width: "100%" }}
         >
           <div className="row">
-            <div className="col-2">
+            <div className="col-3">
               <IconAtom
                 iconID="#it-upload"
-                className="icon-xs icon-white"
+                className="icon-sm icon-white"
                 isRounded={false}
               />
             </div>
             <div className="col-md-auto">
-              <span className={style.contextAccordinButton}>
+              <span className="titillium-web-bold" style={{ fontSize: "14px" }}>
                 <FormattedMessage id="upload_view" />
               </span>
             </div>
@@ -73,40 +72,40 @@ export const GraphControlMenuAtom = ({
         </button>
       </Link>
       <button
-        className={`btn btn-success btn-sm py-1 px-2 mt-2 ${headerStyle.headerText}`}
+        className={`btn btn-primary btn-sm py-1 px-2 mt-2 ${headerStyle.headerText}`}
         style={{ display: "block", width: "100%" }}
         onClick={onExport}
       >
         <div className="row align-items-start">
-          <div className="col-2">
+          <div className="col-3">
             <IconAtom
               iconID="#it-download"
-              className="icon-xs icon-white"
+              className="icon-sm icon-white"
               isRounded={false}
             />
           </div>
           <div className="col-md-auto">
-            <span className={style.contextAccordinButton}>
+            <span className="titillium-web-bold" style={{ fontSize: "14px" }}>
               <FormattedMessage id="export" />
             </span>
           </div>
         </div>
       </button>
       <button
-        className={`btn btn-success btn-sm py-1 px-2 mt-2 ${headerStyle.headerText}`}
+        className={`btn btn-primary btn-sm py-1 px-2 mt-2 ${headerStyle.headerText}`}
         style={{ display: "block", width: "100%" }}
         onClick={onSessionSave}
       >
         <div className="row">
-          <div className="col-2">
+          <div className="col-3">
             <IconAtom
               iconID="#it-bookmark"
-              className="icon-xs icon-white"
+              className="icon-sm icon-white"
               isRounded={false}
             />
           </div>
           <div className="col-md-auto">
-            <span className={style.contextAccordinButton}>
+            <span className="titillium-web-bold" style={{ fontSize: "14px" }}>
               <FormattedMessage id="save_view" />
             </span>
           </div>
@@ -114,20 +113,20 @@ export const GraphControlMenuAtom = ({
       </button>
       {showTCButton && (
         <button
-          className={`btn btn-success btn-sm py-1 px-2 mt-2 ${headerStyle.headerText}`}
+          className={`btn btn-primary btn-sm py-1 px-2 mt-2 ${headerStyle.headerText}`}
           style={{ display: "block", width: "100%" }}
           onClick={onTCCopy}
         >
           <div className="row">
-            <div className="col-2">
+            <div className="col-3">
               <IconAtom
                 iconID="#it-plug"
-                className="icon-xs icon-white"
+                className="icon-sm icon-white"
                 isRounded={false}
               />
             </div>
             <div className="col-md-auto">
-              <span className={style.contextAccordinButton}>
+              <span className="titillium-web-bold" style={{ fontSize: "14px" }}>
                 <FormattedMessage id="export_tc" />
               </span>
             </div>

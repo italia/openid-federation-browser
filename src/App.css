@@ -2,6 +2,10 @@
   font-size: 1rem;
 }
 
+:root {
+  --bs-nav-link-font-size: 18px;
+}
+
 .App-link {
   color: #61dafb;
 }
@@ -24,4 +28,14 @@ td {
 
 :focus:not(.focus--mouse) {
   display: none !important;
+}
+
+.it-header-slim-wrapper {
+  background: #004D99 !important;
+}
+
+.titillium-web-bold {
+  font-family: "Titillium Web", sans-serif;
+  font-weight: 700;
+  font-style: normal;
 }

@@ -68,7 +68,7 @@ export const UrlInput = () => {
           </div>
           <div className="col-2">
             <button
-              className="btn btn-success btn-sm py-1 px-2"
+              className="btn btn-primary btn-sm py-1 px-2"
               style={{ fontSize: "14px" }}
               onClick={() => setDoCheck(true)}
             >
