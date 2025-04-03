@@ -29,15 +29,16 @@ export const NavBarAtom = () => {
                 style={{ display: "none" }}
               >
                 <div className="menu-wrapper">
-                  <ul className="navbar-nav titillium-web-bold" style={{ fontSize: "18px !important" }}>
+                  <ul
+                    className="navbar-nav titillium-web-bold"
+                    style={{ fontSize: "18px !important" }}
+                  >
                     <li className="nav-item">
                       <Link
                         className={`nav-link ${location.pathname === "/insertUrl" ? "active" : ""}`}
                         to="/insertUrl"
                       >
-                        <span
-                          style={{ padding: "2px 24px" }}
-                        >
+                        <span style={{ padding: "2px 24px" }}>
                           <FormattedMessage id="insert_trust_node_url_option" />
                         </span>
                       </Link>

@@ -89,12 +89,20 @@ export const PaginatedListAtom = ({
             renderOnZeroPageCount={null}
             previousLabel={
               <span>
-                <IconAtom iconID="#it-chevron-left" className="icon icon-primary" style={{width: "48px", height: "48px"}} />
+                <IconAtom
+                  iconID="#it-chevron-left"
+                  className="icon icon-primary"
+                  style={{ width: "48px", height: "48px" }}
+                />
               </span>
             }
             nextLabel={
               <span>
-                <IconAtom iconID="#it-chevron-right" className="icon icon-primary" style={{width: "48px", height: "48px"}} />
+                <IconAtom
+                  iconID="#it-chevron-right"
+                  className="icon icon-primary"
+                  style={{ width: "48px", height: "48px" }}
+                />
               </span>
             }
           />
