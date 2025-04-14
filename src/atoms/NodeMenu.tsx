@@ -6,8 +6,7 @@ import { GraphNode } from "../lib/graph-data/types";
 import { PaginatedListAtom } from "../atoms/PaginatedList";
 import { EntityItemsRenderer } from "./EntityItemRender";
 import { useEffect, useState } from "react";
-import { WarningModalAtom } from "./WarningModal";
-import { showModal, fmtValidity } from "../lib/utils";
+import { fmtValidity } from "../lib/utils";
 import { validateEntityConfiguration } from "../lib/openid-federation/schema";
 import { FormattedMessage } from "react-intl";
 import { timestampToLocaleString } from "../lib/utils";
@@ -95,11 +94,9 @@ export const NodeMenuAtom = ({
 
   useEffect(() => {
     if (toDiscoverList.length === 0) return;
-    if (toDiscoverList.length === 1) {
-      onNodesAdd(toDiscoverList);
-      return;
-    }
-    showModal("warning-modal");
+    
+    onNodesAdd(toDiscoverList.filter((node) => !isDiscovered(node) && !isFailed(node)));
+    return;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [toDiscoverList]);
 
@@ -126,15 +123,6 @@ export const NodeMenuAtom = ({
 
   return (
     <>
-      <WarningModalAtom
-        modalID="warning-modal"
-        headerID="warning_modal_title"
-        descriptionID="warning_modal_message"
-        dismissActionID="modal_cancel"
-        acceptActionID="modal_confirm"
-        onAccept={() => onNodesAdd(toDiscoverList)}
-        onDismiss={() => setToDiscoverList([])}
-      />
       <div className="row">
         <div className="accordion">
           <AccordionAtom
