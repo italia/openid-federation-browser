@@ -32,7 +32,6 @@ export const WarningModalAtom = ({
       tabIndex={-1}
       role="dialog"
       id={modalID}
-      style={{ zIndex: 16169932 }}
     >
       <div className="modal-dialog" role="document">
         <div className="modal-content">

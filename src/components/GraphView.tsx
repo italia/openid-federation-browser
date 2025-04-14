@@ -54,6 +54,7 @@ export const GraphView = () => {
     undefined,
   );
   const [discoverQueue, setDiscoveryQueue] = useState<string[]>([]);
+  const [toDiscoverList, setToDiscoverList] = useState<string[]>([]);
   const [showElement, setShowElement] = useState<ShowElement>(
     ShowElement.Loading,
   );
@@ -173,6 +174,20 @@ export const GraphView = () => {
     updateGraph({ nodes, edges: newEdges });
   };
 
+  const onNodesAdd = (nodes: string[]) => {
+    console.log("onNodesAdd", nodes);
+    if (nodes.length === 0) return;
+    else if (nodes.length == 1) {
+      setDiscoveryQueue([...discoverQueue, ...nodes]);
+      return;
+    }else {
+      console.log("multiple nodes");
+
+      setToDiscoverList(nodes);
+      showModal("warning-modal");
+    }
+  }
+
   useEffect(
     () => setTc(evaluateTrustChain({ nodes, edges }, selections)),
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -256,7 +271,7 @@ export const GraphView = () => {
         visible={sidebarVisible}
         onClose={() => setSidebarVisible(false)}
         currentVisualizedData={currentContextMenu}
-        onNodesAdd={(nodes) => setDiscoveryQueue([...discoverQueue, ...nodes])}
+        onNodesAdd={onNodesAdd}
         onNodesRemove={onNodesRemove}
         isFailed={isFailed}
         onEdgeAdd={onEdgeAdd}
@@ -307,6 +322,15 @@ export const GraphView = () => {
           persistSession(ref.current?.exportCanvas() as string);
           showNotification();
         }}
+      />
+      <WarningModalAtom
+        modalID="warning-modal"
+        headerID="warning_modal_title"
+        descriptionID="warning_modal_message"
+        dismissActionID="modal_cancel"
+        acceptActionID="modal_confirm"
+        onAccept={() => setDiscoveryQueue([...discoverQueue, ...toDiscoverList])}
+        onDismiss={() => setToDiscoverList([])}
       />
       <InputModalAtom
         modalID="add-entity-modal"
