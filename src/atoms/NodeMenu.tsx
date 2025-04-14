@@ -109,6 +109,13 @@ export const NodeMenuAtom = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filterDiscovered]);
 
+  useEffect(() => {
+    setImmDependants(data.info.immDependants);
+    setFilteredItems(data.info.ec.payload.authority_hints || []);
+    setToDiscoverList([]);
+    setAdvancedParams(false);
+  }, [data]);
+
   const displayedInfo = [
     ["entity_id_label", data.info.ec.entity],
     ["federation_entity_type_label", data.info.type],
