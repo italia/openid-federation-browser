@@ -16,9 +16,9 @@ providing a user-friendly interface for navigating Trust Chains and Entity Confi
 
 ## Online Builds
 
-The stable version of OpenID Federation Browser is usable online [here](https://italia.github.io/openid-federation-browser/packageAuditing)
+The stable version of OpenID Federation Browser is usable online [here](https://italia.github.io/openid-federation-browser/main)
 
-Snapshot build of the dev version is available [here](https://italia.github.io/openid-federation-browser/main/).
+Snapshot build of the dev version is available [here](https://italia.github.io/openid-federation-browser/dev/).
 
 Please remember to bypass CORS restrictions using a web browser addon or proxy before using it. See [here](https://github.com/italia/openid-federation-browser/blob/main/SETUP.md#cors-restriction) to learn how to do.
 
