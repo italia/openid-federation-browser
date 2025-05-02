@@ -2,10 +2,10 @@
 
 Welcome to the OpenID Federation Browser project!
 
-This tool is designed to facilitate the exploration and management of trust infrastructures based on [OpenID Federation 1.0](https://openid.net/specs/openid-federation-1_0.html),
+This tool is designed to facilitate the exploration of trust infrastructures based on [OpenID Federation 1.0](https://openid.net/specs/openid-federation-1_0.html),
 providing a user-friendly interface for navigating Trust Chains and Entity Configurations.
 
-<img src="images/preview.gif" width="768">
+<img src="images/interop-event.png" width="768">
 
 ## Features
 
@@ -80,4 +80,4 @@ This project is licensed under the Apache2 License. See the [LICENSE](LICENSE) f
 
 ## Contact
 
-For questions or support, please contact [gi.demarco@innovazione.gov.it](mailto:gi.demarco@innovazione.gov.it).
+For questions or support, please open github issues or contact [gi.demarco@innovazione.gov.it](mailto:gi.demarco@innovazione.gov.it).
