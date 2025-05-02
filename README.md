@@ -7,12 +7,14 @@ providing a user-friendly interface for navigating Trust Chains and Entity Confi
 
 <img src="images/interop-event.png" width="768">
 
+<img src="images/inspect-subordinate-statement.png" width="768">
+
 ## Features
 
 - **Entity Discovery**: Easily discover and view OpenID Federation Entities and their configurations.
 - **Trust Chain Visualization**: Visualize the Trust Chains between entities, including Trust Anchors, Intermediates, and Leaves.
 - **Graph View Save, Export and Import**: Produce the representation of your network, save locally or export it. You can also import it in offline mode.
-- **Security Insights**: Gain insights into the security aspects of the federation, including trust marks and compliance status.
+- [TODO] **Security Insights**: Gain insights into the security aspects of the federation, including trust marks and compliance status.
 
 ## Online Builds
 
