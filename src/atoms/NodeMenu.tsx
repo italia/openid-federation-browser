@@ -47,7 +47,8 @@ export const NodeMenuAtom = ({
     data.info.ec.payload.metadata?.federation_entity
       .federation_trust_mark_list_endpoint;
 
-  const [filteredItems, setFilteredItems] = useState<string[]>([]);
+  const [depFilteredItems, setDepFilteredItems] = useState<string[]>([]);
+  const [autFilteredItems, setAutFilteredItems] = useState<string[]>([]);
   const [toDiscoverList, setToDiscoverList] = useState<string[]>([]);
   const [filterDiscovered, setFilterDiscovered] = useState(false);
   const [immDependants, setImmDependants] = useState(
@@ -57,15 +58,21 @@ export const NodeMenuAtom = ({
 
   const removeEntities = (entityIDs: string[]) => onNodesRemove(entityIDs);
 
-  const addEntities = (entityID?: string | string[]) => {
-    if (!entityID) setToDiscoverList(filteredItems);
-    else {
-      const list = Array.isArray(entityID) ? entityID : [entityID];
-      const fiteredToDiscovery = list.filter(
-        (node) => !isFailed(node) && !isInDiscoveryQueue(node),
-      );
-      setToDiscoverList(fiteredToDiscovery);
+  const addAllEntities = (dependants: boolean = false) => {
+    if(dependants) {
+      setToDiscoverList(depFilteredItems);
+    } else {
+      setToDiscoverList(autFilteredItems);
     }
+  };
+
+
+  const addEntities = (entityID: string | string[]) => {
+    const list = Array.isArray(entityID) ? entityID : [entityID];
+    const fiteredToDiscovery = list.filter(
+      (node) => !isFailed(node) && !isInDiscoveryQueue(node),
+    );
+    setToDiscoverList(fiteredToDiscovery);
   };
 
   const removeAllEntities =
@@ -87,7 +94,13 @@ export const NodeMenuAtom = ({
   const removeAllSubordinates = removeAllEntities(true);
   const removeAllAuthorityHints = removeAllEntities(false);
 
-  const onFilteredList = (items: string[]) => setFilteredItems(items);
+  const onFilteredList = (items: string[], dependants: boolean = false) => {
+    if (dependants) {
+      setDepFilteredItems(items);
+    } else {
+      setAutFilteredItems(items);
+    }
+  };
 
   const immediateFilter = (anchor: string, filterValue: string) =>
     anchor.toLowerCase().includes(filterValue.toLowerCase());
@@ -111,7 +124,8 @@ export const NodeMenuAtom = ({
 
   useEffect(() => {
     setImmDependants(data.info.immDependants);
-    setFilteredItems(data.info.ec.payload.authority_hints || []);
+    setDepFilteredItems(data.info.immDependants || []);
+    setAutFilteredItems(data.info.ec.payload.authority_hints || []);
     setToDiscoverList([]);
     setAdvancedParams(false);
   }, [data]);
@@ -155,16 +169,17 @@ export const NodeMenuAtom = ({
                     ItemsRenderer={EntityItemsRenderer({
                       isInDiscoveryQueue,
                       addEntities,
+                      addFilteredEntities: () => addAllEntities(),
                       onNodesRemove,
                       removeAllEntities: removeAllAuthorityHints,
                       isFailed,
                       onSelection,
                       isDisconnected,
                       isDiscovered,
-                      onEdgeAdd: (node: string) => onEdgeAdd(node),
+                      onEdgeAdd,
                     })}
                     filterFn={immediateFilter}
-                    onItemsFiltered={onFilteredList}
+                    onItemsFiltered={(f) => onFilteredList(f, false)}
                   />
                 }
               />
@@ -225,16 +240,17 @@ export const NodeMenuAtom = ({
                     ItemsRenderer={EntityItemsRenderer({
                       isInDiscoveryQueue,
                       addEntities,
+                      addFilteredEntities: () => addAllEntities(true),
                       onNodesRemove,
                       removeAllEntities: removeAllSubordinates,
                       isFailed,
                       onSelection,
                       isDisconnected,
                       isDiscovered,
-                      onEdgeAdd: (node: string) => onEdgeAdd(node),
+                      onEdgeAdd,
                     })}
                     filterFn={immediateFilter}
-                    onItemsFiltered={onFilteredList}
+                    onItemsFiltered={(f) => onFilteredList(f, true)}
                   />
                 </>
               }

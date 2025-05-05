@@ -6,7 +6,8 @@ import style from "../css/ContextMenu.module.css";
 export interface EntityItemsRendererProps {
   isInDiscoveryQueue: (dep: string) => boolean;
   onNodesRemove: (dep: string[]) => void;
-  addEntities: (dep?: string | string[]) => void;
+  addEntities: (dep: string | string[]) => void;
+  addFilteredEntities: () => void;
   removeAllEntities: () => void;
   isFailed: (node: string) => boolean;
   isDiscovered: (node: string) => boolean;
@@ -19,6 +20,7 @@ export const EntityItemsRenderer = ({
   isInDiscoveryQueue,
   onNodesRemove,
   addEntities,
+  addFilteredEntities,
   removeAllEntities,
   isFailed,
   isDiscovered,
@@ -119,7 +121,6 @@ export const EntityItemsRenderer = ({
                 title="Discovery"
                 ariaLabel="Discovery"
                 text="Add all in this page"
-                textClassName={style.contextAccordinButton}
               />
             </div>
             <div className="col-md-auto">
@@ -130,18 +131,16 @@ export const EntityItemsRenderer = ({
                 title="Discovery"
                 ariaLabel="Discovery"
                 text="Remove All"
-                textClassName={style.contextAccordinButton}
               />
             </div>
             <div className="col-md-auto">
               <Button
-                action={() => addEntities()}
+                action={addFilteredEntities}
                 iconID="#it-plus-circle"
                 btnClassName="btn-sm py-0 px-1 btn-secondary"
                 title="Discovery"
                 ariaLabel="Discovery"
                 text="Add all filtered"
-                textClassName={style.contextAccordinButton}
               />
             </div>
           </div>
