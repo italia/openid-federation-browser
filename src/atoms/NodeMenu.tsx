@@ -15,7 +15,7 @@ import { TrustMarkListing } from "./TrustMarkListing";
 import { getEntityTypes } from "../lib/openid-federation/utils";
 import style from "../css/ContextMenu.module.css";
 
-export interface ContextMenuProps {
+export interface NodeMenuProps {
   data: GraphNode;
   onNodesAdd: (nodes: string[]) => void;
   onNodesRemove: (nodes: string[]) => void;
@@ -39,7 +39,7 @@ export const NodeMenuAtom = ({
   isDisconnected,
   onSelection,
   onModalError,
-}: ContextMenuProps) => {
+}: NodeMenuProps) => {
   const federationListEndpoint =
     data.info.ec.payload.metadata?.federation_entity?.federation_list_endpoint;
 

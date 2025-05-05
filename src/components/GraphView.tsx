@@ -188,6 +188,21 @@ export const GraphView = () => {
     }
   }
 
+  const onSelection = (node: string) => {
+    setHighlighting(true);
+    setActives([cleanEntityID(node)]);
+    setSelections([cleanEntityID(node)]);
+    setCurrentContextMenu(
+      nodes.find((n) => cleanEntityID(n.id) === cleanEntityID(node)),
+    );
+
+    setTimeout(() => {
+      setHighlighting(false);
+      setSelections([]);
+      setActives([]);
+    }, 2000);
+  };
+
   useEffect(
     () => setTc(evaluateTrustChain({ nodes, edges }, selections)),
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -280,18 +295,7 @@ export const GraphView = () => {
         isDisconnected={isDisconnected}
         isDiscovered={isDiscovered}
         isInDiscoveryQueue={(node: string) => discoverQueue.includes(node)}
-        onSelection={(node: string) => {
-          setHighlighting(true);
-          setActives([cleanEntityID(node)]);
-          setSelections([cleanEntityID(node)]);
-          setCurrentContextMenu(undefined);
-
-          setTimeout(() => {
-            setHighlighting(false);
-            setSelections([]);
-            setActives([]);
-          }, 2000);
-        }}
+        onSelection={onSelection}
       />
       <WarningModalAtom
         modalID="error-modal"
