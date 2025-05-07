@@ -144,7 +144,10 @@ export const NodeMenuAtom = ({
 
   return (
     <>
-      <div className="row">
+      <div 
+        className="row"
+        data-testid="node-context-sidebar"
+      >
         <div className="accordion">
           <AccordionAtom
             accordinId="info-details"

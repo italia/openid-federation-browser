@@ -355,7 +355,9 @@ export const GraphView = () => {
         ) : showElement === ShowElement.Error ? (
           <ErrorViewAtom error={error} />
         ) : (
-          <>
+          <div 
+            data-testid="graph-view"
+          >
             <GraphControlMenuAtom
               onSessionSave={onSessionSave}
               onExport={onExport}
@@ -395,7 +397,7 @@ export const GraphView = () => {
                 setSidebarVisible(true);
               }}
             />
-          </>
+          </div>
         )}
       </div>
       <div
