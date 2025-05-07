@@ -13,6 +13,7 @@ import { timestampToLocaleString } from "../lib/utils";
 import { SubAdvanceFiltersAtom } from "./SubAdvanceFilters";
 import { TrustMarkListing } from "./TrustMarkListing";
 import { getEntityTypes } from "../lib/openid-federation/utils";
+import { cleanEntityID } from "../lib/utils";
 import style from "../css/ContextMenu.module.css";
 
 export interface NodeMenuProps {
@@ -310,6 +311,18 @@ export const NodeMenuAtom = ({
               }
             />
           )}
+        </div>
+        <div className="col-12">
+          {
+            data.info.istanciatedFrom && 
+            !data.info.ec.payload.authority_hints?.some(
+              (ah) => cleanEntityID(ah) === cleanEntityID(data.info.istanciatedFrom!)
+            ) && (
+              <div className="alert alert-warning" role="alert">
+                <FormattedMessage id="entity_instanciated_from_authority_hint" />
+              </div>
+            )
+          }
         </div>
       </div>
     </>
