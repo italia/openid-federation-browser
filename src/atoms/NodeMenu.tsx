@@ -41,20 +41,20 @@ export const NodeMenuAtom = ({
   onSelection,
   onModalError,
 }: NodeMenuProps) => {
-  const federationListEndpoint =
-    data.info.ec.payload.metadata?.federation_entity?.federation_list_endpoint;
+  const [federationListEndpoint, setFederationListEndpoint] = useState<string | undefined>(
+    data.info.ec.payload.metadata?.federation_entity?.federation_list_endpoint
+  );
 
-  const trustMarkListEndpoint =
+  const [trustMarkListEndpoint, setTrustMarkListEndpoint] = useState<string | undefined>(   
     data.info.ec.payload.metadata?.federation_entity
-      .federation_trust_mark_list_endpoint;
+      .federation_trust_mark_list_endpoint
+  );
 
   const [depFilteredItems, setDepFilteredItems] = useState<string[]>([]);
   const [autFilteredItems, setAutFilteredItems] = useState<string[]>([]);
   const [toDiscoverList, setToDiscoverList] = useState<string[]>([]);
   const [filterDiscovered, setFilterDiscovered] = useState(false);
-  const [immDependants, setImmDependants] = useState(
-    data.info.immDependants || [],
-  );
+  const [immDependants, setImmDependants] = useState(data.info.immDependants || [],);
   const [advancedParams, setAdvancedParams] = useState<boolean>(false);
 
   const removeEntities = (entityIDs: string[]) => onNodesRemove(entityIDs);
@@ -128,7 +128,16 @@ export const NodeMenuAtom = ({
     setDepFilteredItems(data.info.immDependants || []);
     setAutFilteredItems(data.info.ec.payload.authority_hints || []);
     setToDiscoverList([]);
+    setFilterDiscovered(false);
     setAdvancedParams(false);
+    setFederationListEndpoint(
+      data.info.ec.payload.metadata?.federation_entity
+        ?.federation_list_endpoint,
+    );
+    setTrustMarkListEndpoint(
+      data.info.ec.payload.metadata?.federation_entity
+        ?.federation_trust_mark_list_endpoint,
+    );
   }, [data]);
 
   const displayedInfo = [

@@ -56,6 +56,14 @@ export const PaginatedListAtom = ({
     [searchValue, itemOffset, items],
   );
 
+  useEffect(() => {
+    setItemOffset(0);
+    setSearchValue("");
+    setCurrentItems(items);
+    setPageCount(0);
+    setCurrentPage(0);
+  }, [items])
+
   return (
     <div className={`it-list-wrapper container`} style={{ width: "100%" }}>
       {filterFn && (
@@ -84,7 +92,7 @@ export const PaginatedListAtom = ({
             pageLinkClassName="page-link"
             breakLabel="..."
             onPageChange={handlePageClick}
-            pageRangeDisplayed={3}
+            pageRangeDisplayed={2}
             pageCount={pageCount}
             renderOnZeroPageCount={null}
             previousLabel={
