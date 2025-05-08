@@ -59,7 +59,6 @@ export const PaginatedListAtom = ({
   useEffect(() => {
     setItemOffset(0);
     setSearchValue("");
-    setCurrentItems(items);
     setPageCount(0);
     setCurrentPage(0);
   }, [items]);
@@ -92,7 +91,7 @@ export const PaginatedListAtom = ({
             pageLinkClassName="page-link"
             breakLabel="..."
             onPageChange={handlePageClick}
-            pageRangeDisplayed={2}
+            pageRangeDisplayed={3}
             pageCount={pageCount}
             renderOnZeroPageCount={null}
             previousLabel={
