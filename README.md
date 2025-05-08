@@ -68,9 +68,18 @@ The trust anchor list is an important part of the OpenID Federation Browser dist
 4. **Make Changes**: Implement your changes in the codebase.
 5. **Commit Your Changes**: Make sure to write clear and concise commit messages.
 6. **Push to GitHub**: Push your changes to your forked repository.
-7. **Open a Pull Request**: Navigate to the original repository and open a pull request with a description of your changes. 
+7. **Open a Pull Request**: Navigate to the original repository and open a pull request with a description of your changes.
 
 We appreciate your contributions and look forward to collaborating with you!
+
+### Run Tests
+
+To test the application start the development server using "npm run start" and in a separate shell run the following command:
+
+> npx cypress open
+
+At this point select E2E testing and one of the installed browser as a platform.
+For the correct functioning it's necessary install a CORS Plugin (see [here](https://github.com/italia/openid-federation-browser/blob/main/SETUP.md#cors-restriction)) and enabling it before the tests start.
 
 ### Add your Federation in the Assets
 
