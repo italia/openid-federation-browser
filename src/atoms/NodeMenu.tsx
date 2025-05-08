@@ -60,6 +60,7 @@ export const NodeMenuAtom = ({
     data.info.immDependants || [],
   );
   const [advancedParams, setAdvancedParams] = useState<boolean>(false);
+  const [display, setDisplay] = useState(true);
 
   const removeEntities = (entityIDs: string[]) => onNodesRemove(entityIDs);
 
@@ -129,6 +130,10 @@ export const NodeMenuAtom = ({
   }, [filterDiscovered]);
 
   useEffect(() => {
+    setDisplay(false);
+    setTimeout(() => {
+      setDisplay(true);
+    }, 0);
     setImmDependants(data.info.immDependants);
     setDepFilteredItems(data.info.immDependants || []);
     setAutFilteredItems(data.info.ec.payload.authority_hints || []);
@@ -161,17 +166,19 @@ export const NodeMenuAtom = ({
     <>
       <div className="row">
         <div className="accordion">
-          <AccordionAtom
-            accordinId="info-details"
-            labelId="node_info"
-            show={true}
-            hiddenElement={
-              <InfoView
-                id={`${data.info.ec.entity}-view`}
-                infos={displayedInfo}
-              />
-            }
-          />
+          {display && (
+            <AccordionAtom
+              accordinId="info-details"
+              labelId="node_info"
+              show={true}
+              hiddenElement={
+                <InfoView
+                  id={`${data.info.ec.entity}-view`}
+                  infos={displayedInfo}
+                />
+              }
+            />
+          )}
           {data.info.ec.payload.authority_hints &&
             data.info.ec.payload.authority_hints.length > 0 && (
               <AccordionAtom
