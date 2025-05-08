@@ -41,12 +41,16 @@ export const NodeMenuAtom = ({
   onSelection,
   onModalError,
 }: NodeMenuProps) => {
-  const federationListEndpoint =
-    data.info.ec.payload.metadata?.federation_entity?.federation_list_endpoint;
+  const [federationListEndpoint, setFederationListEndpoint] = useState<
+    string | undefined
+  >(data.info.ec.payload.metadata?.federation_entity?.federation_list_endpoint);
 
-  const trustMarkListEndpoint =
+  const [trustMarkListEndpoint, setTrustMarkListEndpoint] = useState<
+    string | undefined
+  >(
     data.info.ec.payload.metadata?.federation_entity
-      .federation_trust_mark_list_endpoint;
+      .federation_trust_mark_list_endpoint,
+  );
 
   const [depFilteredItems, setDepFilteredItems] = useState<string[]>([]);
   const [autFilteredItems, setAutFilteredItems] = useState<string[]>([]);
@@ -60,13 +64,12 @@ export const NodeMenuAtom = ({
   const removeEntities = (entityIDs: string[]) => onNodesRemove(entityIDs);
 
   const addAllEntities = (dependants: boolean = false) => {
-    if(dependants) {
+    if (dependants) {
       setToDiscoverList(depFilteredItems);
     } else {
       setToDiscoverList(autFilteredItems);
     }
   };
-
 
   const addEntities = (entityID: string | string[]) => {
     const list = Array.isArray(entityID) ? entityID : [entityID];
@@ -108,8 +111,10 @@ export const NodeMenuAtom = ({
 
   useEffect(() => {
     if (toDiscoverList.length === 0) return;
-    
-    onNodesAdd(toDiscoverList.filter((node) => !isDiscovered(node) && !isFailed(node)));
+
+    onNodesAdd(
+      toDiscoverList.filter((node) => !isDiscovered(node) && !isFailed(node)),
+    );
     return;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [toDiscoverList]);
@@ -128,7 +133,16 @@ export const NodeMenuAtom = ({
     setDepFilteredItems(data.info.immDependants || []);
     setAutFilteredItems(data.info.ec.payload.authority_hints || []);
     setToDiscoverList([]);
+    setFilterDiscovered(false);
     setAdvancedParams(false);
+    setFederationListEndpoint(
+      data.info.ec.payload.metadata?.federation_entity
+        ?.federation_list_endpoint,
+    );
+    setTrustMarkListEndpoint(
+      data.info.ec.payload.metadata?.federation_entity
+        ?.federation_trust_mark_list_endpoint,
+    );
   }, [data]);
 
   const displayedInfo = [
@@ -313,16 +327,15 @@ export const NodeMenuAtom = ({
           )}
         </div>
         <div className="col-12">
-          {
-            data.info.istanciatedFrom && 
+          {data.info.istanciatedFrom &&
             !data.info.ec.payload.authority_hints?.some(
-              (ah) => cleanEntityID(ah) === cleanEntityID(data.info.istanciatedFrom!)
+              (ah) =>
+                cleanEntityID(ah) === cleanEntityID(data.info.istanciatedFrom!),
             ) && (
               <div className="alert alert-warning" role="alert">
                 <FormattedMessage id="entity_instanciated_from_authority_hint" />
               </div>
-            )
-          }
+            )}
         </div>
       </div>
     </>
