@@ -180,13 +180,13 @@ export const GraphView = () => {
     else if (nodes.length == 1) {
       setDiscoveryQueue([...discoverQueue, ...nodes]);
       return;
-    }else {
+    } else {
       console.log("multiple nodes");
 
       setToDiscoverList(nodes);
       showModal("warning-modal");
     }
-  }
+  };
 
   const onSelection = (node: string) => {
     setHighlighting(true);
@@ -254,10 +254,12 @@ export const GraphView = () => {
 
       const data = currentContextMenu as GraphNode;
 
-      const discoveredNode = result.graph.nodes.find((n) => n.id === discovery) as GraphNode;
+      const discoveredNode = result.graph.nodes.find(
+        (n) => n.id === discovery,
+      ) as GraphNode;
 
       discoveredNode.info.istanciatedFrom = currentContextMenu?.id;
-      
+
       const isAuthorityHint = data.info.ec.payload.authority_hints?.some(
         (ah) => ah.startsWith(discovery) || discovery.startsWith(ah),
       );
@@ -337,7 +339,9 @@ export const GraphView = () => {
         descriptionID="warning_modal_message"
         dismissActionID="modal_cancel"
         acceptActionID="modal_confirm"
-        onAccept={() => setDiscoveryQueue([...discoverQueue, ...toDiscoverList])}
+        onAccept={() =>
+          setDiscoveryQueue([...discoverQueue, ...toDiscoverList])
+        }
         onDismiss={() => setToDiscoverList([])}
       />
       <InputModalAtom
@@ -347,13 +351,11 @@ export const GraphView = () => {
         dismissActionID="modal_cancel"
         acceptActionID="add"
         inputVerifyFn={(name) => !isValidUrl(name)}
-        onAccept={(entityID) =>{
+        onAccept={(entityID) => {
           discoverNode(entityID, { nodes, edges })
             .then(updateGraph)
             .catch(showErrorMessage);
-          
-        }
-        }
+        }}
       />
       <div id="content-body" className={styles.graphAtom}>
         {showElement === ShowElement.Loading ? (

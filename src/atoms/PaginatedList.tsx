@@ -62,7 +62,7 @@ export const PaginatedListAtom = ({
     setCurrentItems(items);
     setPageCount(0);
     setCurrentPage(0);
-  }, [items])
+  }, [items]);
 
   return (
     <div className={`it-list-wrapper container`} style={{ width: "100%" }}>

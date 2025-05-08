@@ -68,7 +68,7 @@ The trust anchor list is an important part of the OpenID Federation Browser dist
 4. **Make Changes**: Implement your changes in the codebase.
 5. **Commit Your Changes**: Make sure to write clear and concise commit messages.
 6. **Push to GitHub**: Push your changes to your forked repository.
-7. **Open a Pull Request**: Navigate to the original repository and open a pull request with a description of your changes. 
+7. **Open a Pull Request**: Navigate to the original repository and open a pull request with a description of your changes.
 
 We appreciate your contributions and look forward to collaborating with you!
 
