@@ -32,6 +32,7 @@ export const WarningModalAtom = ({
       tabIndex={-1}
       role="dialog"
       id={modalID}
+      data-testid="warning-modal"
     >
       <div className="modal-dialog" role="document">
         <div className="modal-content">
@@ -73,6 +74,7 @@ export const WarningModalAtom = ({
           </div>
           <div className="modal-footer">
             <button
+              data-testid="warning-modal-dismiss-button"
               className="btn btn-outline-primary btn-sm"
               type="button"
               data-bs-dismiss="modal"
@@ -82,6 +84,7 @@ export const WarningModalAtom = ({
             </button>
             {acceptActionID && (
               <button
+                data-testid="warning-modal-accept-button"
                 className="btn btn-primary btn-sm"
                 type="button"
                 data-bs-dismiss="modal"
