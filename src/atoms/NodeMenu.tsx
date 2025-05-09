@@ -302,7 +302,7 @@ export const NodeMenuAtom = ({
               hiddenElement={
                 <>
                   {data.info.trustMarks.map((tm, i) => (
-                    <div key={i} style={{ padding: "12px 12px" }}>
+                    <div key={i} style={{ padding: "12px 12px" }} data-testid="trust-mark">
                       <AccordionAtom
                         key={i}
                         accordinId={`trust-mark-${i}`}

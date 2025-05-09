@@ -41,7 +41,7 @@ describe('ContextSideBar spec', () => {
       .should('exist')
       .should('be.visible');
 
-    const accordions = nodeSidebar.get('.accordion-button');
+    const accordions = cy.get('.accordion-button');
 
     accordions
       .should('have.length', 3);
@@ -60,7 +60,7 @@ describe('ContextSideBar spec', () => {
       .should('be.visible')
       .should('have.class', 'show');
 
-    const infoTable = nodeInformationAccordionCollapse
+    let infoTable = nodeInformationAccordionCollapse
       .find('.table');
 
     infoTable
@@ -68,7 +68,7 @@ describe('ContextSideBar spec', () => {
       .should('be.visible')
       .should('have.class', 'table');
 
-    const tableRows = infoTable
+    let tableRows = infoTable
       .find('tbody tr');
 
     tableRows
@@ -85,7 +85,7 @@ describe('ContextSideBar spec', () => {
       .first()
       .click();
 
-      nodeSidebar
+    nodeSidebar
       .get('.accordion-collapse')
       .first()
       .should('not.have.class', 'show');
@@ -199,10 +199,150 @@ describe('ContextSideBar spec', () => {
       .should('have.length', 5)
       .should('be.not.disabled');
 
+    //check that entity Context menu is correctly handled
     cy.get('[data-testid="highlight-entities-button"]')
       .first()
       .click();
 
     cy.wait(1000);
+
+    //check the opened entity context menu 
+    cy.get('[data-testid="context-sidebar"]')
+      .should('exist')
+      .should('be.visible');
+
+    cy.get('.accordion-button')
+      .should('exist')
+      .should('be.visible')
+      .should('have.length.gte', 4)
+      .first()
+      .should('have.class', 'show')
+      .should('contain', 'Node Information');
+  
+    cy.get('.accordion-collapse')
+      .should('exist')
+      .should('be.visible')
+      .should('have.class', 'show');
+
+    infoTable = cy
+      .get('.accordion-collapse')
+      .find('.table');
+
+    infoTable
+      .should('exist')
+      .should('be.visible')
+      .should('have.class', 'table');
+
+    tableRows = infoTable
+      .find('tbody tr');
+
+    tableRows
+      .should('have.length', 6);
+
+    tableRows.each((row) => {
+      const cells = cy.wrap(row).find('td');
+      cells
+        .should('have.length', 2);
+    });
+
+    cy.get('.accordion-button')
+      .eq(1)
+      .should('exist')
+      .should('be.visible')
+      .contains('Authority Hints List')
+      .click();
+    
+    cy.wait(1000);
+  
+    cy.get('[data-testid="add-remove-entities-button"]')
+      .should('exist')
+      .should('be.visible')
+      .should('have.length.gte', 2)
+      .should('have.length.lte', 5)
+      .first()
+      .should('have.class', 'btn btn-sm py-0 px-1 btn-danger');
+
+    cy.get('[data-testid="add-remove-entities-button"]')
+      .eq(1)
+      .should('have.class', 'btn btn-sm py-0 px-1 btn-success');
+
+    cy.get('.accordion-button')
+      .first()
+      .click();
+    
+    cy.get('.accordion-button')
+      .eq(1)
+      .click();
+
+    //check the jwt accordion
+    cy.get('.accordion-button')
+      .eq(2)
+      .click();
+
+    cy.get('[data-testid="schema-validation-table"]')
+      .should('exist')
+      .should('be.visible')
+      .contains('Valid Schema');
+
+    cy.get('[data-testid="schema-validation-table"]')
+      .find('tbody tr')
+      .should('have.length', 1);
+
+    cy.get('[data-testid="copy-raw-jwt-button"]')
+      .should('exist')
+      .should('be.visible')
+      .should('have.class', 'btn btn-primary btn-icon btn-xs py-1 px-1')
+      .contains('Copy raw JWT');
+
+    cy.get('[data-testid="jwt-tabs"]')
+      .should('exist')
+      .should('be.visible')
+      .should('have.class', 'nav nav-tabs auto')
+  
+    cy.get('[data-testid="jwt-header-tab"]')
+      .should('exist')
+      .should('be.visible')
+      .should('have.class', 'nav-link active')
+      .contains('Header');
+
+    cy.get('[data-testid="jwt-payload-tab"]')
+      .should('exist')
+      .should('be.visible')
+      .should('have.class', 'nav-link')
+      .contains('Payload');
+
+    cy.get('[data-testid="jwt-header-tab-content"]')
+      .should('exist')
+      .should('be.visible')
+      .should('have.class', 'tab-pane fade show active');
+
+    cy.get('#entity-configuration-view-nav-payload-tab')
+        .click();
+
+    cy.get('[data-testid="jwt-payload-tab-content"]')
+      .should('exist')
+      .should('be.visible')
+      .should('have.class', 'tab-pane fade active show');
+
+    cy.get('.accordion-button')
+      .eq(2)
+      .click();
+
+    //check trust marks accordion
+    cy.get('.accordion-button')
+      .eq(3)
+      .should('exist')
+      .should('be.visible')
+      .contains('Trust Marks')
+      .click();
+    
+    cy.get('[data-testid="trust-mark"]')
+      .should('exist')
+      .should('be.visible')
+      .should('have.length.gte', 1)
+      .first()
+      .click();
   });
+
+  
 });
