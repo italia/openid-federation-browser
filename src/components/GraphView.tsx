@@ -222,7 +222,19 @@ export const GraphView = () => {
     const view = sessionStorage.getItem("currentSession");
 
     if (view) {
-      importView(view).then(updateGraph).catch(showErrorMessage);
+      importView(view)
+        .then(({graph, errors}) => {
+          setUpdate(false);
+          if (errors.length > 0 && !isModalShowed("error-modal")) {
+            setErrorModalText(new Error("Failed to load some entities"));
+            setErrorDetails(errors.map((e) => `${e[0]} - ${JSON.stringify(e[1])}`));
+            showModal("error-modal");
+          } 
+            
+          updateGraph(graph);
+        }).catch(
+          showErrorMessage
+        );
       return;
     }
 
