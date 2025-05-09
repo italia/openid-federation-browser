@@ -56,6 +56,12 @@ export const PaginatedListAtom = ({
     [searchValue, itemOffset, items],
   );
 
+  useEffect(() => {
+    setSearchValue("");
+    handlePageClick({ selected: 0 });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [items]);
+
   return (
     <div className={`it-list-wrapper container`} style={{ width: "100%" }}>
       {filterFn && (
@@ -67,6 +73,7 @@ export const PaginatedListAtom = ({
               id="input-value"
               placeholder="Filter Subordinates By Entity ID"
               onChange={changeSearchValue}
+              value={searchValue}
             />
           </div>
         </div>
@@ -87,6 +94,7 @@ export const PaginatedListAtom = ({
             pageRangeDisplayed={3}
             pageCount={pageCount}
             renderOnZeroPageCount={null}
+            forcePage={currentPage}
             previousLabel={
               <span>
                 <IconAtom

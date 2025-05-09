@@ -104,7 +104,10 @@ export const ContextSideBar = ({
         )}
 
         <div className="row justify-content-center">
-          <div className="col-md-6" style={{ position: "relative", top: "10px" }}>
+          <div
+            className="col-md-6"
+            style={{ position: "relative", top: "10px" }}
+          >
             <Button
               text={"Delete element from graph"}
               iconID="#it-delete"
@@ -122,10 +125,11 @@ export const ContextSideBar = ({
               }}
             />
           </div>
-          <div className="col-md-6" style={{ position: "relative", top: "10px" }}>
-            {
-              dataPresent && 
-              !isNode(currentVisualizedData) && 
+          <div
+            className="col-md-6"
+            style={{ position: "relative", top: "10px" }}
+          >
+            {dataPresent && !isNode(currentVisualizedData) && (
               <Button
                 text={"Select linked entity on map"}
                 iconID="#it-pin"
@@ -135,7 +139,7 @@ export const ContextSideBar = ({
                   onSelection(edge.target);
                 }}
               />
-            }
+            )}
           </div>
         </div>
       </div>

@@ -109,7 +109,7 @@ export const EntityItemsRenderer = ({
                       className={style.contextAccordinText}
                       style={{ whiteSpace: "nowrap" }}
                     >
-                      {truncateMiddle(dep, 53)}
+                      {truncateMiddle(dep, 42)}
                     </span>
                   </div>
                 </div>
