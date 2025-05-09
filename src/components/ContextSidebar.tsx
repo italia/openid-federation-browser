@@ -49,6 +49,7 @@ export const ContextSideBar = ({
       messages={getTranslations(navigator.language)}
     >
       <div
+        data-testid="context-sidebar"
         className={`sidebar-wrapper ${visible ? "show" : "collapse"}`}
         style={{
           border: "solid hsl(210,4%,78%)",

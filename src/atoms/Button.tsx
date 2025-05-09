@@ -13,6 +13,7 @@ export interface ButtonProps {
   iconClassName?: string;
   disabled?: boolean;
   style?: React.CSSProperties;
+  test_id?: string;
 }
 
 export const Button = ({
@@ -27,6 +28,7 @@ export const Button = ({
   iconClassName,
   disabled,
   style,
+  test_id
 }: ButtonProps) => {
   return (
     <button
@@ -37,6 +39,7 @@ export const Button = ({
       onClick={action}
       style={style}
       disabled={disabled || false}
+      data-testid={test_id}
     >
       {iconID && (
         <IconAtom

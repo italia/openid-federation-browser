@@ -72,6 +72,15 @@ The trust anchor list is an important part of the OpenID Federation Browser dist
 
 We appreciate your contributions and look forward to collaborating with you!
 
+### Run Tests
+
+To test the application start the development server using "npm run start" and in a separate shell run the following command:
+
+> npx cypress open
+
+At this point select E2E testing and one of the installed browser as a platform.
+For the correct functioning it's necessary install a CORS Plugin (see [here](https://github.com/italia/openid-federation-browser/blob/main/SETUP.md#cors-restriction)) and enabling it before the tests start.
+
 ### Add your Federation in the Assets
 
 Open a PR adding your favorite Trust Anchors [here](src/assets/trustChainList.json).

@@ -56,6 +56,7 @@ export const UrlInput = () => {
               type="text"
               className={`form-control ${style.contextAccordinText}`}
               id="input-value"
+              data-testid="input-value"
               onChange={changeValue}
               placeholder={
                 getTranslations(navigator.language)[
@@ -71,6 +72,7 @@ export const UrlInput = () => {
               className="btn btn-primary btn-sm py-1 px-2"
               style={{ fontSize: "14px" }}
               onClick={() => setDoCheck(true)}
+              data-testid="submit-button"
             >
               <span className={style.contextAccordinButton}>
                 <FormattedMessage id="trust_anchor_url_button" />
