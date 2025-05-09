@@ -175,14 +175,11 @@ export const GraphView = () => {
   };
 
   const onNodesAdd = (nodes: string[]) => {
-    console.log("onNodesAdd", nodes);
     if (nodes.length === 0) return;
     else if (nodes.length == 1) {
       setDiscoveryQueue([...discoverQueue, ...nodes]);
       return;
     } else {
-      console.log("multiple nodes");
-
       setToDiscoverList(nodes);
       showModal("warning-modal");
     }
