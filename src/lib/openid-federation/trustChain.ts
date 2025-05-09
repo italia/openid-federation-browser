@@ -14,7 +14,7 @@ import {
   EntityType,
   SubordinateStatementPayload,
 } from "./types";
-import { Graph, GraphEdge } from "../graph-data/types";
+import { Graph, GraphEdge, GraphNode } from "../graph-data/types";
 import { genEdge, updateGraph } from "../graph-data/utils";
 import { setEntityType } from "./utils";
 import { checkViewValidity } from "./utils";
@@ -341,7 +341,7 @@ export const exportView = (
   );
 };
 
-export const importView = async (view: string): Promise<Graph> => {
+export const importView = async (view: string): Promise<{graph: Graph, errors: [string, Error][]}> => {
   let parsed;
 
   try {
@@ -357,7 +357,7 @@ export const importView = async (view: string): Promise<Graph> => {
     if (!staticSchemaCheck) {
       throw new Error("Invalid view data");
     }
-    return parsed as Graph;
+    return {graph: parsed, errors: []};
   }
 
   parsed = parsed as {
@@ -367,15 +367,27 @@ export const importView = async (view: string): Promise<Graph> => {
 
   if (!checkViewValidity(parsed)) throw new Error("Invalid view data");
 
-  const newNodes = await Promise.all(
-    parsed.nodes.map(async (entity) => (await discoverNode(entity)).nodes[0]),
+  const errorNodes: [string, Error][] = [];
+  const newNodes: GraphNode[] = [];
+
+  await Promise.all(
+    parsed.nodes.map(
+      async (entity) => {
+        try{
+          newNodes.push((await discoverNode(entity)).nodes[0]);
+        } catch(e) {
+          errorNodes.push([entity, e as Error]);
+        }
+      }
+    ),
   );
-  const newEdges: GraphEdge[] = await Promise.all(
+
+  const newEdges: GraphEdge[] = (await Promise.all(
     parsed.edges.map(async (edge) => {
       const parent = newNodes.find((node) => node.id === edge.source);
       const currentNode = newNodes.find((node) => node.id === edge.target);
 
-      if (!parent || !currentNode) throw new Error("Invalid graph data");
+      if (!parent || !currentNode) return undefined;
 
       const label = `${edge.source}-${edge.target}`;
       const federationFetchEndpoint =
@@ -405,10 +417,15 @@ export const importView = async (view: string): Promise<Graph> => {
         target: edge.target,
       };
     }),
-  );
+  )).filter(
+    (edge) => edge !== undefined,
+  ) as GraphEdge[];
 
   return {
-    nodes: newNodes,
-    edges: newEdges,
+    graph: {
+      nodes: newNodes,
+      edges: newEdges,
+    }, 
+    errors: errorNodes
   };
 };
