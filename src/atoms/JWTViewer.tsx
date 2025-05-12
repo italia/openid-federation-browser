@@ -85,7 +85,7 @@ export const JWTViewer = ({
       <div className="row" style={{ padding: "8px" }}>
         {validationFn && (
           <div className="col">
-            <table style={{ width: "100%" }}>
+            <table style={{ width: "100%" }} data-testid="schema-validation-table">
               <tbody>
                 <tr>
                   <td>
@@ -131,6 +131,7 @@ export const JWTViewer = ({
             title="Discovery"
             aria-label="Discovery"
             onClick={() => navigator.clipboard.writeText(raw)}
+            data-testid="copy-raw-jwt-button"
           >
             <IconAtom
               iconID="#it-copy"
@@ -143,9 +144,10 @@ export const JWTViewer = ({
       </div>
       <div className="row" style={{ padding: "8px" }}>
         <div className="col">
-          <ul className="nav nav-tabs auto">
+          <ul className="nav nav-tabs auto" data-testid="jwt-tabs">
             <li className="nav-item">
               <span
+                data-testid="jwt-header-tab"
                 className="nav-link active"
                 id={`${id}-nav-header-tab`}
                 role="tab"
@@ -156,8 +158,10 @@ export const JWTViewer = ({
                 </span>
               </span>
             </li>
-            <li className="nav-item">
+            <li className="nav-item"
+              data-testid="jwt-payload-li">
               <span
+                data-testid="jwt-payload-tab"
                 className="nav-link"
                 id={`${id}-nav-payload-tab`}
                 role="tab"
@@ -175,6 +179,7 @@ export const JWTViewer = ({
               id={`${id}-nav-header`}
               role="tabpanel"
               aria-labelledby="nav-header-tab"
+              data-testid="jwt-header-tab-content"
             >
               <CodeViewer language="json" code={decodedHeaderStr} />
             </div>
@@ -183,6 +188,7 @@ export const JWTViewer = ({
               id={`${id}-nav-payload`}
               role="tabpanel"
               aria-labelledby="nav-payload-tab"
+              data-testid="jwt-payload-tab-content"
             >
               <CodeViewer language="json" code={decodedPayloadStr} />
             </div>

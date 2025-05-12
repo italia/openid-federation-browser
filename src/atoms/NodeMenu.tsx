@@ -164,7 +164,10 @@ export const NodeMenuAtom = ({
 
   return (
     <>
-      <div className="row">
+      <div 
+        className="row"
+        data-testid="node-context-sidebar"
+      >
         <div className="accordion">
           {display && (
             <AccordionAtom
@@ -299,7 +302,7 @@ export const NodeMenuAtom = ({
               hiddenElement={
                 <>
                   {data.info.trustMarks.map((tm, i) => (
-                    <div key={i} style={{ padding: "12px 12px" }}>
+                    <div key={i} style={{ padding: "12px 12px" }} data-testid="trust-mark">
                       <AccordionAtom
                         key={i}
                         accordinId={`trust-mark-${i}`}

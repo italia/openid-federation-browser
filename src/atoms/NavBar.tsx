@@ -37,6 +37,7 @@ export const NavBarAtom = () => {
                       <Link
                         className={`nav-link ${location.pathname === "/insertUrl" ? "active" : ""}`}
                         to="/insertUrl"
+                        data-testid="insert-entity-url-link"
                       >
                         <span style={{ padding: "2px 24px" }}>
                           <FormattedMessage id="insert_trust_node_url_option" />
@@ -47,6 +48,7 @@ export const NavBarAtom = () => {
                       <Link
                         className={`nav-link ${location.pathname === "/listUrl" ? "active" : ""}`}
                         to="/listUrl"
+                        data-testid="list-entity-url-link"
                       >
                         <FormattedMessage id="select_trust_node_url_option" />
                       </Link>
@@ -55,6 +57,7 @@ export const NavBarAtom = () => {
                       <Link
                         className={`nav-link ${location.pathname === "/insertEntityUrl" ? "active" : ""}`}
                         to="/insertEntityUrl"
+                        data-testid="insert-entity-url-link"
                       >
                         <FormattedMessage id="insert_entity_node_url_option" />
                       </Link>
@@ -63,6 +66,7 @@ export const NavBarAtom = () => {
                       <Link
                         className={`nav-link ${location.pathname === "/restoreSession" ? "active" : ""}`}
                         to="/restoreSession"
+                        data-testid="restore-session-link"
                       >
                         <FormattedMessage id="restore_session_label" />
                       </Link>
@@ -72,6 +76,7 @@ export const NavBarAtom = () => {
                         <Link
                           className={`nav-link ${location.pathname === "/graphView" ? "active" : ""}`}
                           to="/graphView"
+                          data-testid="current-view-link"
                         >
                           <FormattedMessage id="current_view_label" />
                         </Link>
