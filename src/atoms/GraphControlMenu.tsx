@@ -34,6 +34,7 @@ export const GraphControlMenuAtom = ({
         className={`btn btn-primary btn-sm py-1 px-2 mt-2 ${headerStyle.headerText}`}
         style={{ display: "block", width: "100%" }}
         onClick={onEntityAdd}
+        data-testid="add-entity-button"
       >
         <div className="row align-items-start">
           <div className="col-3">
@@ -54,6 +55,7 @@ export const GraphControlMenuAtom = ({
         <button
           className={`btn btn-primary btn-sm py-1 px-2 mt-2 ${headerStyle.headerText}`}
           style={{ display: "block", width: "100%" }}
+          data-testid="upload-button"
         >
           <div className="row">
             <div className="col-3">
@@ -75,6 +77,7 @@ export const GraphControlMenuAtom = ({
         className={`btn btn-primary btn-sm py-1 px-2 mt-2 ${headerStyle.headerText}`}
         style={{ display: "block", width: "100%" }}
         onClick={onExport}
+        data-testid="export-button"
       >
         <div className="row align-items-start">
           <div className="col-3">
@@ -95,6 +98,7 @@ export const GraphControlMenuAtom = ({
         className={`btn btn-primary btn-sm py-1 px-2 mt-2 ${headerStyle.headerText}`}
         style={{ display: "block", width: "100%" }}
         onClick={onSessionSave}
+        data-testid="save-button"
       >
         <div className="row">
           <div className="col-3">
@@ -116,6 +120,7 @@ export const GraphControlMenuAtom = ({
           className={`btn btn-primary btn-sm py-1 px-2 mt-2 ${headerStyle.headerText}`}
           style={{ display: "block", width: "100%" }}
           onClick={onTCCopy}
+          data-testid="export-tc-button"
         >
           <div className="row">
             <div className="col-3">
