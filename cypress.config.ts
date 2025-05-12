@@ -1,4 +1,5 @@
 import { defineConfig } from "cypress";
+import plugin from "cypress-localstorage-commands/plugin";
 
 export default defineConfig({
   e2e: {
@@ -6,7 +7,9 @@ export default defineConfig({
     port: 4242,
     chromeWebSecurity: false,
     setupNodeEvents(on, config) {
-      // implement node event listeners here
+      
+      plugin(on, config);
+      return config;
     },
   },
 });
