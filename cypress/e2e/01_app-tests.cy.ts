@@ -1,6 +1,19 @@
 import assert from "assert";
 
 describe('ContextSideBar spec', () => {
+  before(() => {
+    cy.clearLocalStorageSnapshot();
+  });
+
+  beforeEach(() => {
+    cy.restoreLocalStorage();
+    cy.visit("/");
+  });
+
+  afterEach(() => {
+    cy.saveLocalStorage();
+  });
+
   it('ContextSideBar checks passes', () => {
     cy.visit('http://localhost:5173/');
 
@@ -342,7 +355,97 @@ describe('ContextSideBar spec', () => {
       .should('have.length.gte', 1)
       .first()
       .click();
+
+    cy.get('[data-testid="save-button"]')
+      .should('exist')
+      .should('be.visible')
+      .should('have.class', 'btn btn-primary btn-sm py-1 px-2 mt-2 _headerText_1hr40_10')
+      .contains('Save View')
+      .click();
+
+    cy.get('#save-title-modal-input-value')
+      .should('exist')
+      .should('be.visible')
+      .should('have.class', 'form-control')
+      .type('Cypress view');
+
+    cy.get('[data-testid="modal-dismiss-button"]')
+      .should('exist')
+      .should('be.visible')
+      .should('have.class', 'btn btn-outline-primary btn-sm')
+      .contains('Cancel');
+
+    cy.get('[data-testid="modal-accept-button"]')
+      .should('exist')
+      .should('be.visible')
+      .should('have.class', 'btn btn-primary btn-sm')
+      .contains('Save')
+      .click();
   });
 
-  
+  it('Restore checks passes', () => {
+    cy.visit('http://localhost:5173/');
+
+    cy.get('[data-testid="restore-session-link"]')
+      .should('exist')
+      .should('be.visible')
+      .click();
+
+    cy.get('#input-value')
+      .should('exist')
+      .should('have.class', 'upload');
+
+    cy.get('[data-testid="restore-upload-button"]')
+        .should('exist')
+        .should('be.visible')
+        .should('have.class', 'btn btn-primary btn-sm py-2 px-4')
+        .should('have.attr', 'disabled');
+
+    
+    cy.get('[data-testid="from-file-tab"]')
+        .should('exist')
+        .should('be.visible')
+        .should('have.class', 'nav-link active');
+
+    cy.get('[data-testid="from-previous-tab"]')
+        .should('exist')
+        .should('be.visible')
+        .should('have.class', 'nav-link')
+        .click();
+
+    cy.get('[data-testid="session-table"]')
+        .should('exist')
+        .should('be.visible');
+    
+    cy.get('[data-testid="session-row"]')
+        .should('exist')
+        .should('be.visible')
+        .should('have.length.gte', 1);
+
+    cy.get('[data-testid="session-name"]')
+        .should('exist')
+        .should('be.visible')
+        .contains('Cypress view');
+
+    cy.get('[data-testid="delete-session-button"]')
+      .should('exist')
+      .should('be.visible')
+      .should('have.class', 'btn-icon btn-sm py-0 px-1 btn-danger')
+      .contains('Delete');
+      
+    cy.get('[data-testid="restore-session-button"]')
+        .should('exist')
+        .should('be.visible')
+        .should('have.class', 'btn-icon btn-sm py-0 px-1 btn-success')
+        .contains('Restore')
+        .click();
+
+    cy.wait(1000);
+
+    cy.get('canvas')
+      .first()
+      .should('exist')
+      .should('be.visible');
+    
+  });
 });
