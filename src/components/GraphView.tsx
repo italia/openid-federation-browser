@@ -180,13 +180,28 @@ export const GraphView = () => {
     else if (nodes.length == 1) {
       setDiscoveryQueue([...discoverQueue, ...nodes]);
       return;
-    }else {
+    } else {
       console.log("multiple nodes");
 
       setToDiscoverList(nodes);
       showModal("warning-modal");
     }
-  }
+  };
+
+  const onSelection = (node: string) => {
+    setHighlighting(true);
+    setActives([cleanEntityID(node)]);
+    setSelections([cleanEntityID(node)]);
+    setCurrentContextMenu(
+      nodes.find((n) => cleanEntityID(n.id) === cleanEntityID(node)),
+    );
+
+    setTimeout(() => {
+      setHighlighting(false);
+      setSelections([]);
+      setActives([]);
+    }, 2000);
+  };
 
   useEffect(
     () => setTc(evaluateTrustChain({ nodes, edges }, selections)),
@@ -207,7 +222,19 @@ export const GraphView = () => {
     const view = sessionStorage.getItem("currentSession");
 
     if (view) {
-      importView(view).then(updateGraph).catch(showErrorMessage);
+      importView(view)
+        .then(({graph, errors}) => {
+          setUpdate(false);
+          if (errors.length > 0 && !isModalShowed("error-modal")) {
+            setErrorModalText(new Error("Failed to load some entities"));
+            setErrorDetails(errors.map((e) => `${e[0]} - ${JSON.stringify(e[1])}`));
+            showModal("error-modal");
+          } 
+            
+          updateGraph(graph);
+        }).catch(
+          showErrorMessage
+        );
       return;
     }
 
@@ -238,6 +265,12 @@ export const GraphView = () => {
       }
 
       const data = currentContextMenu as GraphNode;
+
+      const discoveredNode = result.graph.nodes.find(
+        (n) => n.id === discovery,
+      ) as GraphNode;
+
+      discoveredNode.info.istanciatedFrom = currentContextMenu?.id;
 
       const isAuthorityHint = data.info.ec.payload.authority_hints?.some(
         (ah) => ah.startsWith(discovery) || discovery.startsWith(ah),
@@ -280,18 +313,7 @@ export const GraphView = () => {
         isDisconnected={isDisconnected}
         isDiscovered={isDiscovered}
         isInDiscoveryQueue={(node: string) => discoverQueue.includes(node)}
-        onSelection={(node: string) => {
-          setHighlighting(true);
-          setActives([cleanEntityID(node)]);
-          setSelections([cleanEntityID(node)]);
-          setCurrentContextMenu(undefined);
-
-          setTimeout(() => {
-            setHighlighting(false);
-            setSelections([]);
-            setActives([]);
-          }, 2000);
-        }}
+        onSelection={onSelection}
       />
       <WarningModalAtom
         modalID="error-modal"
@@ -329,7 +351,9 @@ export const GraphView = () => {
         descriptionID="warning_modal_message"
         dismissActionID="modal_cancel"
         acceptActionID="modal_confirm"
-        onAccept={() => setDiscoveryQueue([...discoverQueue, ...toDiscoverList])}
+        onAccept={() =>
+          setDiscoveryQueue([...discoverQueue, ...toDiscoverList])
+        }
         onDismiss={() => setToDiscoverList([])}
       />
       <InputModalAtom
@@ -339,11 +363,11 @@ export const GraphView = () => {
         dismissActionID="modal_cancel"
         acceptActionID="add"
         inputVerifyFn={(name) => !isValidUrl(name)}
-        onAccept={(entityID) =>
+        onAccept={(entityID) => {
           discoverNode(entityID, { nodes, edges })
             .then(updateGraph)
-            .catch(showErrorMessage)
-        }
+            .catch(showErrorMessage);
+        }}
       />
       <div id="content-body" className={styles.graphAtom}>
         {showElement === ShowElement.Loading ? (

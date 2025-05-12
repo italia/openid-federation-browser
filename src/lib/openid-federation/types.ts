@@ -93,6 +93,7 @@ export interface EntityConfiguration {
 
 export interface NodeInfo {
   ec: EntityConfiguration;
+  istanciatedFrom?: string;
   immDependants: string[];
   startNode?: boolean;
   type: EntityType;

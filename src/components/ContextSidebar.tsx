@@ -102,23 +102,44 @@ export const ContextSideBar = ({
           </div>
         )}
 
-        <div className="col-md-10" style={{ position: "relative", top: "10px" }}>
-          <Button
-            text={"Delete element from graph"}
-            iconID="#it-delete"
-            btnClassName="btn btn-danger btn-sm"
-            action={() => {
-              if (!dataPresent) {
-                return;
-              }
-              if (isNode(currentVisualizedData)) {
-                onNodesRemove([currentVisualizedData.id]);
-              } else {
-                onEdgeRemove(currentVisualizedData.id);
-              }
-              onClose();
-            }}
-          />
+        <div className="row justify-content-center">
+          <div
+            className="col-md-6"
+            style={{ position: "relative", top: "10px" }}
+          >
+            <Button
+              text={"Delete element from graph"}
+              iconID="#it-delete"
+              btnClassName="btn btn-danger btn-sm"
+              action={() => {
+                if (!dataPresent) {
+                  return;
+                }
+                if (isNode(currentVisualizedData)) {
+                  onNodesRemove([currentVisualizedData.id]);
+                } else {
+                  onEdgeRemove(currentVisualizedData.id);
+                }
+                onClose();
+              }}
+            />
+          </div>
+          <div
+            className="col-md-6"
+            style={{ position: "relative", top: "10px" }}
+          >
+            {dataPresent && !isNode(currentVisualizedData) && (
+              <Button
+                text={"Select linked entity on map"}
+                iconID="#it-pin"
+                btnClassName="btn btn-primary btn-sm"
+                action={() => {
+                  const edge = currentVisualizedData as GraphEdge;
+                  onSelection(edge.target);
+                }}
+              />
+            )}
+          </div>
         </div>
       </div>
     </IntlProvider>

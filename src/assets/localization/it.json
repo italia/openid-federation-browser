@@ -92,5 +92,6 @@
   "trust_marks_listing_endpoint": "Endpoint di elenco dei Trust Marks",
   "entity_type_label": "Tipo Entità",
   "loaded_file": "File caricato:",
-  "upload_file": "Carica File"
+  "upload_file": "Carica File",
+  "entity_instanciated_from_authority_hint": "Entità instanziata da un Authority Hint non elencato"
 }

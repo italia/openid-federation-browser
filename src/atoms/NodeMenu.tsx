@@ -13,9 +13,10 @@ import { timestampToLocaleString } from "../lib/utils";
 import { SubAdvanceFiltersAtom } from "./SubAdvanceFilters";
 import { TrustMarkListing } from "./TrustMarkListing";
 import { getEntityTypes } from "../lib/openid-federation/utils";
+import { cleanEntityID } from "../lib/utils";
 import style from "../css/ContextMenu.module.css";
 
-export interface ContextMenuProps {
+export interface NodeMenuProps {
   data: GraphNode;
   onNodesAdd: (nodes: string[]) => void;
   onNodesRemove: (nodes: string[]) => void;
@@ -39,33 +40,44 @@ export const NodeMenuAtom = ({
   isDisconnected,
   onSelection,
   onModalError,
-}: ContextMenuProps) => {
-  const federationListEndpoint =
-    data.info.ec.payload.metadata?.federation_entity?.federation_list_endpoint;
+}: NodeMenuProps) => {
+  const [federationListEndpoint, setFederationListEndpoint] = useState<
+    string | undefined
+  >(data.info.ec.payload.metadata?.federation_entity?.federation_list_endpoint);
 
-  const trustMarkListEndpoint =
+  const [trustMarkListEndpoint, setTrustMarkListEndpoint] = useState<
+    string | undefined
+  >(
     data.info.ec.payload.metadata?.federation_entity
-      .federation_trust_mark_list_endpoint;
+      .federation_trust_mark_list_endpoint,
+  );
 
-  const [filteredItems, setFilteredItems] = useState<string[]>([]);
+  const [depFilteredItems, setDepFilteredItems] = useState<string[]>([]);
+  const [autFilteredItems, setAutFilteredItems] = useState<string[]>([]);
   const [toDiscoverList, setToDiscoverList] = useState<string[]>([]);
   const [filterDiscovered, setFilterDiscovered] = useState(false);
   const [immDependants, setImmDependants] = useState(
     data.info.immDependants || [],
   );
   const [advancedParams, setAdvancedParams] = useState<boolean>(false);
+  const [display, setDisplay] = useState(true);
 
   const removeEntities = (entityIDs: string[]) => onNodesRemove(entityIDs);
 
-  const addEntities = (entityID?: string | string[]) => {
-    if (!entityID) setToDiscoverList(filteredItems);
-    else {
-      const list = Array.isArray(entityID) ? entityID : [entityID];
-      const fiteredToDiscovery = list.filter(
-        (node) => !isFailed(node) && !isInDiscoveryQueue(node),
-      );
-      setToDiscoverList(fiteredToDiscovery);
+  const addAllEntities = (dependants: boolean = false) => {
+    if (dependants) {
+      setToDiscoverList(depFilteredItems);
+    } else {
+      setToDiscoverList(autFilteredItems);
     }
+  };
+
+  const addEntities = (entityID: string | string[]) => {
+    const list = Array.isArray(entityID) ? entityID : [entityID];
+    const fiteredToDiscovery = list.filter(
+      (node) => !isFailed(node) && !isInDiscoveryQueue(node),
+    );
+    setToDiscoverList(fiteredToDiscovery);
   };
 
   const removeAllEntities =
@@ -87,15 +99,23 @@ export const NodeMenuAtom = ({
   const removeAllSubordinates = removeAllEntities(true);
   const removeAllAuthorityHints = removeAllEntities(false);
 
-  const onFilteredList = (items: string[]) => setFilteredItems(items);
+  const onFilteredList = (items: string[], dependants: boolean = false) => {
+    if (dependants) {
+      setDepFilteredItems(items);
+    } else {
+      setAutFilteredItems(items);
+    }
+  };
 
   const immediateFilter = (anchor: string, filterValue: string) =>
     anchor.toLowerCase().includes(filterValue.toLowerCase());
 
   useEffect(() => {
     if (toDiscoverList.length === 0) return;
-    
-    onNodesAdd(toDiscoverList.filter((node) => !isDiscovered(node) && !isFailed(node)));
+
+    onNodesAdd(
+      toDiscoverList.filter((node) => !isDiscovered(node) && !isFailed(node)),
+    );
     return;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [toDiscoverList]);
@@ -110,10 +130,24 @@ export const NodeMenuAtom = ({
   }, [filterDiscovered]);
 
   useEffect(() => {
+    setDisplay(false);
+    setTimeout(() => {
+      setDisplay(true);
+    }, 0);
     setImmDependants(data.info.immDependants);
-    setFilteredItems(data.info.ec.payload.authority_hints || []);
+    setDepFilteredItems(data.info.immDependants || []);
+    setAutFilteredItems(data.info.ec.payload.authority_hints || []);
     setToDiscoverList([]);
+    setFilterDiscovered(false);
     setAdvancedParams(false);
+    setFederationListEndpoint(
+      data.info.ec.payload.metadata?.federation_entity
+        ?.federation_list_endpoint,
+    );
+    setTrustMarkListEndpoint(
+      data.info.ec.payload.metadata?.federation_entity
+        ?.federation_trust_mark_list_endpoint,
+    );
   }, [data]);
 
   const displayedInfo = [
@@ -132,17 +166,19 @@ export const NodeMenuAtom = ({
     <>
       <div className="row">
         <div className="accordion">
-          <AccordionAtom
-            accordinId="info-details"
-            labelId="node_info"
-            show={true}
-            hiddenElement={
-              <InfoView
-                id={`${data.info.ec.entity}-view`}
-                infos={displayedInfo}
-              />
-            }
-          />
+          {display && (
+            <AccordionAtom
+              accordinId="info-details"
+              labelId="node_info"
+              show={true}
+              hiddenElement={
+                <InfoView
+                  id={`${data.info.ec.entity}-view`}
+                  infos={displayedInfo}
+                />
+              }
+            />
+          )}
           {data.info.ec.payload.authority_hints &&
             data.info.ec.payload.authority_hints.length > 0 && (
               <AccordionAtom
@@ -155,16 +191,17 @@ export const NodeMenuAtom = ({
                     ItemsRenderer={EntityItemsRenderer({
                       isInDiscoveryQueue,
                       addEntities,
+                      addFilteredEntities: () => addAllEntities(),
                       onNodesRemove,
                       removeAllEntities: removeAllAuthorityHints,
                       isFailed,
                       onSelection,
                       isDisconnected,
                       isDiscovered,
-                      onEdgeAdd: (node: string) => onEdgeAdd(node),
+                      onEdgeAdd,
                     })}
                     filterFn={immediateFilter}
-                    onItemsFiltered={onFilteredList}
+                    onItemsFiltered={(f) => onFilteredList(f, false)}
                   />
                 }
               />
@@ -225,16 +262,17 @@ export const NodeMenuAtom = ({
                     ItemsRenderer={EntityItemsRenderer({
                       isInDiscoveryQueue,
                       addEntities,
+                      addFilteredEntities: () => addAllEntities(true),
                       onNodesRemove,
                       removeAllEntities: removeAllSubordinates,
                       isFailed,
                       onSelection,
                       isDisconnected,
                       isDiscovered,
-                      onEdgeAdd: (node: string) => onEdgeAdd(node),
+                      onEdgeAdd,
                     })}
                     filterFn={immediateFilter}
-                    onItemsFiltered={onFilteredList}
+                    onItemsFiltered={(f) => onFilteredList(f, true)}
                   />
                 </>
               }
@@ -294,6 +332,17 @@ export const NodeMenuAtom = ({
               }
             />
           )}
+        </div>
+        <div className="col-12">
+          {data.info.istanciatedFrom &&
+            !data.info.ec.payload.authority_hints?.some(
+              (ah) =>
+                cleanEntityID(ah) === cleanEntityID(data.info.istanciatedFrom!),
+            ) && (
+              <div className="alert alert-warning" role="alert">
+                <FormattedMessage id="entity_instanciated_from_authority_hint" />
+              </div>
+            )}
         </div>
       </div>
     </>

@@ -6,7 +6,8 @@ import style from "../css/ContextMenu.module.css";
 export interface EntityItemsRendererProps {
   isInDiscoveryQueue: (dep: string) => boolean;
   onNodesRemove: (dep: string[]) => void;
-  addEntities: (dep?: string | string[]) => void;
+  addEntities: (dep: string | string[]) => void;
+  addFilteredEntities: () => void;
   removeAllEntities: () => void;
   isFailed: (node: string) => boolean;
   isDiscovered: (node: string) => boolean;
@@ -19,6 +20,7 @@ export const EntityItemsRenderer = ({
   isInDiscoveryQueue,
   onNodesRemove,
   addEntities,
+  addFilteredEntities,
   removeAllEntities,
   isFailed,
   isDiscovered,
@@ -60,6 +62,8 @@ export const EntityItemsRenderer = ({
   };
 
   const renderer = ({ items }: { items: string[] }) => {
+    const notDiscoverdNumber = items.filter((i) => !isDiscovered(i)).length;
+
     return (
       <>
         <ul style={{ listStyleType: "none", paddingLeft: "0.8rem" }}>
@@ -102,7 +106,7 @@ export const EntityItemsRenderer = ({
                       className={style.contextAccordinText}
                       style={{ whiteSpace: "nowrap" }}
                     >
-                      {truncateMiddle(dep, 53)}
+                      {truncateMiddle(dep, 42)}
                     </span>
                   </div>
                 </div>
@@ -118,30 +122,29 @@ export const EntityItemsRenderer = ({
                 btnClassName="btn-sm py-0 px-1 btn-primary"
                 title="Discovery"
                 ariaLabel="Discovery"
-                text="Add all in this page"
-                textClassName={style.contextAccordinButton}
+                text={`Add all this ${notDiscoverdNumber} in page`}
+                disabled={notDiscoverdNumber === 0}
               />
             </div>
             <div className="col-md-auto">
               <Button
                 action={removeAllEntities}
                 iconID="#it-restore"
-                btnClassName="btn-sm py-0 px-1 btn-warning"
+                btnClassName="btn-sm py-0 px-1 btn-danger"
                 title="Discovery"
                 ariaLabel="Discovery"
                 text="Remove All"
-                textClassName={style.contextAccordinButton}
               />
             </div>
             <div className="col-md-auto">
               <Button
-                action={() => addEntities()}
+                action={addFilteredEntities}
                 iconID="#it-plus-circle"
-                btnClassName="btn-sm py-0 px-1 btn-secondary"
+                btnClassName="btn-sm py-0 px-1 btn-outline-primary"
+                iconClassName="icon-xs icon-primary"
                 title="Discovery"
                 ariaLabel="Discovery"
                 text="Add all filtered"
-                textClassName={style.contextAccordinButton}
               />
             </div>
           </div>

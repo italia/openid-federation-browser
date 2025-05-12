@@ -10,6 +10,7 @@ export interface ButtonProps {
   iconID?: string;
   btnClassName?: string;
   textClassName?: string;
+  iconClassName?: string;
   disabled?: boolean;
   style?: React.CSSProperties;
 }
@@ -23,6 +24,7 @@ export const Button = ({
   iconID,
   btnClassName,
   textClassName,
+  iconClassName,
   disabled,
   style,
 }: ButtonProps) => {
@@ -39,7 +41,7 @@ export const Button = ({
       {iconID && (
         <IconAtom
           iconID={iconID}
-          className="icon-xs icon-white"
+          className={iconClassName || "icon-xs icon-white"}
           isRounded={false}
         />
       )}
