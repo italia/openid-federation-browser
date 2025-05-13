@@ -19,3 +19,9 @@ jobs:
           start: npm start
         env:
           ELECTRON_EXTRA_LAUNCH_ARGS: --disable-gpu
+      - name: Upload screenshots
+        uses: actions/upload-artifact@v3
+        if: failure()
+        with:
+            name: cypress-screenshots
+            path: cypress/screenshots
