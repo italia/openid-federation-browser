@@ -17,3 +17,5 @@ jobs:
         with:
           build: npm run build
           start: npm start
+        env:
+          ELECTRON_EXTRA_LAUNCH_ARGS: --disable-gpu
