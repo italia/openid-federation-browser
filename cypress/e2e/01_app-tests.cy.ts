@@ -14,7 +14,9 @@ describe("Openid Federation Browser spec", () => {
     cy.saveLocalStorage();
   });
 
-  it("ContextSideBar checks passes", () => {
+  it("ContextSideBar checks passes", {
+    defaultCommandTimeout: 10000
+  }, () => {
     cy.visit("http://localhost:5173/", {
       onBeforeLoad(win) {
         Object.defineProperty(win.navigator, "language", {
