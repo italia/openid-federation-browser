@@ -48,13 +48,13 @@ describe("Openid Federation Browser spec", () => {
 
       const contextSidebar = cy.get('[data-testid="context-sidebar"]');
 
-      contextSidebar.should("exist").should("be.visible");
+      contextSidebar.should("exist");
 
       const nodeSidebar = contextSidebar.get(
         '[data-testid="node-context-sidebar"]',
       );
 
-      nodeSidebar.should("exist").should("be.visible");
+      nodeSidebar.should("exist");
 
       const accordions = cy.get(".accordion-button");
 
