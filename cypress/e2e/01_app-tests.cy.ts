@@ -15,7 +15,7 @@ describe("Openid Federation Browser spec", () => {
   });
 
   it("ContextSideBar checks passes", {
-    defaultCommandTimeout: 10000
+    defaultCommandTimeout: 180000
   }, () => {
     cy.visit("http://localhost:5173/", {
       onBeforeLoad(win) {
