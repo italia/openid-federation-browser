@@ -45,8 +45,11 @@ describe("Openid Federation Browser spec", () => {
       cy.wrap($canvas)
         .first()
         .scrollIntoView()
-        .rightclick(canvasCenterX, canvasCenterY);
+        .rightclick(canvasCenterX, canvasCenterY, {
+          force: true,
+        });
 
+      cy.wait(1000);
       const contextSidebar = cy.get('[data-testid="context-sidebar"]');
 
       contextSidebar.should("exist");
