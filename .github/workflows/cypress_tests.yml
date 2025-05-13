@@ -16,6 +16,6 @@ jobs:
         with:
           node-version: 20.12.x
       - name: Run tests
-        run: >-
+        run: |
           npm install
           npx cypress run
