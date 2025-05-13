@@ -14,9 +14,7 @@ describe("Openid Federation Browser spec", () => {
     cy.saveLocalStorage();
   });
 
-  it("ContextSideBar checks passes", {
-    defaultCommandTimeout: 180000
-  }, () => {
+  it("ContextSideBar checks passes", {}, () => {
     cy.visit("http://localhost:5173/", {
       onBeforeLoad(win) {
         Object.defineProperty(win.navigator, "language", {
@@ -44,9 +42,10 @@ describe("Openid Federation Browser spec", () => {
       const canvasCenterX = canvasWidth / 2;
       const canvasCenterY = canvasHeight / 2;
 
-      cy.wrap($canvas).rightclick(canvasCenterX, canvasCenterY, {
-        multiple: true,
-      });
+      cy.wrap($canvas)
+        .first()
+        .scrollIntoView()
+        .rightclick(canvasCenterX, canvasCenterY);
 
       const contextSidebar = cy.get('[data-testid="context-sidebar"]');
 
