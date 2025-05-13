@@ -17,6 +17,7 @@ jobs:
         with:
           build: npm run build
           start: npm start
+          browser: chrome
         env:
           ELECTRON_EXTRA_LAUNCH_ARGS: --disable-gpu
       - name: Upload screenshots

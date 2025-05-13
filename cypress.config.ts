@@ -12,6 +12,12 @@ export default defineConfig({
           launchOptions.preferences.webPreferences.webSecurity = false;
           return launchOptions;
         }
+
+        if (browser.name === "chrome" || browser.name === "chromium") {
+          launchOptions.args.push("--disable-web-security");
+          launchOptions.args.push("--allow-file-access-from-files");
+          return launchOptions;
+        }
       });
 
       plugin(on, config);
