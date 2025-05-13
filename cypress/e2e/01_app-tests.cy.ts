@@ -48,16 +48,18 @@ describe('Openid Federation Browser spec', () => {
           .rightclick(canvasCenterX, canvasCenterY, { multiple: true });
     });
 
-    cy.wait(1000);
+    cy.wait(2000);
     const contextSidebar = cy.get('[data-testid="context-sidebar"]');
       
     contextSidebar
-      .should('exist');
+      .should('exist')
+      .should('be.visible');
 
     const nodeSidebar = contextSidebar.get('[data-testid="node-context-sidebar"]');
 
     nodeSidebar
-      .should('exist');
+      .should('exist')
+      .should('be.visible');
 
     const accordions = cy.get('.accordion-button');
 
