@@ -7,15 +7,13 @@ on:
     branches: ["*"]
 
 jobs:
-  Run:
+  cypress-run:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Setup Node.js environment
+      - uses: cypress-io/github-action@v6
+      - name: Setup Cypress tests
         uses: actions/setup-node@v4.1.0
         with:
           node-version: 20.12.x
-      - name: Run tests
-        run: |
-          npm install
-          npx cypress run
+          build: npm run build
+          start: npm start
