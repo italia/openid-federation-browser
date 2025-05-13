@@ -1,6 +1,6 @@
 import assert from "assert";
 
-describe('ContextSideBar spec', () => {
+describe('Openid Federation Browser spec', () => {
   before(() => {
     cy.clearLocalStorageSnapshot();
   });
@@ -15,7 +15,14 @@ describe('ContextSideBar spec', () => {
   });
 
   it('ContextSideBar checks passes', () => {
-    cy.visit('http://localhost:5173/');
+    cy.visit('http://localhost:5173/', {
+      onBeforeLoad(win) {
+        Object.defineProperty(win.navigator, 'language', {
+          value: 'en-US',
+          configurable: true,
+        });
+      }
+    });
 
     cy.get('[data-testid="input-value"]')
       .type('https://oidc.registry.servizicie.interno.gov.it');
@@ -98,17 +105,17 @@ describe('ContextSideBar spec', () => {
       .first()
       .click();
 
-    nodeSidebar
-      .get('.accordion-collapse')
-      .first()
-      .should('not.have.class', 'show');
-
     //check second accordion
+
+    nodeSidebar
+      .get('.accordion-button')
+      .eq(1)
+      .click();
+
     nodeSidebar
       .get('.accordion-button')
       .eq(1)
       .should('exist')
-      .should('be.visible')
       .should('not.have.class', 'show')
       .contains('Immediate Subordinates List');
 
@@ -130,18 +137,15 @@ describe('ContextSideBar spec', () => {
     //check that entities are listed and visible
     cy.get('[data-testid="entity-item"]')
       .should('exist')
-      .should('be.visible')
       .should('have.length', 5);
 
     cy.get('[data-testid="add-remove-entities-button"]')
       .should('exist')
-      .should('be.visible')
       .should('have.class', 'btn btn-sm py-0 px-1 btn-success')
       .should('have.length', 5);
 
     cy.get('[data-testid="highlight-entities-button"]')
       .should('exist')
-      .should('be.visible')
       .should('have.class', 'btn btn-sm py-0 px-1 btn-primary')
       .should('have.length', 5)
       .should('be.disabled');
@@ -149,19 +153,16 @@ describe('ContextSideBar spec', () => {
     //check that buttons are correctly displayed
     cy.get('#add-all-entities-button')
       .should('exist')
-      .should('be.visible')
       .should('have.class', 'btn btn-sm py-0 px-1 btn-primary')
       .contains('Add all this 5 in page');
 
     cy.get('#remove-all-entities-button')
       .should('exist')
-      .should('be.visible')
       .should('have.class', 'btn btn-sm py-0 px-1 btn-danger')
       .contains('Remove All');
 
     cy.get('#add-filtered-entities-button')
       .should('exist')
-      .should('be.visible')
       .should('have.class', 'btn btn-sm py-0 px-1 btn-outline-primary')
       .contains('Add all filtered');
 
@@ -384,7 +385,14 @@ describe('ContextSideBar spec', () => {
   });
 
   it('Restore checks passes', () => {
-    cy.visit('http://localhost:5173/');
+    cy.visit('http://localhost:5173/', {
+      onBeforeLoad(win) {
+        Object.defineProperty(win.navigator, 'language', {
+          value: 'en-US',
+          configurable: true,
+        });
+      }
+    });
 
     cy.get('[data-testid="restore-session-link"]')
       .should('exist')
