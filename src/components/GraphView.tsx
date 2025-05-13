@@ -360,9 +360,7 @@ export const GraphView = () => {
         ) : showElement === ShowElement.Error ? (
           <ErrorViewAtom error={error} />
         ) : (
-          <div 
-            data-testid="graph-view"
-          >
+          <div data-testid="graph-view">
             <GraphControlMenuAtom
               onSessionSave={onSessionSave}
               onExport={onExport}

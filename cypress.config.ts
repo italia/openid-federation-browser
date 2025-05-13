@@ -7,13 +7,13 @@ export default defineConfig({
     port: 4242,
     chromeWebSecurity: false,
     setupNodeEvents(on, config) {
-      on('before:browser:launch', (browser: Cypress.Browser, launchOptions) => {
-        if (browser.name === 'electron') {
-          launchOptions.preferences.webPreferences.webSecurity = false;  
+      on("before:browser:launch", (browser: Cypress.Browser, launchOptions) => {
+        if (browser.name === "electron") {
+          launchOptions.preferences.webPreferences.webSecurity = false;
           return launchOptions;
         }
       });
-      
+
       plugin(on, config);
       return config;
     },

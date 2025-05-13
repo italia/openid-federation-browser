@@ -83,7 +83,7 @@ export const EntityItemsRenderer = ({
                       </div>
                     ) : (
                       <Button
-                      test_id="add-remove-entities-button"
+                        test_id="add-remove-entities-button"
                         action={getButtonAction(dep)}
                         iconID={getButtonIcon(dep)}
                         btnClassName={`btn-sm py-0 px-1 ${getButtonColor(dep)}`}

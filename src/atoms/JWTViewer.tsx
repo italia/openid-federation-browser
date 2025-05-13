@@ -85,7 +85,10 @@ export const JWTViewer = ({
       <div className="row" style={{ padding: "8px" }}>
         {validationFn && (
           <div className="col">
-            <table style={{ width: "100%" }} data-testid="schema-validation-table">
+            <table
+              style={{ width: "100%" }}
+              data-testid="schema-validation-table"
+            >
               <tbody>
                 <tr>
                   <td>
@@ -158,8 +161,7 @@ export const JWTViewer = ({
                 </span>
               </span>
             </li>
-            <li className="nav-item"
-              data-testid="jwt-payload-li">
+            <li className="nav-item" data-testid="jwt-payload-li">
               <span
                 data-testid="jwt-payload-tab"
                 className="nav-link"
