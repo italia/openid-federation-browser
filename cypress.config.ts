@@ -10,6 +10,7 @@ export default defineConfig({
       on('before:browser:launch', (browser: Cypress.Browser, launchOptions) => {
         if (browser.name === 'electron') {
           launchOptions.preferences.webPreferences.webSecurity = false;
+          launchOptions.args.push('--disable-gpu'); // Disable GPU acceleration
   
           return launchOptions;
         }
