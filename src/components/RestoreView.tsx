@@ -45,10 +45,10 @@ export const RestoreView = () => {
 
   const ItemsRenderer = ({ items }: { items: Session[] }) => {
     return (
-      <table 
+      <table
         style={{ listStyleType: "none", width: "100%" }}
         data-testid="session-table"
-        >
+      >
         <thead>
           <tr className={`primary-bg ${style.contextHeaderText}`}>
             <th>
@@ -76,10 +76,7 @@ export const RestoreView = () => {
         <tbody>
           {items &&
             items.map((d) => (
-              <tr 
-                key={d.sessionName}
-                data-testid="session-row"
-                >
+              <tr key={d.sessionName} data-testid="session-row">
                 <th style={{ width: "162px" }}>
                   <div className="row justify-content-center">
                     <img

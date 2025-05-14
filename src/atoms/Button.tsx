@@ -28,7 +28,7 @@ export const Button = ({
   iconClassName,
   disabled,
   style,
-  test_id
+  test_id,
 }: ButtonProps) => {
   return (
     <button

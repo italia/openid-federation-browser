@@ -25,6 +25,8 @@ import { isModalShowed } from "../lib/utils";
 import { areDisconnected } from "../lib/graph-data/utils";
 import styles from "../css/BodyComponent.module.css";
 import headerStyle from "../css/Header.module.css";
+import { useLocation } from "react-router-dom";
+import { useSearchParams } from 'react-router-dom';
 
 import { removeEntities as _removeEntities } from "../lib/graph-data/utils";
 
@@ -59,6 +61,9 @@ export const GraphView = () => {
     ShowElement.Loading,
   );
   const [sidebarVisible, setSidebarVisible] = useState(false);
+  const [, setSearchParams] = useSearchParams();
+
+  const location = useLocation();
 
   const updateGraph = ({ nodes, edges }: Graph) => {
     setNodes(nodes);
@@ -199,6 +204,44 @@ export const GraphView = () => {
       setActives([]);
     }, 2000);
   };
+
+  const enableNodeContextMenu = (node: string) => {
+    const data = nodes.find((n) => cleanEntityID(n.id) === cleanEntityID(node));
+
+    if (!data) return;
+
+    setCurrentContextMenu(data);
+    setSidebarVisible(true);
+  };
+
+  const enableEdgeContextMenu = (edge: string) => {
+    const data = edges.find((e) => e.id === edge);
+
+    if (!data) return;
+
+    setCurrentContextMenu(data);
+    setSidebarVisible(true);
+  };
+
+
+  useEffect(() => {
+    if(location.pathname !== "/graphView") return;
+
+    const reqQuery = location.search.replace("?", "").split("&");
+
+    const node = reqQuery.find((q) => q.startsWith("node="));
+
+    if (node) {
+      enableNodeContextMenu(decodeURIComponent(node.split("=")[1]));
+    }
+
+    const edge = reqQuery.find((q) => q.startsWith("edge="));
+
+    if (edge) {
+      enableEdgeContextMenu(decodeURIComponent(edge.split("=")[1]));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location, nodes, edges]);
 
   useEffect(
     () => setTc(evaluateTrustChain({ nodes, edges }, selections)),
@@ -372,9 +415,7 @@ export const GraphView = () => {
         ) : showElement === ShowElement.Error ? (
           <ErrorViewAtom error={error} />
         ) : (
-          <div 
-            data-testid="graph-view"
-          >
+          <div data-testid="graph-view">
             <GraphControlMenuAtom
               onSessionSave={onSessionSave}
               onExport={onExport}
@@ -406,12 +447,13 @@ export const GraphView = () => {
               onLassoEnd={(selections) => setSelections(selections)}
               draggable
               onNodeContextMenu={(node) => {
-                setCurrentContextMenu(node);
-                setSidebarVisible(true);
+                setSearchParams({node: node.id});
+                enableNodeContextMenu(node.id);
               }}
               onEdgeContextMenu={(edge) => {
-                setCurrentContextMenu(edge);
-                setSidebarVisible(true);
+                const gEdge = edge as GraphEdge; 
+                setSearchParams({edge: gEdge.id});
+                enableNodeContextMenu(gEdge.id);
               }}
             />
           </div>
