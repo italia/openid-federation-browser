@@ -12,12 +12,18 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Setup Cypress tests
+      - name: Setup Cypress Chrome tests
         uses: cypress-io/github-action@v6
         with:
           build: npm run build
           start: npm start
           browser: chrome
+      - name: Setup Cypress Electron tests
+        uses: cypress-io/github-action@v6
+        with:
+          build: npm run build
+          start: npm start
+          browser: electron
         env:
           ELECTRON_EXTRA_LAUNCH_ARGS: --disable-gpu
       - name: Upload screenshots
