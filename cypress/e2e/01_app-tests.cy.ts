@@ -35,19 +35,16 @@ describe("Openid Federation Browser spec", () => {
     const graphCanvas = cy.get("canvas").first();
     graphCanvas.should("exist").should("be.visible");
 
-    graphCanvas.then(($canvas) => {
-      const canvasWidth = $canvas.width() || 0;
-      const canvasHeight = $canvas.height() || 0;
-
-      const canvasCenterX = canvasWidth / 2;
-      const canvasCenterY = canvasHeight / 2;
-
-      cy.wrap($canvas)
-        .first()
-        .scrollIntoView()
-        .rightclick(canvasCenterX, canvasCenterY, {
-          force: true,
-        });
+    cy.visit('http://localhost:5173/graphView?node=https%3A%2F%2Foidc.registry.servizicie.interno.gov.it',
+      {
+        onBeforeLoad(win) {
+          Object.defineProperty(win.navigator, "language", {
+            value: "en-US",
+            configurable: true,
+          });
+        },
+      },
+    );
 
       cy.wait(1000);
       const contextSidebar = cy.get('[data-testid="context-sidebar"]');
@@ -352,7 +349,6 @@ describe("Openid Federation Browser spec", () => {
         .should("have.class", "btn btn-primary btn-sm")
         .contains("Save")
         .click();
-    });
   });
 
   it("Restore checks passes", () => {
