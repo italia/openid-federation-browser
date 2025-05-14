@@ -45,7 +45,10 @@ export const RestoreView = () => {
 
   const ItemsRenderer = ({ items }: { items: Session[] }) => {
     return (
-      <table style={{ listStyleType: "none", width: "100%" }}>
+      <table
+        style={{ listStyleType: "none", width: "100%" }}
+        data-testid="session-table"
+      >
         <thead>
           <tr className={`primary-bg ${style.contextHeaderText}`}>
             <th>
@@ -73,10 +76,11 @@ export const RestoreView = () => {
         <tbody>
           {items &&
             items.map((d) => (
-              <tr key={d.sessionName}>
+              <tr key={d.sessionName} data-testid="session-row">
                 <th style={{ width: "162px" }}>
                   <div className="row justify-content-center">
                     <img
+                      data-testid="screenshot"
                       src={d.screenShot}
                       style={{ width: "160px", height: "60px" }}
                       alt="screenshot"
@@ -86,6 +90,7 @@ export const RestoreView = () => {
                 <th style={{ width: "280px" }}>
                   <div
                     className={`row justify-content-center ${style.contextAccordinText}`}
+                    data-testid="session-name"
                   >
                     {d.label}
                   </div>
@@ -93,6 +98,7 @@ export const RestoreView = () => {
                 <th style={{ width: "160px" }}>
                   <div
                     className={`row justify-content-center ${style.contextAccordinText}`}
+                    data-testid="session-date"
                   >
                     {timestampToLocaleString(d.date)}
                   </div>
@@ -111,6 +117,7 @@ export const RestoreView = () => {
                       iconID="#it-plus"
                       textClassName={style.contextAccordinButton}
                       style={{ width: "90px" }}
+                      test_id="restore-session-button"
                     />
                   </div>
                   <div className="row justify-content-center mt-1">
@@ -126,6 +133,7 @@ export const RestoreView = () => {
                       btnClassName="btn-icon btn-sm py-0 px-1 btn-danger"
                       textClassName={style.contextAccordinButton}
                       style={{ width: "90px" }}
+                      test_id="delete-session-button"
                     />
                   </div>
                 </th>
@@ -145,6 +153,7 @@ export const RestoreView = () => {
             id={`nav-file-tab`}
             role="tab"
             onClick={() => toggleTab("file")}
+            data-testid="from-file-tab"
           >
             <span className={style.contextAccordinText}>
               <FormattedMessage id="from_file" />
@@ -157,6 +166,7 @@ export const RestoreView = () => {
             id={`nav-previous-tab`}
             role="tab"
             onClick={() => toggleTab("previous")}
+            data-testid="from-previous-tab"
           >
             <span className={style.contextAccordinText}>
               <FormattedMessage id="from_previous_session" />

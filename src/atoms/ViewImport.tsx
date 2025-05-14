@@ -100,6 +100,7 @@ export const ViewImportAtom = () => {
             style={{ fontSize: "14px" }}
             onClick={() => uploadFile()}
             disabled={!file}
+            data-testid="restore-upload-button"
           >
             <IconAtom
               iconID="#it-arrow-up-circle"

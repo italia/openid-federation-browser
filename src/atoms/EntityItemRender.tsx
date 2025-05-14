@@ -72,6 +72,7 @@ export const EntityItemsRenderer = ({
               <li
                 key={dep}
                 className="it-list-item pt-2"
+                data-testid="entity-item"
                 style={{ width: "auto", height: "auto" }}
               >
                 <div className="row justify-content-md-start">
@@ -82,6 +83,7 @@ export const EntityItemsRenderer = ({
                       </div>
                     ) : (
                       <Button
+                        test_id="add-remove-entities-button"
                         action={getButtonAction(dep)}
                         iconID={getButtonIcon(dep)}
                         btnClassName={`btn-sm py-0 px-1 ${getButtonColor(dep)}`}
@@ -93,6 +95,7 @@ export const EntityItemsRenderer = ({
                   </div>
                   <div className="col-md-auto">
                     <Button
+                      test_id="highlight-entities-button"
                       action={() => onSelection(dep)}
                       iconID="#it-pin"
                       btnClassName="btn-sm py-0 px-1 btn-primary"
@@ -117,6 +120,7 @@ export const EntityItemsRenderer = ({
           <div className="row">
             <div className="col-md-auto">
               <Button
+                id="add-all-entities-button"
                 action={() => addEntities(items)}
                 iconID="#it-plus"
                 btnClassName="btn-sm py-0 px-1 btn-primary"
@@ -128,6 +132,7 @@ export const EntityItemsRenderer = ({
             </div>
             <div className="col-md-auto">
               <Button
+                id="remove-all-entities-button"
                 action={removeAllEntities}
                 iconID="#it-restore"
                 btnClassName="btn-sm py-0 px-1 btn-danger"
@@ -138,6 +143,7 @@ export const EntityItemsRenderer = ({
             </div>
             <div className="col-md-auto">
               <Button
+                id="add-filtered-entities-button"
                 action={addFilteredEntities}
                 iconID="#it-plus-circle"
                 btnClassName="btn-sm py-0 px-1 btn-outline-primary"

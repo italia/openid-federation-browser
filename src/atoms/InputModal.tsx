@@ -89,6 +89,7 @@ export const InputModalAtom = ({
               type="button"
               data-bs-dismiss="modal"
               onClick={onDismiss}
+              data-testid="modal-dismiss-button"
             >
               <FormattedMessage id={dismissActionID} />
             </button>
@@ -98,6 +99,7 @@ export const InputModalAtom = ({
                 type="button"
                 onClick={checkValue}
                 data-bs-dismiss="modal"
+                data-testid="modal-accept-button"
               >
                 <FormattedMessage id={acceptActionID} />
               </button>
