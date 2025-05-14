@@ -172,7 +172,7 @@ describe("Openid Federation Browser spec", () => {
 
       cy.get('[data-testid="warning-modal"]').should("be.not.visible");
 
-      cy.wait(5000);
+      cy.wait(8000);
 
       cy.get("#add-all-entities-button")
         .should("exist")
