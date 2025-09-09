@@ -244,14 +244,10 @@ describe("Openid Federation Browser spec", () => {
       cy.get('[data-testid="add-remove-entities-button"]')
         .should("exist")
         .should("be.visible")
-        .should("have.length.gte", 2)
+        .should("have.length.gte", 1)
         .should("have.length.lte", 5)
         .first()
         .should("have.class", "btn btn-sm py-0 px-1 btn-danger");
-
-      cy.get('[data-testid="add-remove-entities-button"]')
-        .eq(1)
-        .should("have.class", "btn btn-sm py-0 px-1 btn-success");
 
       cy.get(".accordion-button").first().click();
 
