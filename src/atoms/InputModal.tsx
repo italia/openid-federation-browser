@@ -14,6 +14,7 @@ export interface InputModalProps {
   onAccept: (value: string) => void;
   onDismiss?: () => void;
   inputVerifyFn?: (value: string) => boolean;
+  onError?: (e: Error) => void;
 }
 
 export const InputModalAtom = ({
@@ -25,14 +26,20 @@ export const InputModalAtom = ({
   onAccept,
   onDismiss,
   inputVerifyFn,
+  onError,
 }: InputModalProps) => {
   const [inputValue, setInputValue] = useState("");
 
   const changeValue = (e: React.ChangeEvent<HTMLInputElement>) =>
     setInputValue(e.target.value);
+
   const checkValue = () => {
     if (inputVerifyFn && inputVerifyFn(inputValue)) {
-      handleCollapseVisibility(`${modalID}-invalid-input-collapse`, true);
+      onError?.(
+        new Error(
+          getTranslations(navigator.language)["invalid_input_value"]
+        )
+      );
       return;
     }
     onAccept(inputValue);

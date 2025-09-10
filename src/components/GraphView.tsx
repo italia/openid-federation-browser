@@ -223,6 +223,12 @@ export const GraphView = () => {
     setSidebarVisible(true);
   };
 
+  const onError = (e: Error) => {
+    if (!isModalShowed("error-modal")) {
+      setErrorModalText(e);
+      showModal("error-modal");
+    }
+  };
 
   useEffect(() => {
     if(location.pathname !== "/graphView") return;
@@ -378,6 +384,7 @@ export const GraphView = () => {
         dismissActionID="modal_cancel"
         acceptActionID="save"
         inputVerifyFn={(name) => name === ""}
+        onError={onError}
         onAccept={(name) => {
           sessionStorage.setItem("currentSessionName", `session-${name}`);
           setNotification(`Saved: ${name.replace("session-", "")}`);
