@@ -453,7 +453,7 @@ export const GraphView = () => {
               onEdgeContextMenu={(edge) => {
                 const gEdge = edge as GraphEdge; 
                 setSearchParams({edge: gEdge.id});
-                enableNodeContextMenu(gEdge.id);
+                enableEdgeContextMenu(gEdge.id);
               }}
             />
           </div>
