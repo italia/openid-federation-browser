@@ -410,6 +410,7 @@ export const GraphView = () => {
         dismissActionID="modal_cancel"
         acceptActionID="add"
         inputVerifyFn={(name) => !isValidUrl(name)}
+        onError={onError}
         onAccept={(entityID) => {
           discoverNode(entityID, { nodes, edges })
             .then(updateGraph)
