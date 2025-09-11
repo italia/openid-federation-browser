@@ -4,7 +4,7 @@
     "url": "https://oidc.registry.servizicie.interno.gov.it"
   },
   {
-    "name": "Italian IT-Wallet POC Federation",
-    "url": "https://demo.federation.eudi.wallet.developers.italia.it"
+    "name": "IT-Wallet Stage",
+    "url": "https://pre.ta.wallet.ipzs.it"
   }
 ]
