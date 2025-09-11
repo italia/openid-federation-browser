@@ -19,10 +19,9 @@ export const EdgeMenuAtom = ({ data }: EdgeMenuAtomProps) => {
   }
 
   return (
-    <div className="row">
-      <div className="accordion">
-        {data.subStatement && (
-          <>
+    <div className="row justify-content-center">
+        {data.subStatement ? (
+          <div className="accordion">
             <AccordionAtom
               accordinId="info-details"
               labelId="edge_info"
@@ -61,9 +60,13 @@ export const EdgeMenuAtom = ({ data }: EdgeMenuAtomProps) => {
                 />
               }
             />
-          </>
-        )}
+          </div>
+        ) : (
+          <div className="col-md-10 text-center">
+            <h6>No subordinate statement available</h6>
+          </div>
+        )
+        }
       </div>
-    </div>
   );
 };
