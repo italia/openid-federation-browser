@@ -223,13 +223,6 @@ export const GraphView = () => {
     setSidebarVisible(true);
   };
 
-  const onError = (e: Error) => {
-    if (!isModalShowed("error-modal")) {
-      setErrorModalText(e);
-      showModal("error-modal");
-    }
-  };
-
   useEffect(() => {
     if(location.pathname !== "/graphView") return;
 
@@ -384,7 +377,6 @@ export const GraphView = () => {
         dismissActionID="modal_cancel"
         acceptActionID="save"
         inputVerifyFn={(name) => name === ""}
-        onError={onError}
         onAccept={(name) => {
           sessionStorage.setItem("currentSessionName", `session-${name}`);
           setNotification(`Saved: ${name.replace("session-", "")}`);
@@ -409,8 +401,8 @@ export const GraphView = () => {
         placeorderID="insert_entity_url_label"
         dismissActionID="modal_cancel"
         acceptActionID="add"
+        invalidInputMessageID="invalid_url_error_message"
         inputVerifyFn={(name) => !isValidUrl(name)}
-        onError={onError}
         onAccept={(entityID) => {
           discoverNode(entityID, { nodes, edges })
             .then(updateGraph)
