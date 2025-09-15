@@ -1,5 +1,5 @@
 import React from "react";
-import trustChainList from "../assets/trustChainList.json";
+import trustChainList from "../assets/trustAnchorsList.json";
 import { PaginatedListAtom } from "../atoms/PaginatedList";
 import { IconAtom } from "../atoms/Icon";
 import style from "../css/ContextMenu.module.css";

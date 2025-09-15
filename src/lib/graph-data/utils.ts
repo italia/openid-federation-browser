@@ -12,13 +12,20 @@ export const genNode = (node: NodeInfo): GraphNode => {
 };
 
 export const genEdge = (parent: NodeInfo, child: NodeInfo): GraphEdge => {
-  return {
+  const edge = {
     id: `${parent.ec.entity}-${child.ec.entity}`,
     source: parent.ec.entity,
     target: child.ec.entity,
     label: `${parent.ec.entity}->${child.ec.entity}`,
     subStatement: child.ec.subordinates[parent.ec.entity],
-  } as GraphEdge;
+    fill: "#c6c6c6",
+  };
+
+  if (!edge.subStatement) {
+    edge.fill = "#B8252A";
+  }
+
+  return edge as GraphEdge;
 };
 
 export const updateGraph = (node: NodeInfo, graph: Graph): Graph => {

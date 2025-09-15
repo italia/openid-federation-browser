@@ -12,11 +12,16 @@ export interface EdgeMenuAtomProps {
 }
 
 export const EdgeMenuAtom = ({ data }: EdgeMenuAtomProps) => {
+
+  const validateSub = async (ec: object): Promise<[boolean, string | undefined]> => {
+    const validation = await validateSubordinateStatement(ec);
+    return [(validation[0] && data.subStatement!.valid), validation[1]];
+  }
+
   return (
-    <div className="row">
-      <div className="accordion">
-        {data.subStatement && (
-          <>
+    <div className="row justify-content-center">
+        {data.subStatement ? (
+          <div className="accordion">
             <AccordionAtom
               accordinId="info-details"
               labelId="edge_info"
@@ -50,14 +55,18 @@ export const EdgeMenuAtom = ({ data }: EdgeMenuAtomProps) => {
                   raw={data.subStatement.jwt}
                   decodedPayload={data.subStatement.payload as object}
                   decodedHeader={data.subStatement.header as object}
-                  validationFn={validateSubordinateStatement}
+                  validationFn={validateSub}
                   schemaUrl={`${import.meta.env.VITE_SUB_STATEMENT_SCHEMA}`}
                 />
               }
             />
-          </>
-        )}
+          </div>
+        ) : (
+          <div className="col-md-10 text-center">
+            <h6>No subordinate statement available</h6>
+          </div>
+        )
+        }
       </div>
-    </div>
   );
 };

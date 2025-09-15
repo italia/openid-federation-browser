@@ -223,7 +223,6 @@ export const GraphView = () => {
     setSidebarVisible(true);
   };
 
-
   useEffect(() => {
     if(location.pathname !== "/graphView") return;
 
@@ -402,6 +401,7 @@ export const GraphView = () => {
         placeorderID="insert_entity_url_label"
         dismissActionID="modal_cancel"
         acceptActionID="add"
+        invalidInputMessageID="invalid_url_error_message"
         inputVerifyFn={(name) => !isValidUrl(name)}
         onAccept={(entityID) => {
           discoverNode(entityID, { nodes, edges })
@@ -453,7 +453,7 @@ export const GraphView = () => {
               onEdgeContextMenu={(edge) => {
                 const gEdge = edge as GraphEdge; 
                 setSearchParams({edge: gEdge.id});
-                enableNodeContextMenu(gEdge.id);
+                enableEdgeContextMenu(gEdge.id);
               }}
             />
           </div>

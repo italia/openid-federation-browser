@@ -93,5 +93,6 @@
   "entity_type_label": "Tipo Entità",
   "loaded_file": "File caricato:",
   "upload_file": "Carica File",
-  "entity_instanciated_from_authority_hint": "Entità instanziata da un Authority Hint non elencato"
+  "entity_instanciated_from_authority_hint": "Entità instanziata da un Authority Hint non elencato",
+  "invalid_input_value": "Valore di input non valido"
 }
