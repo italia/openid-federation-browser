@@ -42,17 +42,31 @@ export const handleKeyDownEvent = (key: string, onEvent: () => void) => {
 };
 
 export const toggleModal = (id: string) => {
-  const modal = new Modal(document.getElementById(id) as HTMLElement);
+  const modal = Modal.getOrCreateInstance(document.getElementById(id) as HTMLElement);
   modal.toggle();
 };
 
+export const showModalFromRef = (ref: React.RefObject<HTMLElement | null>) => {
+  if (ref.current) {
+    const modal = Modal.getOrCreateInstance(ref.current);
+    modal.show();
+  }
+};
+
+export const hideModalFromRef = (ref: React.RefObject<HTMLElement | null>) => {
+  if (ref.current) {
+    const modal = Modal.getOrCreateInstance(ref.current);
+    modal.hide();
+  }
+};
+
 export const showModal = (id: string) => {
-  const modal = new Modal(document.getElementById(id) as HTMLElement);
+  const modal = Modal.getOrCreateInstance(document.getElementById(id) as HTMLElement);
   modal.show();
 };
 
 export const hideModal = (id: string) => {
-  const modal = new Modal(document.getElementById(id) as HTMLElement);
+  const modal = Modal.getOrCreateInstance(document.getElementById(id) as HTMLElement);
   modal.hide();
 };
 

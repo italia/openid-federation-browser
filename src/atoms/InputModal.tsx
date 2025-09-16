@@ -1,9 +1,9 @@
 import React from "react";
 import { FormattedMessage } from "react-intl";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { handleCollapseVisibility } from "../lib/utils";
 import { getTranslations } from "../lib/translations";
-import { cleanInput } from "../lib/utils";
+import { cleanInput, hideModalFromRef } from "../lib/utils";
 
 export interface InputModalProps {
   modalID: string;
@@ -14,6 +14,7 @@ export interface InputModalProps {
   onAccept: (value: string) => void;
   onDismiss?: () => void;
   inputVerifyFn?: (value: string) => boolean;
+  invalidInputMessageID?: string;
 }
 
 export const InputModalAtom = ({
@@ -25,11 +26,16 @@ export const InputModalAtom = ({
   onAccept,
   onDismiss,
   inputVerifyFn,
+  invalidInputMessageID,
 }: InputModalProps) => {
   const [inputValue, setInputValue] = useState("");
+  const inputRef = useRef<HTMLInputElement | null>(null);
 
-  const changeValue = (e: React.ChangeEvent<HTMLInputElement>) =>
+  const changeValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
+    handleCollapseVisibility(`${modalID}-invalid-input-collapse`, false);
+  };
+
   const checkValue = () => {
     if (inputVerifyFn && inputVerifyFn(inputValue)) {
       handleCollapseVisibility(`${modalID}-invalid-input-collapse`, true);
@@ -38,10 +44,11 @@ export const InputModalAtom = ({
     onAccept(inputValue);
     cleanInput(`${modalID}-input-value`);
     handleCollapseVisibility(`${modalID}-invalid-input-collapse`, false);
+    hideModalFromRef(inputRef);
   };
 
   return (
-    <div className="modal" tabIndex={-1} role="dialog" id={modalID}>
+    <div className="modal" tabIndex={-1} role="dialog" id={modalID} ref={inputRef}>
       <div className="modal-dialog" role="document">
         <div className="modal-content">
           <div className="modal-header">
@@ -79,7 +86,7 @@ export const InputModalAtom = ({
                 role="alert"
                 style={{ fontSize: "14px" }}
               >
-                <FormattedMessage id="invalid_url_error_message" />
+                <FormattedMessage id={invalidInputMessageID || "invalid_input_value"} />
               </div>
             </div>
           </div>
@@ -98,7 +105,6 @@ export const InputModalAtom = ({
                 className="btn btn-primary btn-sm"
                 type="button"
                 onClick={checkValue}
-                data-bs-dismiss="modal"
                 data-testid="modal-accept-button"
               >
                 <FormattedMessage id={acceptActionID} />

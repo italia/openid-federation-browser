@@ -6,7 +6,7 @@ import { Header } from "./components/Header";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { FormattedMessage } from "react-intl";
 import { useEffect, useState } from "react";
-import trustChainList from "./assets/trustChainList.json";
+import trustChainList from "./assets/trustAnchorsList.json";
 import axios from "axios";
 import { UrlInput } from "./components/UrlInput";
 import { AnchorList } from "./components/AnchorList";

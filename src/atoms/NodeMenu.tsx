@@ -110,6 +110,11 @@ export const NodeMenuAtom = ({
   const immediateFilter = (anchor: string, filterValue: string) =>
     anchor.toLowerCase().includes(filterValue.toLowerCase());
 
+  const validateEC = async (ec: object): Promise<[boolean, string | undefined]> => {
+    const validation = await validateEntityConfiguration(ec);
+    return [(validation[0] && data.info.ec.valid), validation[1]];
+  }
+
   useEffect(() => {
     if (toDiscoverList.length === 0) return;
 
@@ -287,7 +292,7 @@ export const NodeMenuAtom = ({
                 raw={data.info.ec.jwt}
                 decodedPayload={data.info.ec.payload as object}
                 decodedHeader={data.info.ec.header as object}
-                validationFn={validateEntityConfiguration}
+                validationFn={validateEC}
                 schemaUrl={`${import.meta.env.VITE_ENTITY_CONFIG_SCHEMA}`}
               />
             }
