@@ -48,8 +48,9 @@ export const NodeMenuAtom = ({
   const [trustMarkListEndpoint, setTrustMarkListEndpoint] = useState<
     string | undefined
   >(
-    data.info.ec.payload.metadata?.federation_entity
-      .federation_trust_mark_list_endpoint,
+    data.info.ec.payload.metadata?.federation_entity ? 
+    data.info.ec.payload.metadata?.federation_entity.federation_trust_mark_list_endpoint : 
+    undefined,
   );
 
   const [depFilteredItems, setDepFilteredItems] = useState<string[]>([]);
