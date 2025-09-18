@@ -1,6 +1,6 @@
 {
   "name": "openid-federation-browser",
-  "version": "0.11.0",
+  "version": "0.12.0",
   "homepage": "./",
   "private": true,
   "type": "module",
@@ -13,7 +13,7 @@
     "@types/react-dom": "^18.3.1",
     "@vitejs/plugin-react-swc": "^3.7.2",
     "ajv": "^8.17.1",
-    "axios": "^1.7.9",
+    "axios": "^1.12.0",
     "bootstrap-italia": "^2.13.3",
     "cypress-localstorage-commands": "^2.2.7",
     "express": "^4.21.2",
