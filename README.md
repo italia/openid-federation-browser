@@ -83,7 +83,7 @@ For the correct functioning it's necessary install a CORS Plugin (see [here](htt
 
 ### Add your Federation in the Assets
 
-Open a PR adding your favorite Trust Anchors [here](src/assets/trustChainList.json).
+Open a PR adding your favorite Trust Anchors [here](src/assets/trustAnchorsList.json).
 
 ## License
 
