@@ -18,6 +18,10 @@ pre {
   height: 20rem !important;
 }
 
+ul.nav-tabs {
+  cursor: pointer !important;
+}
+
 table,
 th,
 td {
