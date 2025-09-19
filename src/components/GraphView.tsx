@@ -307,7 +307,12 @@ export const GraphView = () => {
 
       const discoveredNode = result.graph.nodes.find(
         (n) => n.id === discovery,
-      ) as GraphNode;
+      );
+
+      if (!discoveredNode) {
+        setDiscoveryQueue(rest);
+        return;
+      }
 
       discoveredNode.info.istanciatedFrom = currentContextMenu?.id;
 
