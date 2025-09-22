@@ -43,3 +43,8 @@ td {
   font-weight: 700;
   font-style: normal;
 }
+
+.p-warning {
+  margin-top: -15px;
+  font-size: 14px;
+}
