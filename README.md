@@ -85,6 +85,10 @@ For the correct functioning it's necessary install a CORS Plugin (see [here](htt
 
 Open a PR adding your favorite Trust Anchors [here](src/assets/trustAnchorsList.json).
 
+### Direct Link to an Entity
+You can link directly to an entity using a url with the query param `node` as follows:
+```https://italia.github.io/openid-federation-browser/dynamicUrl?node=https%3A%2F%2Fpre.ta.wallet.ipzs.it```
+
 ## License
 
 This project is licensed under the Apache2 License. See the [LICENSE](LICENSE) file for more details.
