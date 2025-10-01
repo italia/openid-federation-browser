@@ -25,6 +25,7 @@ import { isModalShowed } from "../lib/utils";
 import { areDisconnected } from "../lib/graph-data/utils";
 import styles from "../css/BodyComponent.module.css";
 import headerStyle from "../css/Header.module.css";
+import { SphereWithSvg } from "../render/node";
 import { useLocation } from "react-router-dom";
 import { useSearchParams } from 'react-router-dom';
 
@@ -454,6 +455,17 @@ export const GraphView = () => {
                 const gEdge = edge as GraphEdge; 
                 setSearchParams({edge: gEdge.id});
                 enableEdgeContextMenu(gEdge.id);
+              }}
+              renderNode={({ node, ...rest }) => {
+                console.warn(node.icon);
+                return (
+                  <SphereWithSvg
+                    {...rest}
+                    node={node}
+                    image={node.icon || ""}
+                    svgSize={0.8}
+                  />
+                );
               }}
             />
           </div>

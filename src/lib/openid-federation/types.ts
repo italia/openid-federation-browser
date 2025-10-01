@@ -1,4 +1,4 @@
-import jose from "jose";
+import * as jose from "jose";
 
 export interface JWTHeader {
   alg: string;
@@ -52,6 +52,7 @@ export interface EntityConfigurationPayload {
     federation_entity: {
       contacts: string[];
       federation_fetch_endpoint: string;
+      logo_uri: string | undefined;
       homepage_uri: string;
       organization_name: string;
       federation_list_endpoint: string;
