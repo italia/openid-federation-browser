@@ -8,11 +8,13 @@ import { isValidUrl } from "../lib/utils";
 import style from "../css/ContextMenu.module.css";
 import bodyStyle from "../css/BodyComponent.module.css";
 import { useNavigate } from "react-router-dom";
+import { useSearchParams } from 'react-router-dom';
 
 export const UrlInput = () => {
   const [inputValue, setInputValue] = useState("");
   const [doCheck, setDoCheck] = useState(false);
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
 
   const changeValue = (e: React.ChangeEvent<HTMLInputElement>) =>
     setInputValue(e.target.value);
@@ -46,6 +48,12 @@ export const UrlInput = () => {
   }, [doCheck]);
 
   useEffect(() => handleKeyDownEvent("Enter", () => setDoCheck(true)), []);
+
+  useEffect(() => {
+    const urlParam = searchParams.get('node');
+    setInputValue(urlParam ? urlParam : '');
+    if (urlParam) setDoCheck(true);
+  }, [searchParams]);
 
   return (
     <div className={bodyStyle.bodyElement}>
