@@ -1,4 +1,4 @@
-import React from "react";
+import React, {JSX} from "react";
 import { AccordionAtom } from "./Accordion";
 import { JWTViewer } from "./JWTViewer";
 import { InfoView } from "../atoms/InfoView";
@@ -155,7 +155,7 @@ export const NodeMenuAtom = ({
     );
   }, [data]);
 
-  const displayedInfo = [
+  const displayedInfo: (string | number | JSX.Element)[][] = [
     ["entity_id_label", data.info.ec.entity],
     ["federation_entity_type_label", data.info.type],
     ["immediate_subordinate_count_label", data.info.immDependants.length],
@@ -166,6 +166,19 @@ export const NodeMenuAtom = ({
     ["expiring_date_label", timestampToLocaleString(data.info.ec.payload.exp)],
     ["entity_type_label", getEntityTypes(data.info.ec.payload).join(", ")],
   ];
+
+  if (data.info.ec.payload.metadata.federation_entity?.logo_uri) {
+    console.log("logo", data.info.ec.payload.metadata.federation_entity.logo_uri)
+    displayedInfo.push([
+      "logo",
+      <img
+        key="logo"
+        src={data.info.ec.payload.metadata.federation_entity.logo_uri}
+        alt="logo"
+        style={{ maxHeight: "50px", maxWidth: "150px" }}
+      ></img>,
+    ]);
+  }
 
   return (
     <>
