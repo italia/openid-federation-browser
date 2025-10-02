@@ -467,7 +467,6 @@ export const GraphView = () => {
                     {...rest}
                     node={node}
                     image={node.icon || ""}
-                    svgSize={0.8}
                     logoVisible={logoVisible}
                   />
                 )}
