@@ -225,7 +225,7 @@ describe("Openid Federation Browser spec", () => {
 
       tableRows = infoTable.find("tbody tr");
 
-      tableRows.should("have.length", 6);
+      tableRows.should("have.length", 7);
 
       tableRows.each((row) => {
         const cells = cy.wrap(row).find("td");
