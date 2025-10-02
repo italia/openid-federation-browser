@@ -466,7 +466,7 @@ export const GraphView = () => {
                   <SphereWithSvg
                     {...rest}
                     node={node}
-                    image={node.icon || ""}
+                    image={node.icon || "/it-help-circle.svg"}
                     logoVisible={logoVisible}
                   />
                 )}
