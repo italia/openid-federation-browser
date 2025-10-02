@@ -47,6 +47,7 @@ export const Svg: FC<SvgProps> = ({
 }) => {
     const [scale, setScale] = useState(new Vector3(0.1, 0.1, 0.1));
     const [position, setPosition] = useState(new Vector3(600, -600, 0));
+    const [validLogo, setValidLogo] = useState<boolean>(false);
 
     const targetWidth = 15;
     const targetHeight = 15;
@@ -115,6 +116,7 @@ export const Svg: FC<SvgProps> = ({
                 const scale = Math.min(scaleX, scaleY);
                 setScale(new Vector3(scale, scale, scale));
                 setPosition(new Vector3(((-width * scale) * 20), ((-height * scale) * 20), 1));
+                setValidLogo(true);
             } catch (error) {
                 if (error instanceof Error) {
                     console.error("Error:", error.message);
@@ -126,26 +128,30 @@ export const Svg: FC<SvgProps> = ({
     }, [image]);
 
   return (
-    <a.group userData={{ id, type: 'node' }} scale={scale}>
-        <Billboard position={[0, 0, 1]}>
-            <DreiSvg
-                {...rest}
-                src={image}
-                fillMaterial={{
-                    fog: true,
-                    depthTest: false,
-                    transparent: true,
-                    opacity,
-                    side: DoubleSide,
-                    ...(rest.fillMaterial || {})
-                }}
-                fillMeshProps={{
-                    position: position,
-                    ...(rest.fillMeshProps || {})
-                }}
-            />
-        </Billboard>
-    </a.group>
+    <>
+        {validLogo && (
+            <a.group userData={{ id, type: 'node' }} scale={scale}>
+                <Billboard position={[0, 0, 1]}>
+                    <DreiSvg
+                        {...rest}
+                        src={image}
+                        fillMaterial={{
+                            fog: true,
+                            depthTest: false,
+                            transparent: true,
+                            opacity,
+                            side: DoubleSide,
+                            ...(rest.fillMaterial || {})
+                        }}
+                        fillMeshProps={{
+                            position: position,
+                            ...(rest.fillMeshProps || {})
+                        }}
+                    />
+                </Billboard>
+            </a.group>
+        )}
+    </>
     );
 };
 
@@ -186,31 +192,31 @@ export const SphereWithSvg: FC<SphereWithSvgProps> = ({
         <group>
             {logoVisible && (
                 <>
-            {imageType === ImageType.SVG ? (
-                <Svg
-                    id={id}
-                    selected={selected}
-                    size={svgSize || size * 0.8}
-                    animated={animated}
-                    color={svgFill || "#000000"}
-                    node={node}
-                    active={active}
-                    image={image}
-                    {...rest}
-                />
-            ) : (
-                <Icon
-                    id={id}
-                    image={image}
-                    selected={selected}
-                    size={size + 8}
-                    opacity={1}
-                    animated={animated}
-                    color={color}
-                    node={node}
-                    active={active}
-                />
-            )}
+                    {imageType === ImageType.SVG ? (
+                        <Svg
+                            id={id}
+                            selected={selected}
+                            size={svgSize || size * 0.8}
+                            animated={animated}
+                            color={svgFill || "#000000"}
+                            node={node}
+                            active={active}
+                            image={image}
+                            {...rest}
+                        />
+                    ) : (
+                        <Icon
+                            id={id}
+                            image={image}
+                            selected={selected}
+                            size={size + 8}
+                            opacity={1}
+                            animated={animated}
+                            color={color}
+                            node={node}
+                            active={active}
+                        />
+                    )}
                 </>
             )}
             <Sphere
