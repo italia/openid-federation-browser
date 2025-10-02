@@ -1,5 +1,11 @@
 import { Modal } from "bootstrap-italia";
 
+export enum ImageType {
+    SVG,
+    IMAGE,
+    UNKNOWN
+};
+
 export const isValidUrl = (url: string): boolean => {
   try {
     new URL(url);
@@ -201,3 +207,38 @@ export const cleanEntityID = (entityID: string) =>
 
 export const timestampToLocaleString = (timestamp: number) =>
   new Date(timestamp * 1000).toLocaleString(navigator.language.split(",")[0]);
+
+export const getImageType = async (url: string) => {
+    const headers = new Headers();
+    
+    headers.append(
+        "Accept", "image/avif,image/webp,image/png,image/svg+xml,image/*;q=0.8,*/*;q=0.5"
+    );
+
+    const response = await fetch(url, { 
+        headers,
+        method: 'GET',
+        credentials: 'include'  // Include cookies for CORS requests
+    });
+
+    if (!response.ok) {
+        console.error("Failed to fetch Image file: " + response.statusText);
+        return ImageType.UNKNOWN;
+    }
+
+    const contentType = response.headers.get("Content-Type");
+    if (!contentType) {
+        console.error("Could not determine image content type");
+        return ImageType.UNKNOWN;
+    }
+
+    if (contentType.includes("image/svg+xml")) {
+        return ImageType.SVG;
+    }
+
+    if (contentType.includes("image/png") || contentType.includes("image/jpeg") ||
+        contentType.includes("image/jpg") || contentType.includes("image/gif")) {
+        return ImageType.IMAGE;
+    }
+    return ImageType.UNKNOWN;
+};
