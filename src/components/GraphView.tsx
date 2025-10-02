@@ -63,8 +63,13 @@ export const GraphView = () => {
   );
   const [sidebarVisible, setSidebarVisible] = useState(false);
   const [, setSearchParams] = useSearchParams();
+  const [logoVisible, setLogoVisible] = useState(true);
 
   const location = useLocation();
+
+  const handleLogoToggle = () => {
+    setLogoVisible(!logoVisible);
+  };
 
   const updateGraph = ({ nodes, edges }: Graph) => {
     setNodes(nodes);
@@ -423,6 +428,7 @@ export const GraphView = () => {
               onTCCopy={onTCCopy}
               showTCButton={tc !== undefined}
               onEntityAdd={onEntityAdd}
+              onShowHideLogos={handleLogoToggle}
             />
             <GraphCanvas
               ref={ref}
@@ -456,17 +462,15 @@ export const GraphView = () => {
                 setSearchParams({edge: gEdge.id});
                 enableEdgeContextMenu(gEdge.id);
               }}
-              renderNode={({ node, ...rest }) => {
-                console.warn(node.icon);
-                return (
+              renderNode={({ node, ...rest }) => (
                   <SphereWithSvg
                     {...rest}
                     node={node}
                     image={node.icon || ""}
                     svgSize={0.8}
+                    logoVisible={logoVisible}
                   />
-                );
-              }}
+                )}
             />
           </div>
         )}

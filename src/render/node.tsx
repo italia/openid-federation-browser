@@ -27,6 +27,8 @@ export interface SphereWithSvgProps extends SvgProps {
   svgFill?: ColorRepresentation;
 
   svgSize?: number;
+
+  logoVisible: boolean;
 }
 
 export type SvgProps = NodeRendererProps &
@@ -91,7 +93,7 @@ export const Svg: FC<SvgProps> = ({
     const downloadImage = async (url: string): Promise<string | null> => {
         try {
             const response = await fetch(url);
-            if (!response.ok) throw new Error("Failed to fetch SVG file");
+            if (!response.ok) throw new Error("Failed to fetch Image file: " + response.statusText);
             return await response.text();
         } catch (error) {
             if (error instanceof Error) {
@@ -158,6 +160,7 @@ export const SphereWithSvg: FC<SphereWithSvgProps> = ({
     image,
     selected,
     svgSize,
+    logoVisible,
     ...rest
 }) => {
     const [imageType, setImageType] = useState<ImageType>(ImageType.SVG);
@@ -181,6 +184,8 @@ export const SphereWithSvg: FC<SphereWithSvgProps> = ({
 
     return (
         <group>
+            {logoVisible && (
+                <>
             {imageType === ImageType.SVG ? (
                 <Svg
                     id={id}
@@ -206,7 +211,8 @@ export const SphereWithSvg: FC<SphereWithSvgProps> = ({
                     active={active}
                 />
             )}
-
+                </>
+            )}
             <Sphere
                 id={id}
                 selected={selected}

@@ -10,6 +10,7 @@ export interface GraphControlMenuAtomProps {
   onExport: () => void;
   onTCCopy: () => void;
   onEntityAdd: () => void;
+  onShowHideLogos: () => void;
 }
 
 export const GraphControlMenuAtom = ({
@@ -18,6 +19,7 @@ export const GraphControlMenuAtom = ({
   onExport,
   onTCCopy,
   onEntityAdd,
+  onShowHideLogos,
 }: GraphControlMenuAtomProps) => {
   return (
     <div
@@ -111,6 +113,27 @@ export const GraphControlMenuAtom = ({
           <div className="col-md-auto">
             <span className="titillium-web-bold" style={{ fontSize: "14px" }}>
               <FormattedMessage id="save_view" />
+            </span>
+          </div>
+        </div>
+      </button>
+      <button
+        className={`btn btn-primary btn-sm py-1 px-2 mt-2 ${headerStyle.headerText}`}
+        style={{ display: "block", width: "100%" }}
+        onClick={onShowHideLogos}
+        data-testid="show-logos-button"
+      >
+        <div className="row">
+          <div className="col-3">
+            <IconAtom
+              iconID="#it-password-invisible"
+              className="icon-sm icon-white"
+              isRounded={false}
+            />
+          </div>
+          <div className="col-md-auto">
+            <span className="titillium-web-bold" style={{ fontSize: "14px" }}>
+              <FormattedMessage id="show_logos" />
             </span>
           </div>
         </div>
