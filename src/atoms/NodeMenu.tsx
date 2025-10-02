@@ -168,7 +168,6 @@ export const NodeMenuAtom = ({
   ];
 
   if (data.info.ec.payload.metadata.federation_entity?.logo_uri) {
-    console.log("logo", data.info.ec.payload.metadata.federation_entity.logo_uri)
     displayedInfo.push([
       "logo",
       <img
