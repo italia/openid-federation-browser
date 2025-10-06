@@ -25,6 +25,7 @@ import { isModalShowed } from "../lib/utils";
 import { areDisconnected } from "../lib/graph-data/utils";
 import styles from "../css/BodyComponent.module.css";
 import headerStyle from "../css/Header.module.css";
+import { SphereWithSvg } from "../render/node";
 import { useLocation } from "react-router-dom";
 import { useSearchParams } from 'react-router-dom';
 
@@ -62,8 +63,13 @@ export const GraphView = () => {
   );
   const [sidebarVisible, setSidebarVisible] = useState(false);
   const [, setSearchParams] = useSearchParams();
+  const [logoVisible, setLogoVisible] = useState(true);
 
   const location = useLocation();
+
+  const handleLogoToggle = () => {
+    setLogoVisible(!logoVisible);
+  };
 
   const updateGraph = ({ nodes, edges }: Graph) => {
     setNodes(nodes);
@@ -427,6 +433,7 @@ export const GraphView = () => {
               onTCCopy={onTCCopy}
               showTCButton={tc !== undefined}
               onEntityAdd={onEntityAdd}
+              onShowHideLogos={handleLogoToggle}
             />
             <GraphCanvas
               ref={ref}
@@ -460,6 +467,14 @@ export const GraphView = () => {
                 setSearchParams({edge: gEdge.id});
                 enableEdgeContextMenu(gEdge.id);
               }}
+              renderNode={({ node, ...rest }) => (
+                  <SphereWithSvg
+                    {...rest}
+                    node={node}
+                    image={node.icon || "/it-help-circle.svg"}
+                    logoVisible={logoVisible}
+                  />
+                )}
             />
           </div>
         )}

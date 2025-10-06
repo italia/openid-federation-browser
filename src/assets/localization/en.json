@@ -94,5 +94,7 @@
   "loaded_file": "Loaded File:",
   "upload_file": "Upload File",
   "entity_instanciated_from_authority_hint": "Entity instanciated from a not listed Authority Hint",
-  "invalid_input_value": "Invalid input value"
+  "invalid_input_value": "Invalid input value",
+  "logo": "Logo",
+  "show_logos": "Show/Hide Logos"
 }

@@ -6,6 +6,7 @@ export const genNode = (node: NodeInfo): GraphNode => {
   return {
     id: node.ec.entity,
     label: node.ec.entity,
+    icon: node.ec.payload?.metadata?.federation_entity?.logo_uri || undefined,
     fill: EntityColor[node.type],
     info: node,
   } as GraphNode;

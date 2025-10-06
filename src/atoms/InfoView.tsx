@@ -1,14 +1,14 @@
-import React from "react";
+import React, { JSX } from "react";
 import { FormattedMessage } from "react-intl";
 import style from "../css/ContextMenu.module.css";
 
 export interface InfoViewProps {
   id: string;
-  infos: (string | number)[][];
+  infos: (string | number | JSX.Element)[][];
 }
 
 export const InfoView = ({ id, infos }: InfoViewProps) => {
-  const toRow = (info: (string | number)[], index: number) => (
+  const toRow = (info: (string | number | JSX.Element)[], index: number) => (
     <tr className={style.contextAccordinText} key={`${id}-info${index}`}>
       <td
         style={{
