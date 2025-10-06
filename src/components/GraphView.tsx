@@ -305,7 +305,7 @@ export const GraphView = () => {
     discoverNodes([discovery], { nodes, edges }).then((result) => {
       if (result.failed.find((f) => f.entity === discovery)) {
         setFailedNodes([...failedNodes, discovery]);
-        onModalError(result.failed.map((f) => f.error.message));
+        onModalError(result.failed.map((f) => `${f.entity} - ${f.error.message}`));
         setDiscoveryQueue(rest);
       }
 
@@ -313,7 +313,12 @@ export const GraphView = () => {
 
       const discoveredNode = result.graph.nodes.find(
         (n) => n.id === discovery,
-      ) as GraphNode;
+      );
+
+      if (!discoveredNode) {
+        setDiscoveryQueue(rest);
+        return;
+      }
 
       discoveredNode.info.istanciatedFrom = currentContextMenu?.id;
 

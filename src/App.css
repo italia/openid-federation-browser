@@ -18,6 +18,10 @@ pre {
   height: 20rem !important;
 }
 
+ul.nav-tabs {
+  cursor: pointer !important;
+}
+
 table,
 th,
 td {
@@ -38,4 +42,9 @@ td {
   font-family: "Titillium Web", sans-serif;
   font-weight: 700;
   font-style: normal;
+}
+
+.p-warning {
+  margin-top: -15px;
+  font-size: 14px;
 }
