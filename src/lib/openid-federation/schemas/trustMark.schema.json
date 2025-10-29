@@ -1,0 +1,146 @@
+{
+    "type": "object",
+    "properties": {
+        "iss": {
+            "type": "string",
+            "format": "uri",
+            "pattern": "^https://"
+        },
+        "sub": {
+            "type": "string",
+            "format": "uri",
+            "pattern": "^https://"
+        },
+        "id": {
+            "type": "string",
+            "format": "uri",
+            "pattern": "^https:\/\/[a-zA-Z0-9.-]+\/(openid_relying_party|openid_provider|intermediate|oauth_resource)\/(public|private)\/?$"
+        },
+        "iat": {
+            "type": "integer",
+            "minimum": 0
+        },
+        "logo_uri": {
+            "type": "string",
+            "format": "uri",
+            "pattern": "^https://.*\\.svg$"
+        },
+        "exp": {
+            "type": "integer",
+            "minimum": 0
+        },
+        "ref": {
+            "type": "string",
+            "format": "uri",
+            "pattern": "^https://"
+        },
+        "organization_type": {
+            "type": "string",
+            "enum": [
+                "public",
+                "private"
+            ]
+        },
+        "id_code": {
+            "type": "object",
+            "properties": {
+                "ipa_code": {
+                    "type": "string"
+                },
+                "aoo_code": {
+                    "type": "string"
+                },
+                "uo_code": {
+                    "type": "string"
+                },
+                "vat_number": {
+                    "type": "string"
+                },
+                "fiscal_number": {
+                    "type": "string"
+                }
+            }
+        },
+        "email": {
+            "type": "string",
+            "format": "email"
+        },
+        "organization_name": {
+            "type": "string"
+        },
+        "sa_profile": {
+            "type": "string",
+            "enum": [
+                "full",
+                "light"
+            ]
+        }
+    },
+    "required": [
+        "iss",
+        "sub",
+        "id",
+        "iat",
+        "logo_uri",
+        "exp",
+        "ref",
+        "organization_type",
+        "id_code",
+        "email",
+        "organization_name"
+    ],
+    "allOf": [
+        {
+            "if": {
+                "properties": {
+                    "organization_type": {
+                        "const": "public"
+                    }
+                }
+            },
+            "then": {
+                "properties": {
+                    "id_code": {
+                        "type": "object",
+                        "required": [
+                            "ipa_code"
+                        ]
+                    }
+                }
+            }
+        },
+        {
+            "if": {
+                "properties": {
+                    "organization_type": {
+                        "const": "private"
+                    }
+                }
+            },
+            "then": {
+                "anyOf": [
+                    {
+                        "properties": {
+                            "id_code": {
+                                "type": "object",
+                                "required": [
+                                    "vat_number"
+                                ]
+                            }
+                        }
+                    },
+                    {
+                        "properties": {
+                            "id_code": {
+                                "type": "object",
+                                "required": [
+                                    "fiscal_number"
+                                ]
+                            }
+                        }
+                    }
+                ]
+            }
+        }
+    ]
+}

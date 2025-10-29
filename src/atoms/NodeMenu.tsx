@@ -6,14 +6,12 @@ import { GraphNode } from "../lib/graph-data/types";
 import { PaginatedListAtom } from "../atoms/PaginatedList";
 import { EntityItemsRenderer } from "./EntityItemRender";
 import { useEffect, useState } from "react";
-import { fmtValidity } from "../lib/utils";
-import { validateEntityConfiguration } from "../lib/openid-federation/schema";
+import { validateEntityConfiguration, validateHeaderTrustMark, validateTrustMark } from "../lib/openid-federation/schema";
 import { FormattedMessage } from "react-intl";
-import { timestampToLocaleString } from "../lib/utils";
 import { SubAdvanceFiltersAtom } from "./SubAdvanceFilters";
 import { TrustMarkListing } from "./TrustMarkListing";
 import { getEntityTypes } from "../lib/openid-federation/utils";
-import { cleanEntityID } from "../lib/utils";
+import { cleanEntityID, fmtValidity, timestampToLocaleString } from "../lib/utils";
 import style from "../css/ContextMenu.module.css";
 
 export interface NodeMenuProps {
@@ -48,9 +46,9 @@ export const NodeMenuAtom = ({
   const [trustMarkListEndpoint, setTrustMarkListEndpoint] = useState<
     string | undefined
   >(
-    data.info.ec.payload.metadata?.federation_entity ? 
-    data.info.ec.payload.metadata?.federation_entity.federation_trust_mark_list_endpoint : 
-    undefined,
+    data.info.ec.payload.metadata?.federation_entity ?
+      data.info.ec.payload.metadata?.federation_entity.federation_trust_mark_list_endpoint :
+      undefined,
   );
 
   const [depFilteredItems, setDepFilteredItems] = useState<string[]>([]);
@@ -83,19 +81,19 @@ export const NodeMenuAtom = ({
 
   const removeAllEntities =
     (subordinate: boolean = false) =>
-    () => {
-      if (subordinate) {
-        removeEntities(
-          data.info.immDependants.filter((dep) => isDiscovered(dep)),
-        );
-      } else {
-        const authorityHints = data.info.ec.payload.authority_hints;
+      () => {
+        if (subordinate) {
+          removeEntities(
+            data.info.immDependants.filter((dep) => isDiscovered(dep)),
+          );
+        } else {
+          const authorityHints = data.info.ec.payload.authority_hints;
 
-        if (!authorityHints) return;
+          if (!authorityHints) return;
 
-        removeEntities(authorityHints.filter((dep) => isDiscovered(dep)));
-      }
-    };
+          removeEntities(authorityHints.filter((dep) => isDiscovered(dep)));
+        }
+      };
 
   const removeAllSubordinates = removeAllEntities(true);
   const removeAllAuthorityHints = removeAllEntities(false);
@@ -113,6 +111,11 @@ export const NodeMenuAtom = ({
 
   const validateEC = async (ec: object): Promise<[boolean, string | undefined]> => {
     const validation = await validateEntityConfiguration(ec);
+    return [(validation[0] && data.info.ec.valid), validation[1]];
+  }
+
+  const validateTM = async (tm: object): Promise<[boolean, string | undefined]> => {
+    const validation = await validateTrustMark(tm);
     return [(validation[0] && data.info.ec.valid), validation[1]];
   }
 
@@ -320,6 +323,10 @@ export const NodeMenuAtom = ({
                             raw={tm.jwt}
                             decodedPayload={tm.payload as object}
                             decodedHeader={tm.header as object}
+                            validationFn={validateTM}
+                            headerValidationFn={validateHeaderTrustMark}
+                            schemaUrl={`${import.meta.env.VITE_TRUST_MARK_SCHEMA}`}
+                            headerSchemaUrl={`${import.meta.env.VITE_ENTITY_HEADER_SCHEMA}`}
                           />
                         }
                       />
