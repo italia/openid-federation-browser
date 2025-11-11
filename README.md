@@ -89,9 +89,9 @@ Open a PR adding your favorite Trust Anchors [here](src/assets/trustAnchorsList.
 You can link directly to an entity using a url with the query param `node` as follows:
 ```https://italia.github.io/openid-federation-browser/dynamicUrl?node=https%3A%2F%2Fpre.ta.wallet.ipzs.it```
 
-## Example Use Case
+## Deployments
  
-**OpenID Federation Browser** has been integrated in a real-world scenario at [Trust Anchor for IT Wallet](https://pre.ta.wallet.ipzs.it) (pre-production environment).  
+A working setup of **OpenID Federation Browser** has been dewployed at [Trust Anchor for IT Wallet](https://pre.ta.wallet.ipzs.it) (pre-production environment).  
 
 ## License
 
