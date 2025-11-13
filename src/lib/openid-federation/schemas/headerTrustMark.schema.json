@@ -3,6 +3,7 @@
     "properties": {
         "alg": {
             "type": "string",
+            "minLength": 1,
             "not": {
                 "enum": [
                     "none",
@@ -13,11 +14,12 @@
             }
         },
         "kid": {
-            "type": "string"
+            "type": "string",
+            "minLength": 1
         },
         "typ": {
             "type": "string",
-            "const": "trust-mark+jwt"
+            "minLength": 1
         }
     },
     "required": [

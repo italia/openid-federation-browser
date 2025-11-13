@@ -11,10 +11,8 @@
             "format": "uri",
             "pattern": "^https://"
         },
-        "id": {
-            "type": "string",
-            "format": "uri",
-            "pattern": "^https:\/\/[a-zA-Z0-9.-]+\/(openid_relying_party|openid_provider|intermediate|oauth_resource)\/(public|private)\/?$"
+        "trust_mark_type": {
+            "type": "string"
         },
         "iat": {
             "type": "integer",
