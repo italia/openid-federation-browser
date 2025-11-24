@@ -49,6 +49,12 @@ export const PaginatedListAtom = ({
 
       setCurrentItems(currentItems);
       setPageCount(pageCount);
+      setCurrentPage(pageCount === 0 ? 0 : Math.min(currentPage, pageCount - 1));
+      setItemOffset(
+        pageCount === 0
+          ? 0
+          : Math.min(itemOffset, (pageCount - 1) * itemsPerPage),
+      );
       if (onItemsFiltered) onItemsFiltered(filteredItems);
     },
 

@@ -83,11 +83,15 @@ For the correct functioning it's necessary install a CORS Plugin (see [here](htt
 
 ### Add your Federation in the Assets
 
-Open a PR adding your favorite Trust Anchors [here](src/assets/trustChainList.json).
+Open a PR adding your favorite Trust Anchors [here](src/assets/trustAnchorsList.json).
 
 ### Direct Link to an Entity
 You can link directly to an entity using a url with the query param `node` as follows:
 ```https://italia.github.io/openid-federation-browser/dynamicUrl?node=https%3A%2F%2Fpre.ta.wallet.ipzs.it```
+
+## Deployments
+ 
+A working setup of **OpenID Federation Browser** has been dewployed at [Trust Anchor for IT Wallet](https://pre.ta.wallet.ipzs.it) (pre-production environment).  
 
 ## License
 

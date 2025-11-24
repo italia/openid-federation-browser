@@ -1,6 +1,5 @@
 import React from "react";
 import { FormattedMessage } from "react-intl";
-import { AccordionAtom } from "./Accordion";
 import style from "../css/ContextMenu.module.css";
 
 export interface WarningModalProps {
@@ -55,22 +54,24 @@ export const WarningModalAtom = ({
                 <FormattedMessage id={descriptionID} />
               )}
             </p>
-
-            {details && (
-              <AccordionAtom
-                accordinId="details"
-                labelId="error_details"
-                hiddenElement={
-                  <ul>
-                    {details.map((detail, index) => (
-                      <li key={index} className={style.contextAccordinText}>
-                        {detail}
-                      </li>
-                    ))}
-                  </ul>
-                }
-              />
-            )}
+            {details && 
+              <ul>
+                {details.slice(0, 5).map((detail, index) => {
+                  const [entity, message] = detail.split(" - ");
+                  return (
+                    <li key={index} className={style.contextAccordinText}>
+                      <p className="p-warning">{entity}</p>
+                      <p className="p-warning">{message}</p>
+                    </li>
+                  );
+                })}
+                {details.length > 5 && (
+                  <li>
+                    <p className="p-warning">others ...</p>
+                  </li>
+                )}
+              </ul>
+            }
           </div>
           <div className="modal-footer">
             <button

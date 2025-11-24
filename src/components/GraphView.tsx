@@ -4,8 +4,6 @@ import { discoverNode, traverseUp } from "../lib/openid-federation/trustChain";
 import { GraphCanvas, GraphCanvasRef } from "reagraph";
 import { GraphNode, GraphEdge, Graph } from "../lib/graph-data/types";
 import { ContextSideBar } from "./ContextSidebar";
-import { LoadingAtom } from "../atoms/Loading";
-import { ErrorViewAtom } from "../atoms/ErrorView";
 import { downloadJsonFile } from "../lib/utils";
 import { exportView, importView } from "../lib/openid-federation/trustChain";
 import { WarningModalAtom } from "../atoms/WarningModal";
@@ -30,12 +28,6 @@ import { useSearchParams } from 'react-router-dom';
 
 import { removeEntities as _removeEntities } from "../lib/graph-data/utils";
 
-enum ShowElement {
-  Loading = "loading-atom",
-  Error = "error-atom",
-  Graph = "graph-atom",
-}
-
 export const GraphView = () => {
   const ref = useRef<GraphCanvasRef | null>(null);
   const [update, setUpdate] = useState(false);
@@ -46,7 +38,6 @@ export const GraphView = () => {
   const [highlighting, setHighlighting] = useState<boolean>(false);
   const [tc, setTc] = useState<string | undefined>(undefined);
   const [notification, setNotification] = useState<string>("");
-  const [error, setError] = useState<Error>(new Error(""));
   const [failedNodes, setFailedNodes] = useState<string[]>([]);
   const [currentContextMenu, setCurrentContextMenu] = useState<
     InternalGraphNode | InternalGraphEdge | undefined
@@ -57,9 +48,6 @@ export const GraphView = () => {
   );
   const [discoverQueue, setDiscoveryQueue] = useState<string[]>([]);
   const [toDiscoverList, setToDiscoverList] = useState<string[]>([]);
-  const [showElement, setShowElement] = useState<ShowElement>(
-    ShowElement.Loading,
-  );
   const [sidebarVisible, setSidebarVisible] = useState(false);
   const [, setSearchParams] = useSearchParams();
 
@@ -71,14 +59,16 @@ export const GraphView = () => {
 
     sessionStorage.setItem("currentSession", JSON.stringify({ nodes, edges }));
 
-    setShowElement(ShowElement.Graph);
+    //setShowElement(ShowElement.Graph);
   };
 
+  /*
   const showErrorMessage = (e: Error) => {
     console.error(e);
     setError(e);
     setShowElement(ShowElement.Error);
   };
+  */
 
   const isFailed = (node: string) => failedNodes.includes(node);
   const isDiscovered = (node: string) => nodes.some((n) => n.id === node);
@@ -272,7 +262,7 @@ export const GraphView = () => {
             
           updateGraph(graph);
         }).catch(
-          showErrorMessage
+          () => onModalError(["Failed to load the current session"]),
         );
       return;
     }
@@ -286,9 +276,10 @@ export const GraphView = () => {
     const discoveryGraph =
       searchType === "entity" ? traverseUp(url) : discoverNode(url);
 
-    discoveryGraph.then(updateGraph).catch(showErrorMessage);
+    discoveryGraph.then(updateGraph).catch((e) => onModalError([`${url} - ${e.message}`]));
 
     setUpdate(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [update]);
 
   useEffect(() => {
@@ -299,7 +290,7 @@ export const GraphView = () => {
     discoverNodes([discovery], { nodes, edges }).then((result) => {
       if (result.failed.find((f) => f.entity === discovery)) {
         setFailedNodes([...failedNodes, discovery]);
-        onModalError(result.failed.map((f) => f.error.message));
+        onModalError(result.failed.map((f) => `${f.entity} - ${f.error.message}`));
         setDiscoveryQueue(rest);
       }
 
@@ -307,7 +298,12 @@ export const GraphView = () => {
 
       const discoveredNode = result.graph.nodes.find(
         (n) => n.id === discovery,
-      ) as GraphNode;
+      );
+
+      if (!discoveredNode) {
+        setDiscoveryQueue(rest);
+        return;
+      }
 
       discoveredNode.info.istanciatedFrom = currentContextMenu?.id;
 
@@ -406,58 +402,52 @@ export const GraphView = () => {
         onAccept={(entityID) => {
           discoverNode(entityID, { nodes, edges })
             .then(updateGraph)
-            .catch(showErrorMessage);
+            .catch((e) => onModalError([`${entityID} - ${e.message}`]));
         }}
       />
       <div id="content-body" className={styles.graphAtom}>
-        {showElement === ShowElement.Loading ? (
-          <LoadingAtom />
-        ) : showElement === ShowElement.Error ? (
-          <ErrorViewAtom error={error} />
-        ) : (
-          <div data-testid="graph-view">
-            <GraphControlMenuAtom
-              onSessionSave={onSessionSave}
-              onExport={onExport}
-              onTCCopy={onTCCopy}
-              showTCButton={tc !== undefined}
-              onEntityAdd={onEntityAdd}
-            />
-            <GraphCanvas
-              ref={ref}
-              nodes={nodes}
-              edges={edges}
-              selections={selections}
-              actives={actives}
-              onNodeClick={(node) => {
-                if (selections.includes(node.id)) {
-                  setSelections(selections.filter((n) => n !== node.id));
-                  setActives(actives.filter((n) => n !== node.id));
-                } else {
-                  setSelections([node.id, ...selections]);
-                  setActives([node.id, ...actives]);
-                }
-              }}
-              onCanvasClick={() => {
-                if (highlighting || currentContextMenu) return;
-                setActives([]);
-                setSelections([]);
-              }}
-              lassoType="node"
-              onLassoEnd={(selections) => setSelections(selections)}
-              draggable
-              onNodeContextMenu={(node) => {
-                setSearchParams({node: node.id});
-                enableNodeContextMenu(node.id);
-              }}
-              onEdgeContextMenu={(edge) => {
-                const gEdge = edge as GraphEdge; 
-                setSearchParams({edge: gEdge.id});
-                enableEdgeContextMenu(gEdge.id);
-              }}
-            />
-          </div>
-        )}
+        <div data-testid="graph-view">
+          <GraphControlMenuAtom
+            onSessionSave={onSessionSave}
+            onExport={onExport}
+            onTCCopy={onTCCopy}
+            showTCButton={tc !== undefined}
+            onEntityAdd={onEntityAdd}
+          />
+          <GraphCanvas
+            ref={ref}
+            nodes={nodes}
+            edges={edges}
+            selections={selections}
+            actives={actives}
+            onNodeClick={(node) => {
+              if (selections.includes(node.id)) {
+                setSelections(selections.filter((n) => n !== node.id));
+                setActives(actives.filter((n) => n !== node.id));
+              } else {
+                setSelections([node.id, ...selections]);
+                setActives([node.id, ...actives]);
+              }
+            }}
+            onCanvasClick={() => {
+              if (highlighting || currentContextMenu) return;
+              setActives([]);
+              setSelections([]);
+            }}
+            lassoType="node"
+            onLassoEnd={(selections) => setSelections(selections)}
+            draggable
+            onNodeContextMenu={(node) => {
+              setSearchParams({node: node.id});
+              enableNodeContextMenu(node.id);
+            }}
+            onEdgeContextMenu={(edge) => {
+              const gEdge = edge as GraphEdge; 
+              setSearchParams({edge: gEdge.id});
+              enableEdgeContextMenu(gEdge.id);
+            }}
+          />
+        </div>
       </div>
       <div
         id="notification"
