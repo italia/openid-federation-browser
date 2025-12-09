@@ -1,0 +1,28 @@
+{
+    "type": "object",
+    "properties": {
+        "alg": {
+            "type": "string",
+            "not": {
+                "enum": [
+                    "none",
+                    "HS512",
+                    "HS256",
+                    "HS384"
+                ]
+            }
+        },
+        "kid": {
+            "type": "string"
+        },
+        "typ": {
+            "type": "string",
+            "const": "entity-statement+jwt"
+        }
+    },
+    "required": [
+        "alg",
+        "kid",
+        "typ"
+    ]
+}

@@ -5,8 +5,8 @@ import { InfoView } from "../atoms/InfoView";
 import { GraphNode } from "../lib/graph-data/types";
 import { PaginatedListAtom } from "../atoms/PaginatedList";
 import { EntityItemsRenderer } from "./EntityItemRender";
-import { useEffect, useState } from "react";
-import { validateEntityConfiguration, validateHeaderTrustMark, validateTrustMark } from "../lib/openid-federation/schema";
+import { useCallback, useEffect, useState } from "react";
+import { validateEntityConfiguration, validateHeaderEntityConfiguration, validateLeafEntityConfiguration, validateHeaderTrustMark, validateTrustMark } from "../lib/openid-federation/schema";
 import { FormattedMessage } from "react-intl";
 import { SubAdvanceFiltersAtom } from "./SubAdvanceFilters";
 import { TrustMarkListing } from "./TrustMarkListing";
@@ -109,10 +109,20 @@ export const NodeMenuAtom = ({
   const immediateFilter = (anchor: string, filterValue: string) =>
     anchor.toLowerCase().includes(filterValue.toLowerCase());
 
-  const validateEC = async (ec: object): Promise<[boolean, string | undefined]> => {
-    const validation = await validateEntityConfiguration(ec);
-    return [(validation[0] && data.info.ec.valid), validation[1]];
-  }
+  const isLeaf = (data.info.immDependants?.length ?? 0) === 0;
+
+  const validateEC = useCallback(
+    async (ec: object): Promise<[boolean, string | undefined]> => {
+      if (isLeaf) {
+        const v2 = await validateLeafEntityConfiguration(ec);
+        return [v2[0] && data.info.ec.valid, v2[1]];
+      } else {
+        const v1 = await validateEntityConfiguration(ec);
+        return [v1[0] && data.info.ec.valid, v1[1]];
+      }
+    },
+    [isLeaf, data.info.ec],
+  );
 
   const validateTM = async (tm: object): Promise<[boolean, string | undefined]> => {
     const validation = await validateTrustMark(tm);
@@ -292,12 +302,15 @@ export const NodeMenuAtom = ({
             labelId="entity_configuration_data"
             hiddenElement={
               <JWTViewer
+                key={`jwt-${isLeaf ? "leaf" : "entity"}-${+data.info.ec.jwt ? data.info.ec.jwt.slice(0, 12) : "no"}`}
                 id="entity-configuration-view"
                 raw={data.info.ec.jwt}
                 decodedPayload={data.info.ec.payload as object}
                 decodedHeader={data.info.ec.header as object}
                 validationFn={validateEC}
+                headerValidationFn={validateHeaderEntityConfiguration}
                 schemaUrl={`${import.meta.env.VITE_ENTITY_CONFIG_SCHEMA}`}
+                headerSchemaUrl={`${import.meta.env.VITE_ENTITY_HEADER_SCHEMA}`}
               />
             }
           />
