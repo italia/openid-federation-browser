@@ -259,7 +259,7 @@ describe("Openid Federation Browser spec", () => {
     cy.get('[data-testid="entity-configuration-view-schema-validation-table-payload"]')
       .should("exist")
       .should("be.visible")
-      .contains("Valid Payload Schema");
+      .contains("Invalid Payload Schema");
 
     cy.get('[data-testid="entity-configuration-view-schema-validation-table-payload"]')
       .find("tbody tr")
