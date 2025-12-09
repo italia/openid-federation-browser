@@ -37,10 +37,6 @@ jobs:
         node: [22]
     name: Node ${{ matrix.node }} sample
 
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-
     env:
       BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
 
