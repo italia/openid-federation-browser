@@ -77,7 +77,7 @@
     "required": [
         "iss",
         "sub",
-        "id",
+        "trust_mark_type",
         "iat",
         "logo_uri",
         "exp",
