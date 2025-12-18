@@ -1,9 +1,8 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import style from "../css/ContextMenu.module.css";
 import { IconAtom } from "./Icon";
 import { FormattedMessage } from "react-intl";
 import { CodeViewer } from "./CodeViewer";
-import { useState } from "react";
 
 type SchemaValidity = "UNKNOWN" | "VALID" | "INVALID";
 
@@ -13,7 +12,9 @@ export interface ECViewerProps {
   decodedPayload: object;
   decodedHeader: object;
   validationFn?: (payload: object) => Promise<[boolean, string | undefined]>;
+  headerValidationFn?: (header: object) => Promise<[boolean, string | undefined]>;
   schemaUrl?: string;
+  headerSchemaUrl?: string;
 }
 
 export const JWTViewer = ({
@@ -22,11 +23,18 @@ export const JWTViewer = ({
   decodedPayload,
   decodedHeader,
   validationFn,
+  headerValidationFn,
   schemaUrl,
+  headerSchemaUrl,
 }: ECViewerProps) => {
   const [schemaValidity, setSchemaValidity] =
     useState<SchemaValidity>("UNKNOWN");
   const [validationError, setValidationError] = useState<string | undefined>(
+    undefined,
+  );
+  const [headerSchemaValidity, setHeaderSchemaValidity] =
+    useState<SchemaValidity>("UNKNOWN");
+  const [headerValidationError, setHeaderValidationError] = useState<string | undefined>(
     undefined,
   );
 
@@ -62,23 +70,34 @@ export const JWTViewer = ({
 
   useEffect(() => {
     const validateSchema = async () => {
-      if (!validationFn) return;
+      if ((!validationFn) && (!headerValidationFn)) return;
 
-      const [valid, errors] = await validationFn(decodedPayload);
+      if (validationFn) {
+        const [valid, errors] = await validationFn(decodedPayload);
+        if (valid) {
+          setSchemaValidity("VALID");
+        } else {
+          setSchemaValidity("INVALID");
+          setValidationError(errors);
+        }
+      }
 
-      if (valid) {
-        setSchemaValidity("VALID");
-      } else {
-        setSchemaValidity("INVALID");
-        setValidationError(errors);
+      if (headerValidationFn) {
+        const [validHead, headerrors] = await headerValidationFn(decodedHeader);
+        if (validHead) {
+          setHeaderSchemaValidity("VALID");
+        } else {
+          setHeaderSchemaValidity("INVALID");
+          setHeaderValidationError(headerrors);
+        }
       }
     };
 
-    if (schemaValidity === "UNKNOWN") {
+    if (schemaValidity === "UNKNOWN" || headerSchemaValidity === "UNKNOWN") {
       validateSchema();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [schemaValidity]);
+  }, [schemaValidity, headerSchemaValidity]);
 
   return (
     <div className="container" style={{ width: "100%", padding: "14px 24px" }}>
@@ -86,8 +105,8 @@ export const JWTViewer = ({
         {validationFn && (
           <div className="col">
             <table
-              style={{ width: "100%" }}
-              data-testid="schema-validation-table"
+              style={{ width: "100%", tableLayout: "fixed" }}
+              data-testid={`${id}-schema-validation-table-payload`}
             >
               <tbody>
                 <tr>
@@ -121,6 +140,42 @@ export const JWTViewer = ({
               <div className="alert alert-danger" role="alert">
                 <span className={style.contextAccordinText}>
                   {validationError}
+                </span>
+              </div>
+            )}
+            <table className="mt-3" style={{ width: "100%", tableLayout: "fixed" }} data-testid={`${id}-schema-validation-table-header`}>
+              <tbody>
+                <tr>
+                  <td>
+                    <IconAtom
+                      iconID={`${headerSchemaValidity === "VALID" ? "#it-check" : "#it-close"}`}
+                      className={`icon-sm ${headerSchemaValidity === "VALID" ? "icon-success" : "icon-danger"}`}
+                      isRounded={false}
+                    />
+                    <span className={style.contextAccordinText}>
+                      {headerSchemaValidity === "UNKNOWN" ? (
+                        <FormattedMessage id="validate_header_schema" />
+                      ) : headerSchemaValidity === "VALID" ? (
+                        <FormattedMessage id="valid_header_schema" />
+                      ) : (
+                        <FormattedMessage id="invalid_header_schema" />
+                      )}
+                    </span>
+                  </td>
+                  {headerSchemaUrl && (
+                    <td>
+                      <a href={headerSchemaUrl} className={style.contextAccordinText}>
+                        <FormattedMessage id="schema_validation_url" />
+                      </a>
+                    </td>
+                  )}
+                </tr>
+              </tbody>
+            </table>
+            {headerValidationError && (
+              <div className="alert alert-danger" role="alert">
+                <span className={style.contextAccordinText}>
+                  {headerValidationError}
                 </span>
               </div>
             )}

@@ -1,0 +1,304 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "iss": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https://"
+    },
+    "sub": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https://"
+    },
+    "iat": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "exp": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "jwks": {
+      "type": "object",
+      "properties": {
+        "keys": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "kty": {
+                "type": "string"
+              },
+              "n": {
+                "type": "string"
+              },
+              "e": {
+                "type": "string"
+              },
+              "kid": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "kty",
+              "kid"
+            ]
+          }
+        }
+      },
+      "required": [
+        "keys"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "openid_relying_party": {
+          "type": "object",
+          "properties": {
+            "redirect_uris": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "format": "uri"
+              }
+            },
+            "grant_types": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "refresh_token",
+                  "authorization_code"
+                ]
+              },
+              "minItems": 1,
+              "maxItems": 2,
+              "uniqueItems": true,
+              "contains": {
+                "const": "authorization_code"
+              }
+            },
+            "jwks": {
+              "type": "object",
+              "properties": {
+                "keys": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "kty": {
+                        "type": "string"
+                      },
+                      "use": {
+                        "type": "string"
+                      },
+                      "n": {
+                        "type": "string"
+                      },
+                      "e": {
+                        "type": "string"
+                      },
+                      "kid": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "kty",
+                      "kid"
+                    ]
+                  }
+                }
+              },
+              "required": [
+                "keys"
+              ]
+            },
+            "id_token_signed_response_alg": {
+              "type": "string",
+              "not": {
+                "enum": [
+                  "none",
+                  "HS512",
+                  "HS256",
+                  "HS384"
+                ]
+              }
+            },
+            "id_token_encrypted_response_alg": {
+              "type": "string",
+              "not": {
+                "enum": [
+                  "RS_1_5"
+                ]
+              }
+            },
+            "id_token_encrypted_response_enc": {
+              "type": "string"
+            },
+            "userinfo_signed_response_alg": {
+              "type": "string",
+              "not": {
+                "enum": [
+                  "none",
+                  "HS512",
+                  "HS256",
+                  "HS384"
+                ]
+              }
+            },
+            "userinfo_encrypted_response_alg": {
+              "type": "string",
+              "not": {
+                "enum": [
+                  "RS_1_5"
+                ]
+              }
+            },
+            "userinfo_encrypted_response_enc": {
+              "type": "string"
+            },
+            "token_endpoint_auth_method": {
+              "type": "string",
+              "const": "private_key_jwt"
+            },
+            "client_id": {
+              "type": "string",
+              "format": "uri",
+              "pattern": "^https://[^?#]+$"
+            },
+            "client_registration_types": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "const": "automatic"
+              }
+            },
+            "response_types": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "contains": {
+                "type": "string",
+                "const": "code"
+              }
+            }
+          },
+          "required": [
+            "grant_types",
+            "redirect_uris",
+            "id_token_signed_response_alg",
+            "userinfo_signed_response_alg",
+            "userinfo_encrypted_response_alg",
+            "userinfo_encrypted_response_enc",
+            "token_endpoint_auth_method",
+            "client_id",
+            "client_registration_types",
+            "response_types"
+          ],
+          "dependencies": {
+            "id_token_encrypted_response_alg": [
+              "id_token_encrypted_response_enc"
+            ]
+          }
+        },
+        "federation_entity": {
+          "type": "object",
+          "properties": {
+            "federation_resolve_endpoint": {
+              "type": "string",
+              "format": "uri",
+              "pattern": "^https://.*?/resolve/?"
+            },
+            "organization_name": {
+              "type": "string"
+            },
+            "homepage_uri": {
+              "type": "string",
+              "format": "uri"
+            },
+            "policy_uri": {
+              "type": "string",
+              "format": "uri"
+            },
+            "logo_uri": {
+              "type": "string",
+              "format": "uri",
+              "pattern": "^https://.*\\.svg"
+            },
+            "contacts": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "required": [
+            "federation_resolve_endpoint",
+            "organization_name",
+            "homepage_uri",
+            "policy_uri",
+            "contacts"
+          ]
+        },
+        "openid_provider": {
+          "type": "object"
+        },
+        "oauth_authorization_server": {
+          "type": "object"
+        },
+        "oauth_resource": {
+          "type": "object"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "openid_relying_party",
+        "federation_entity"
+      ]
+    },
+    "authority_hints": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "uri",
+        "pattern": "^https://"
+      }
+    },
+    "trust_marks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uri",
+            "pattern": "^https://"
+          },
+          "trust_mark": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9-_]+\\.[A-Za-z0-9-_]+\\.[A-Za-z0-9-_]+$"
+          }
+        },
+        "required": [
+          "id",
+          "trust_mark"
+        ]
+      }
+    }
+  },
+  "required": [
+    "iss",
+    "sub",
+    "iat",
+    "exp",
+    "jwks",
+    "metadata",
+    "authority_hints",
+    "trust_marks"
+  ]
+}

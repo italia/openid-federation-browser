@@ -1,0 +1,30 @@
+{
+    "type": "object",
+    "properties": {
+        "alg": {
+            "type": "string",
+            "minLength": 1,
+            "not": {
+                "enum": [
+                    "none",
+                    "HS512",
+                    "HS256",
+                    "HS384"
+                ]
+            }
+        },
+        "kid": {
+            "type": "string",
+            "minLength": 1
+        },
+        "typ": {
+            "type": "string",
+            "minLength": 1
+        }
+    },
+    "required": [
+        "alg",
+        "kid",
+        "typ"
+    ]
+}
