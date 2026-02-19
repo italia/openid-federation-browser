@@ -8,6 +8,10 @@
     "url": "https://pre.ta.wallet.ipzs.it"
   },
   {
+    "name": "IT-Wallet",
+    "url": "https://ta.wallet.ipzs.it"
+  },
+  {
     "name": "eduGAIN OpenID Federation Pilot Trust Anchor",
     "url": "https://ta.oidf-pilot.edugain.org"
   }
