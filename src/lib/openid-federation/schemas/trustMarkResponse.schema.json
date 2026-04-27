@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Trust Mark Response",
+  "description": "JSON Schema for validating the Trust Mark Response as defined in OpenID Connect Federation 1.0 - February 17, 2026.",
+  "type": "object",
+  "properties": {
+    "iss": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https://[^/?#]+(:[0-9]+)?(/[^?#]*)?$"
+    },
+    "sub": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https://[^/?#]+(:[0-9]+)?(/[^?#]*)?$"
+    },
+    "trust_mark_type": {
+      "type": "string",
+      "minLength": 1
+    },
+    "iat": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "logo_uri": {
+      "type": "string",
+      "format": "uri"
+    },
+    "exp": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "ref": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https://"
+    },
+    "delegation": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+"
+    }
+  },
+  "required": [
+    "iss",
+    "sub",
+    "trust_mark_type",
+    "iat"
+  ]
+}

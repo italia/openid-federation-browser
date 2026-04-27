@@ -6,7 +6,7 @@ import { GraphNode } from "../lib/graph-data/types";
 import { PaginatedListAtom } from "../atoms/PaginatedList";
 import { EntityItemsRenderer } from "./EntityItemRender";
 import { useCallback, useEffect, useState } from "react";
-import { validateEntityConfiguration, validateHeaderEntityConfiguration, validateLeafEntityConfiguration, validateHeaderTrustMark, validateTrustMark } from "../lib/openid-federation/schema";
+import { validateEntityConfiguration, validateHeaderEntityConfiguration, validateHeaderTrustMark, validateTrustMark } from "../lib/openid-federation/schema";
 import { FormattedMessage } from "react-intl";
 import { SubAdvanceFiltersAtom } from "./SubAdvanceFilters";
 import { TrustMarkListing } from "./TrustMarkListing";
@@ -113,15 +113,10 @@ export const NodeMenuAtom = ({
 
   const validateEC = useCallback(
     async (ec: object): Promise<[boolean, string | undefined]> => {
-      if (isLeaf) {
-        const v2 = await validateLeafEntityConfiguration(ec);
-        return [v2[0] && data.info.ec.valid, v2[1]];
-      } else {
-        const v1 = await validateEntityConfiguration(ec);
-        return [v1[0] && data.info.ec.valid, v1[1]];
-      }
+      const v1 = await validateEntityConfiguration(ec);
+      return [v1[0] && data.info.ec.valid, v1[1]];
     },
-    [isLeaf, data.info.ec],
+    [data.info.ec],
   );
 
   const validateTM = async (tm: object): Promise<[boolean, string | undefined]> => {

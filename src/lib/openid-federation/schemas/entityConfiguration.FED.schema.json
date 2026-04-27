@@ -1,0 +1,209 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Federation Entity Configuration Schema",
+  "description": "JSON Schema for validating Federation Entity Configuration documents as defined in OpenID Connect Federation 1.0 - draft 29. February 17, 2026.",
+  "type": "object",
+  "properties": {
+    "iss": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https://[^/?#]+(:[0-9]+)?(/[^?#]*)?$"
+    },
+    "sub": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https://[^/?#]+(:[0-9]+)?(/[^?#]*)?$"
+    },
+    "iat": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "exp": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "jwks": {
+      "type": "object",
+      "properties": {
+        "keys": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "properties": {
+              "kty": {
+                "type": "string"
+              },
+              "n": {
+                "type": "string"
+              },
+              "e": {
+                "type": "string"
+              },
+              "kid": {
+                "type": "string",
+                "minLength": 1
+              },
+              "alg": {
+                "type": "string"
+              },
+              "use": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "kty",
+              "kid"
+            ]
+          }
+        }
+      },
+      "required": [
+        "keys"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "openid_relying_party": {
+          "type": "object"
+        },
+        "openid_provider": {
+          "type": "object"
+        },
+        "federation_entity": {
+          "type": "object"
+        },
+        "oauth_authorization_server": {
+          "type": "object"
+        },
+        "oauth_resource": {
+          "type": "object"
+        }
+      },
+      "additionalProperties": {
+        "type": "object"
+      }
+    },
+    "crit": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "authority_hints": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "uri",
+        "pattern": "^https://[^/?#]+(:[0-9]+)?(/[^?#]*)?$"
+      },
+      "minItems": 1
+    },
+    "trust_anchor_hints": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "uri",
+        "pattern": "^https://[^/?#]+(:[0-9]+)?(/[^?#]*)?$"
+      },
+      "minItems": 1
+    },
+    "trust_marks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "trust_mark"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "trust_mark": {
+            "type": "string",
+            "pattern": "[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+"
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "trust_mark_issuers": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "format": "uri",
+          "pattern": "^https://[^/?#]+(:[0-9]+)?(/[^?#]*)?$"
+        }
+      }
+    },
+    "trust_mark_owners": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "sub",
+          "jwks"
+        ],
+        "properties": {
+          "sub": {
+            "type": "string",
+            "format": "uri",
+            "pattern": "^https://[^/?#]+(:[0-9]+)?(/[^?#]*)?$"
+          },
+          "jwks": {
+            "type": "object",
+            "properties": {
+              "keys": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "kid"
+                  ],
+                  "properties": {
+                    "kid": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  },
+                  "additionalProperties": true
+                }
+              }
+            },
+            "required": [
+              "keys"
+            ]
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "constraints":{
+      "type":"object"
+    }
+  },
+  "not": {
+    "description": "Claims that MUST NOT appear in an Entity Configuration.",
+    "anyOf": [
+      { "required": ["metadata_policy"] },
+      { "required": ["metadata_policy_crit"] },
+      { "required": ["source_endpoint"] }
+    ]
+  },
+  "required": [
+    "iss",
+    "sub",
+    "iat",
+    "exp",
+    "jwks"
+  ]
+}

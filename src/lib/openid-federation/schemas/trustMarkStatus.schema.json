@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Trust Mark Status Response",
+  "description": "JSON Schema for validating the Trust Mark Status Response documents as defined in OpenID Connect Federation 1.0 - February 17, 2026.",
+  "type": "object",
+  "properties": {
+    "iss": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https://[^/?#]+(:[0-9]+)?(/[^?#]*)?$"
+    },
+    "iat": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "trust_mark": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "description": "REQUIRED. Case-sensitive string indicating the current status of the Trust Mark. Values defined by this specification are 'active', 'expired', 'revoked', and 'invalid'. Additional values MAY be defined and used.",
+      "anyOf": [
+        {
+          "enum": [
+            "active",
+            "expired",
+            "revoked",
+            "invalid"
+          ]
+        },
+        {
+          "type": "string",
+          "description": "Extension status value not defined by this specification."
+        }
+      ]
+    }
+  },
+  "required": [
+    "iss",
+    "iat",
+    "trust_mark",
+    "status"
+  ]
+}

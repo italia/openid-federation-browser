@@ -1,25 +1,17 @@
 {
+    "title": "Header Trust Mark Schema",
+    "description": "JSON Schema for validating Header Trust Mark documents as defined in OpenID Connect Federation 1.0 - draft 29. February 17, 2026.",
     "type": "object",
     "properties": {
         "alg": {
-            "type": "string",
-            "minLength": 1,
-            "not": {
-                "enum": [
-                    "none",
-                    "HS512",
-                    "HS256",
-                    "HS384"
-                ]
-            }
+            "type": "string"
         },
         "kid": {
-            "type": "string",
-            "minLength": 1
+            "type": "string"
         },
         "typ": {
             "type": "string",
-            "minLength": 1
+            "const": "trust-mark+jwt"
         }
     },
     "required": [

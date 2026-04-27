@@ -1,0 +1,161 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CIE Entity Configuration Schema",
+  "description": "JSON Schema for validating CIE Entity Configuration documents as defined in OpenID Connect Federation 1.0 - draft 29. February 17, 2026.",
+  "type": "object",
+  "properties": {
+    "iss": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https://"
+    },
+    "sub": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https://"
+    },
+    "iat": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "exp": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "jwks": {
+      "type": "object",
+      "properties": {
+        "keys": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "kty": {
+                "type": "string"
+              },
+              "n": {
+                "type": "string"
+              },
+              "e": {
+                "type": "string"
+              },
+              "kid": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "kty",
+              "kid"
+            ]
+          }
+        }
+      },
+      "required": [
+        "keys"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "openid_relying_party": {
+          "type": "object"
+        },
+        "openid_provider": {
+          "type": "object"
+        },
+        "federation_entity": {
+          "type": "object",
+          "properties": {
+            "organization_name": {
+              "type": "string"
+            },
+            "homepage_uri": {
+              "type": "string",
+              "format": "uri"
+            },
+            "policy_uri": {
+              "type": "string",
+              "format": "uri"
+            },
+            "logo_uri": {
+              "type": "string",
+              "format": "uri",
+              "pattern": "^https://.*\\.svg"
+            },
+            "contacts": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "federation_fetch_endpoint": {
+              "type": "string",
+              "format": "uri",
+              "pattern": "^https://.*?/fetch/?"
+            },
+            "federation_list_endpoint": {
+              "type": "string",
+              "format": "uri",
+              "pattern": "^https://.*?/list/?"
+            },
+            "federation_trust_mark_status_endpoint": {
+              "type": "string",
+              "format": "uri",
+              "pattern": "^https://.*?/trust_mark_status/?"
+            },
+            "federation_resolve_endpoint": {
+              "type": "string",
+              "format": "uri",
+              "pattern": "^https://.*?/resolve/?"
+            }
+          },
+          "required": [
+            "federation_resolve_endpoint",
+            "organization_name",
+            "homepage_uri",
+            "policy_uri",
+            "contacts"
+          ]
+        },
+        "oauth_authorization_server": {
+          "type": "object"
+        },
+        "oauth_resource": {
+          "type": "object"
+        }
+      }
+    },
+    "constraints": {
+      "type": "object"
+    },
+    "trust_mark_issuers": {
+      "type": "object",
+      "items": {
+        "type": "array"
+      }
+    }
+  },
+  "required": [
+    "iss",
+    "sub",
+    "iat",
+    "exp",
+    "jwks",
+    "metadata",
+    "trust_marks_issuers",
+    "constraints"
+  ],
+  "allOf": [
+    {
+      "not": {
+        "required": ["trust_marks"]
+      }
+    },
+    {
+      "not": {
+        "required": ["authority_hints"]
+      }
+    }
+  ]
+}

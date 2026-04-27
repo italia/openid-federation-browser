@@ -1,5 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Leaf CIE Entity Configuration Schema",
+  "description": "JSON Schema for validating Leaf CIE Entity Configuration documents as defined in OpenID Connect Federation 1.0 - draft 29. February 17, 2026.",
   "type": "object",
   "properties": {
     "iss": {
