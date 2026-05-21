@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Subordinate Listing Response",
+  "description": "JSON Schema for validating the Subordinate Listing Response documents as defined in OpenID Connect Federation 1.0 - February 17, 2026.",
+  "type": "array",
+  "items": {
+    "type": "string",
+    "format": "uri",
+    "pattern": "^https://[^/?#]+(:[0-9]+)?(/[^?#]*)?$"
+  },
+  "uniqueItems": true
+}

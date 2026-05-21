@@ -1,6 +1,6 @@
 {
-    "title": "Header Entity Configuration Schema",
-    "description": "JSON Schema for validating Header Entity Configuration documents as defined in OpenID Connect Federation 1.0 - draft 29. February 17, 2026.",
+    "title": "Header Trust Mark Status Schema",
+    "description": "JSON Schema for validating Header Trust Mark Status documents as defined in OpenID Connect Federation 1.0 - draft 29. February 17, 2026.",
     "type": "object",
     "properties": {
         "alg": {
@@ -27,7 +27,7 @@
         },
         "typ": {
             "type": "string",
-            "const": "entity-statement+jwt"
+            "const": "trust-mark-status-response+jwt"
         }
     },
     "required": [

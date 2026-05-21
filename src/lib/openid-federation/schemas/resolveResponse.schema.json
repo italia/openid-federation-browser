@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Resolve Response",
+  "description": "JSON Schema for validating the resolve response as defined in OpenID Connect Federation 1.0 - February 17, 2026.",
+  "type": "object",
+  "properties": {
+    "iss": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https://[^/?#]+(:[0-9]+)?(/[^?#]*)?$"
+    },
+    "sub": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https://[^/?#]+(:[0-9]+)?(/[^?#]*)?$"
+    },
+    "iat": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "exp": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "metadata": {
+      "type": "object",
+      "minProperties": 1,
+      "properties": {
+        "openid_relying_party": {
+          "type": "object"
+        },
+        "openid_provider": {
+          "type": "object"
+        },
+        "federation_entity": {
+          "type": "object"
+        },
+        "oauth_authorization_server": {
+          "type": "object"
+        },
+        "oauth_resource": {
+          "type": "object"
+        }
+      },
+      "additionalProperties": {
+        "type": "object"
+      }
+    },
+    "trust_chain": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+"
+      },
+      "minItems": 1
+    },
+    "trust_marks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "trust_mark_type",
+          "trust_mark"
+        ],
+        "properties": {
+          "trust_mark_type": {
+            "type": "string",
+            "minLength": 1
+          },
+          "trust_mark": {
+            "type": "string",
+            "pattern": "[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+"
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "iss",
+    "sub",
+    "iat",
+    "exp",
+    "metadata",
+    "trust_chain"
+  ]
+}

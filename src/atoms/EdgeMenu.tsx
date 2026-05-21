@@ -5,7 +5,7 @@ import { JWTViewer } from "./JWTViewer";
 import { fmtValidity } from "../lib/utils";
 import { InfoView } from "./InfoView";
 import { timestampToLocaleString } from "../lib/utils";
-import { validateSubordinateStatement } from "../lib/openid-federation/schema";
+import { validateLeafEntityConfiguration } from "../lib/openid-federation/schema";
 
 export interface EdgeMenuAtomProps {
   data: GraphEdge;
@@ -14,7 +14,7 @@ export interface EdgeMenuAtomProps {
 export const EdgeMenuAtom = ({ data }: EdgeMenuAtomProps) => {
 
   const validateSub = async (ec: object): Promise<[boolean, string | undefined]> => {
-    const validation = await validateSubordinateStatement(ec);
+    const validation = await validateLeafEntityConfiguration(ec);
     return [(validation[0] && data.subStatement!.valid), validation[1]];
   }
 

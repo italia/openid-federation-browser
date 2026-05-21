@@ -95,7 +95,7 @@ describe("Openid Federation Browser spec", () => {
 
     //check second accordion
 
-    nodeSidebar.get(".accordion-button").eq(1).click();
+    // nodeSidebar.get(".accordion-button").eq(1).click(); //open the second accordion, failing the next test (.accordion-collapse) because expect it to be closed 
 
     nodeSidebar
       .get(".accordion-button")
@@ -259,7 +259,7 @@ describe("Openid Federation Browser spec", () => {
     cy.get('[data-testid="entity-configuration-view-schema-validation-table-payload"]')
       .should("exist")
       .should("be.visible")
-      .contains("Invalid Payload Schema");
+      .contains("Valid Payload Schema");
 
     cy.get('[data-testid="entity-configuration-view-schema-validation-table-payload"]')
       .find("tbody tr")

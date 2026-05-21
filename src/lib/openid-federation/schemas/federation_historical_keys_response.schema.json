@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Federation Historical Key Schema",
+  "description": "JSON Schema for validating Federation Historical Key as defined in OpenID Connect Federation 1.0 - February 17, 2026.",
+  "type": "object",
+  "properties": {
+    "iss": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https://[^/?#]+(:[0-9]+)?(/[^?#]*)?$"
+    },
+    "iat": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "keys": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "properties": {
+          "kid": {
+            "type": "string",
+            "minLength": 1
+          },
+          "iat": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "exp": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "revoked": {
+            "type": "object",
+            "properties": {
+              "revoked_at": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "reason": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "revoked_at"
+            ]
+          },
+          "nbf": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "kty": {
+            "type": "string"
+          },
+          "n": {
+            "type": "string"
+          },
+          "e": {
+            "type": "string"
+          },
+          "alg": {
+            "type": "string"
+          },
+          "use": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "kid",
+          "exp"
+        ]
+      }
+    }
+  },
+  "required": [
+    "iss",
+    "iat",
+    "keys"
+  ]
+}
