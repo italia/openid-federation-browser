@@ -94,22 +94,22 @@
             "logo_uri": {
               "type": "string",
               "format": "uri",
-              "pattern": "^https://[^?#]+$"
+              "pattern": "^(https://)?[^?#]+$"
             },
             "policy_uri": {
               "type": "string",
               "format": "uri",
-              "pattern": "^https://[^?#]+$"
+              "pattern": "^(https://)?[^?#]+$"
             },
             "information_uri": {
               "type": "string",
               "format": "uri",
-              "pattern": "^https://[^?#]+$"
+              "pattern": "^(https://)?[^?#]+$"
             },
             "organization_uri": {
               "type": "string",
               "format": "uri",
-              "pattern": "^https://[^?#]+$"
+              "pattern": "^(https://)?[^?#]+$"
             }
           }
         },
@@ -140,22 +140,22 @@
             "logo_uri": {
               "type": "string",
               "format": "uri",
-              "pattern": "^https://[^?#]+$"
+              "pattern": "^(https://)?[^?#]+$"
             },
             "policy_uri": {
               "type": "string",
               "format": "uri",
-              "pattern": "^https://[^?#]+$"
+              "pattern": "^(https://)?[^?#]+$"
             },
             "information_uri": {
               "type": "string",
               "format": "uri",
-              "pattern": "^https://[^?#]+$"
+              "pattern": "^(https://)?[^?#]+$"
             },
             "organization_uri": {
               "type": "string",
               "format": "uri",
-              "pattern": "^https://[^?#]+$"
+              "pattern": "^(https://)?[^?#]+$"
             }
           }
         },
@@ -186,22 +186,22 @@
             "logo_uri": {
               "type": "string",
               "format": "uri",
-              "pattern": "^https://[^?#]+$"
+              "pattern": "^(https://)?[^?#]+$"
             },
             "policy_uri": {
               "type": "string",
               "format": "uri",
-              "pattern": "^https://[^?#]+$"
+              "pattern": "^(https://)?[^?#]+$"
             },
             "information_uri": {
               "type": "string",
               "format": "uri",
-              "pattern": "^https://[^?#]+$"
+              "pattern": "^(https://)?[^?#]+$"
             },
             "organization_uri": {
               "type": "string",
               "format": "uri",
-              "pattern": "^https://[^?#]+$"
+              "pattern": "^(https://)?[^?#]+$"
             },
             "federation_fetch_endpoint": {
               "type": "string",
@@ -283,22 +283,22 @@
             "logo_uri": {
               "type": "string",
               "format": "uri",
-              "pattern": "^https://[^?#]+$"
+              "pattern": "^(https://)?[^?#]+$"
             },
             "policy_uri": {
               "type": "string",
               "format": "uri",
-              "pattern": "^https://[^?#]+$"
+              "pattern": "^(https://)?[^?#]+$"
             },
             "information_uri": {
               "type": "string",
               "format": "uri",
-              "pattern": "^https://[^?#]+$"
+              "pattern": "^(https://)?[^?#]+$"
             },
             "organization_uri": {
               "type": "string",
               "format": "uri",
-              "pattern": "^https://[^?#]+$"
+              "pattern": "^(https://)?[^?#]+$"
             }
           }
         },
@@ -329,22 +329,22 @@
             "logo_uri": {
               "type": "string",
               "format": "uri",
-              "pattern": "^https://[^?#]+$"
+              "pattern": "^(https://)?[^?#]+$"
             },
             "policy_uri": {
               "type": "string",
               "format": "uri",
-              "pattern": "^https://[^?#]+$"
+              "pattern": "^(https://)?[^?#]+$"
             },
             "information_uri": {
               "type": "string",
               "format": "uri",
-              "pattern": "^https://[^?#]+$"
+              "pattern": "^(https://)?[^?#]+$"
             },
             "organization_uri": {
               "type": "string",
               "format": "uri",
-              "pattern": "^https://[^?#]+$"
+              "pattern": "^(https://)?[^?#]+$"
             }
           }
         }
