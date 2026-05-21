@@ -65,25 +65,289 @@
     },
     "metadata": {
       "type": "object",
+      "minProperties": 1,
       "properties": {
         "openid_relying_party": {
-          "type": "object"
+          "type": "object",
+          "properties": {
+            "organization_name": {
+              "type": "string"
+            },
+            "display_name": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "keywords": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "contacts": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "logo_uri": {
+              "type": "string",
+              "format": "uri",
+              "pattern": "^https://[^?#]+$"
+            },
+            "policy_uri": {
+              "type": "string",
+              "format": "uri",
+              "pattern": "^https://[^?#]+$"
+            },
+            "information_uri": {
+              "type": "string",
+              "format": "uri",
+              "pattern": "^https://[^?#]+$"
+            },
+            "organization_uri": {
+              "type": "string",
+              "format": "uri",
+              "pattern": "^https://[^?#]+$"
+            }
+          }
         },
         "openid_provider": {
-          "type": "object"
+          "type": "object",
+          "properties": {
+            "organization_name": {
+              "type": "string"
+            },
+            "display_name": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "keywords": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "contacts": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "logo_uri": {
+              "type": "string",
+              "format": "uri",
+              "pattern": "^https://[^?#]+$"
+            },
+            "policy_uri": {
+              "type": "string",
+              "format": "uri",
+              "pattern": "^https://[^?#]+$"
+            },
+            "information_uri": {
+              "type": "string",
+              "format": "uri",
+              "pattern": "^https://[^?#]+$"
+            },
+            "organization_uri": {
+              "type": "string",
+              "format": "uri",
+              "pattern": "^https://[^?#]+$"
+            }
+          }
         },
         "federation_entity": {
-          "type": "object"
+          "type": "object",
+          "properties": {
+            "organization_name": {
+              "type": "string"
+            },
+            "display_name": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "keywords": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "contacts": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "logo_uri": {
+              "type": "string",
+              "format": "uri",
+              "pattern": "^https://[^?#]+$"
+            },
+            "policy_uri": {
+              "type": "string",
+              "format": "uri",
+              "pattern": "^https://[^?#]+$"
+            },
+            "information_uri": {
+              "type": "string",
+              "format": "uri",
+              "pattern": "^https://[^?#]+$"
+            },
+            "organization_uri": {
+              "type": "string",
+              "format": "uri",
+              "pattern": "^https://[^?#]+$"
+            },
+            "federation_fetch_endpoint": {
+              "type": "string",
+              "format": "uri",
+              "pattern": "^https:\\/\\/[A-Za-z0-9.-]+(:\\d+)?(\\/[^?#]*)?(\\?[^#]*)?$"
+            },
+            "federation_list_endpoint": {
+              "type": "string",
+              "format": "uri",
+              "pattern": "^https:\\/\\/[A-Za-z0-9.-]+(:\\d+)?(\\/[^?#]*)?(\\?[^#]*)?$"
+            },
+            "federation_resolve_endpoint": {
+              "type": "string",
+              "format": "uri",
+              "pattern": "^https:\\/\\/[A-Za-z0-9.-]+(:\\d+)?(\\/[^?#]*)?(\\?[^#]*)?$"
+            },
+            "federation_trust_mark_status_endpoint": {
+              "type": "string",
+              "format": "uri",
+              "pattern": "^https:\\/\\/[A-Za-z0-9.-]+(:\\d+)?(\\/[^?#]*)?(\\?[^#]*)?$"
+            },
+            "federation_trust_mark_list_endpoint": {
+              "type": "string",
+              "format": "uri",
+              "pattern": "^https:\\/\\/[A-Za-z0-9.-]+(:\\d+)?(\\/[^?#]*)?(\\?[^#]*)?$"
+            },
+            "federation_trust_mark_endpoint": {
+              "type": "string",
+              "format": "uri",
+              "pattern": "^https:\\/\\/[A-Za-z0-9.-]+(:\\d+)?(\\/[^?#]*)?(\\?[^#]*)?$"
+            },
+            "federation_historical_keys_endpoint": {
+              "type": "string",
+              "format": "uri",
+              "pattern": "^https:\\/\\/[A-Za-z0-9.-]+(:\\d+)?(\\/[^?#]*)?(\\?[^#]*)?$"
+            },
+            "endpoint_auth_signing_alg_values_supported": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "minItems": 1,
+              "not": {
+                "items": {
+                  "enum": [
+                    "none",
+                    "None",
+                    "NONE"
+                  ]
+                }
+              }
+            }
+          }
         },
         "oauth_authorization_server": {
-          "type": "object"
+          "type": "object",
+          "properties": {
+            "organization_name": {
+              "type": "string"
+            },
+            "display_name": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "keywords": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "contacts": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "logo_uri": {
+              "type": "string",
+              "format": "uri",
+              "pattern": "^https://[^?#]+$"
+            },
+            "policy_uri": {
+              "type": "string",
+              "format": "uri",
+              "pattern": "^https://[^?#]+$"
+            },
+            "information_uri": {
+              "type": "string",
+              "format": "uri",
+              "pattern": "^https://[^?#]+$"
+            },
+            "organization_uri": {
+              "type": "string",
+              "format": "uri",
+              "pattern": "^https://[^?#]+$"
+            }
+          }
         },
         "oauth_resource": {
-          "type": "object"
+          "type": "object",
+          "properties": {
+            "organization_name": {
+              "type": "string"
+            },
+            "display_name": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "keywords": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "contacts": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "logo_uri": {
+              "type": "string",
+              "format": "uri",
+              "pattern": "^https://[^?#]+$"
+            },
+            "policy_uri": {
+              "type": "string",
+              "format": "uri",
+              "pattern": "^https://[^?#]+$"
+            },
+            "information_uri": {
+              "type": "string",
+              "format": "uri",
+              "pattern": "^https://[^?#]+$"
+            },
+            "organization_uri": {
+              "type": "string",
+              "format": "uri",
+              "pattern": "^https://[^?#]+$"
+            }
+          }
         }
-      },
-      "additionalProperties": {
-        "type": "object"
       }
     },
     "crit": {
@@ -117,7 +381,7 @@
       "items": {
         "type": "object",
         "required": [
-          "id",
+          "trust_mark_type",
           "trust_mark"
         ],
         "properties": {
@@ -125,12 +389,14 @@
             "type": "string",
             "minLength": 1
           },
+          "trust_mark_type": {
+            "type": "string"
+          },
           "trust_mark": {
             "type": "string",
-            "pattern": "[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+"
+            "pattern": "^[A-Za-z0-9_-]{1,}\\.[A-Za-z0-9_-]{1,}\\.[A-Za-z0-9_-]{1,}$"
           }
-        },
-        "additionalProperties": true
+        }
       }
     },
     "trust_mark_issuers": {
@@ -187,16 +453,28 @@
         "additionalProperties": true
       }
     },
-    "constraints":{
-      "type":"object"
+    "constraints": {
+      "type": "object"
     }
   },
   "not": {
     "description": "Claims that MUST NOT appear in an Entity Configuration.",
     "anyOf": [
-      { "required": ["metadata_policy"] },
-      { "required": ["metadata_policy_crit"] },
-      { "required": ["source_endpoint"] }
+      {
+        "required": [
+          "metadata_policy"
+        ]
+      },
+      {
+        "required": [
+          "metadata_policy_crit"
+        ]
+      },
+      {
+        "required": [
+          "source_endpoint"
+        ]
+      }
     ]
   },
   "required": [

@@ -4,10 +4,26 @@
     "type": "object",
     "properties": {
         "alg": {
-            "type": "string"
+            "type": "string",
+            "minLength": 1,
+            "not": {
+                "enum": [
+                    "none",
+                    "None",
+                    "NONE"
+                ]
+            }
         },
         "kid": {
-            "type": "string"
+            "type": "string",
+            "minLength": 1,
+            "not": {
+                "enum": [
+                    "none",
+                    "None",
+                    "NONE"
+                ]
+            }
         },
         "typ": {
             "type": "string",
